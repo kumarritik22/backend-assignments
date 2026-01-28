@@ -2,10 +2,18 @@ const express = require("express")
 
 const app = express()
 
-const notes = []
+app.use(express.json())
 
-app.post("/notes", (req,res)=> {
-    res.send("note created"); 
+const profiles = []
+
+app.post("/profiles", (req, res) => {
+    console.log(req.body)
+    profiles.push(req.body)
+    res.send("profile created")
+})
+
+app.get("/profiles", (req, res) => {
+    res.send(profiles)
 })
 
 app.listen(3000, ()=> {
