@@ -6,7 +6,7 @@ const App = () => {
   const [profiles, setProfiles] = useState([])
 
   function fetchProfiles(){
-    axios.get("http://localhost:3000/api/profiles")
+    axios.get("https://day-86-server.onrender.com/api/profiles")
     .then((res) => {
       setProfiles(res.data.profiles)
     })
@@ -23,7 +23,7 @@ const App = () => {
 
     // console.log(name.value, profession.value)
     
-    axios.post("http://localhost:3000/api/profiles", {
+    axios.post("https://day-86-server.onrender.com/api/profiles", {
       name: name.value,
       profession: profession.value
     })
@@ -34,7 +34,7 @@ const App = () => {
   }
 
   function handleDeleteProfile(profileId){
-    axios.delete("http://localhost:3000/api/profiles/" + profileId)
+    axios.delete("https://day-86-server.onrender.com/api/profiles/" + profileId)
     .then((res) => {
       // console.log(res.data)
       fetchProfiles()
@@ -44,7 +44,7 @@ const App = () => {
   function handleUpdateProfession(profileId){
     const newProfession = prompt("Enter new profession");
     
-    axios.patch("http://localhost:3000/api/profiles/" + profileId, {profession: newProfession})
+    axios.patch("https://day-86-server.onrender.com/api/profiles/" + profileId, {profession: newProfession})
     .then((res) => {
       // console.log(res.data);
       fetchProfiles()
@@ -55,7 +55,7 @@ const App = () => {
     const newName = prompt("Enter new name");
     const newProfession = prompt("Enter new profession");
 
-    axios.put("http://localhost:3000/api/profiles/" + profileId, {name: newName, profession: newProfession})
+    axios.put("https://day-86-server.onrender.com/api/profiles/" + profileId, {name: newName, profession: newProfession})
     .then((res) => {
       // console.log(res.data);
       fetchProfiles()
