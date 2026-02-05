@@ -42,7 +42,7 @@ const App = () => {
   }
 
   function handleUpdateProfession(profileId){
-    const newProfession = prompt("Enter new profession");
+    const newProfession = prompt("Enter New Profession");
     
     axios.patch("https://day-86-server.onrender.com/api/profiles/" + profileId, {profession: newProfession})
     .then((res) => {
@@ -52,8 +52,8 @@ const App = () => {
   }
 
   function handleUpdateProfile(profileId){
-    const newName = prompt("Enter new name");
-    const newProfession = prompt("Enter new profession");
+    const newName = prompt("Enter New Name");
+    const newProfession = prompt("Enter New Profession");
 
     axios.put("https://day-86-server.onrender.com/api/profiles/" + profileId, {name: newName, profession: newProfession})
     .then((res) => {
@@ -65,10 +65,13 @@ const App = () => {
 
   return (
     <>
+      <div className='heading'>
+        <h1>Profile Generator</h1>
+      </div>
       <form className='note-create-form' onSubmit={handleSubmit}>
-        <input name='name' type='text' placeholder='Enter Name'></input>
-        <input name='profession' type='text' placeholder='Enter Profession'></input>
-        <button>Create Profile</button>
+        <input className='name' name="name" type='text' placeholder='Enter Name'></input>
+        <input className='profession' name="profession" type='text' placeholder='Enter Profession'></input>
+        <button className='create-profile'>Create Profile</button>
       </form>
 
 
@@ -78,17 +81,19 @@ const App = () => {
             return  <div className="profile">
                   <h1>{profile.name}</h1>
                   <p>{profile.profession}</p>
-                  <button onClick={()=> {
-                    handleDeleteProfile(profile._id)
-                  }}>Delete</button>
+                  <div className="btn">
+                    <button className='delete' onClick={()=> {
+                      handleDeleteProfile(profile._id)
+                    }}>Delete</button>
 
-                  <button onClick={()=> {
-                    handleUpdateProfession(profile._id)
-                  }}>Update profession</button>
+                    <button className='update-profession' onClick={()=> {
+                      handleUpdateProfession(profile._id)
+                    }}>Update Profession</button>
 
-                  <button onClick={()=> {
-                    handleUpdateProfile(profile._id)
-                  }}>Update Profile</button>
+                    <button className='update-profile' onClick={()=> {
+                      handleUpdateProfile(profile._id)
+                    }}>Update Profile</button>
+                  </div>
               </div>
           })
         }
