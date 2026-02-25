@@ -1,15 +1,9 @@
-import "../style/form.scss";
-import { Link } from "react-router";
-import { useState } from "react";
+import "../style/form.scss"
+import { Link } from "react-router-dom";
 
-const register = () => {
-
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-
-  async function handleSubmit(e) {
-   
+const Register = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
   }
 
   return (
@@ -17,28 +11,15 @@ const register = () => {
       <div className="form-container">
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
-          <input 
-            onInput={(e)=> {setUsername(e.target.value)}} 
-            type="text" 
-            name="username" 
-            placeholder="Enter username" />
-          <input
-            onInput={(e)=> {setEmail(e.target.value)}}  
-            type="email" 
-            name="email" 
-            placeholder="Enter email" />
-          <input
-            onInput={(e)=> {setPassword(e.target.value)}}
-            type="password" 
-            name="password" 
-            placeholder="Enter password" />
-          <button type="submit">Register</button>
+          <input type="text" name="username" id="username" placeholder="Enter username" />
+          <input type="email" name="email" id="email" placeholder="Enter email id" />
+          <input type="password" name="password" id="password" placeholder="Enter password" />
+          <button className="button primary-button">Login</button>
         </form>
-
-        <p>Already have an account? <Link to="/login" className="toggleAuthForm">Login</Link></p>
+        <p>Already have an account? <Link to={"/login"}>Login</Link></p>
       </div>
     </main>
   )
 }
 
-export default register
+export default Register

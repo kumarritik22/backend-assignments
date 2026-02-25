@@ -1,31 +1,30 @@
-import { useState } from "react";
-import "../style/form.scss";
-import { Link } from "react-router";
+import "../style/form.scss"
+import { Link } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const login = () => {
+const Login = () => {
+
+  const {user, loading, handleLogin} = useAuth()
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  const {handleLogin, loading} = useAuth()
   const navigate = useNavigate();
 
-  if(loading) {
-    return(
-      <h1>Loading...</h1>
-    )
-  }
-
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
-    handleLogin(username, password)
-    .then((res) => {
-      console.log(res)
-      navigate("/")
-    })
+    await handleLogin(username, password)
+
+    navigate("/");
+  }
+
+  if (loading) {
+    return (<main>
+      <h1>Loading...</h1>
+    </main>)
   }
 
   return (
@@ -34,22 +33,23 @@ const login = () => {
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <input 
-            onInput={(e)=> {setUsername(e.target.value)}} 
+            onInput={(e) => {setUsername(e.target.value) }} 
             type="text" 
             name="username" 
+            id="username" 
             placeholder="Enter username" />
           <input 
-            onInput={(e)=> {setPassword(e.target.value)}} 
+            onInput={(e) => {setPassword(e.target.value) }} 
             type="password" 
             name="password" 
+            id="password" 
             placeholder="Enter password" />
-          <button type="submit">Login</button>
+          <button className="button primary-button">Login</button>
         </form>
-
-        <p>Don't have an account? <Link to="/register" className="toggleAuthForm">Register</Link></p>
+        <p>Don't have an account? <Link to={"/register"}>Register</Link></p>
       </div>
     </main>
   )
 }
 
-export default login
+export default Login
