@@ -79,7 +79,7 @@ async function likePostController (req, res) {
 
     if (!post) {
         return res.status(404).json({
-            message: "post not found"
+            message: "Post not found"
         })
     }
 
@@ -93,6 +93,30 @@ async function likePostController (req, res) {
         message: "Post liked successfully",
         like
     })
+
+}
+
+async function unlikePostController (req, res) {
+    const username = req.user.username
+    const postId = req.params.postId
+
+    const isLiked = await likeModel.findOne({
+        post: postId,
+        user: username
+    })
+
+    if (!isLiked) {
+        return res.status(400).json({
+            message: "Post is not liked"
+        })
+    }
+
+    await likeModel.findOneAndDelete({_id: isLiked._id})
+
+    return res.status(200).json({
+        message: "Post Unliked successfully"
+    })
+
 
 }
 
@@ -123,5 +147,6 @@ module.exports = {
     getPostController,
     getPostDetailsController,
     likePostController,
-    getFeedController
+    getFeedController,
+    unlikePostController
 }

@@ -13,10 +13,16 @@ export async function login(username, password) {
     return response.data
 }
 
-export async function register(username, email, password) {
-    const response = await api.post("/register", {
-        username, email, password
-    })
+export async function register(username, email, password, bio, imageFile) {
+    const formData = new FormData()
+
+    formData.append("username", username)
+    formData.append("email", email)
+    formData.append("password", password)
+    formData.append("bio", bio)
+    formData.append("profileImage", imageFile)
+
+    const response = await api.post("/register", formData)
 
     return response.data
 }

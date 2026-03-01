@@ -27,5 +27,16 @@ main{
             padding-block: 0.5rem;
             border-radius: 1rem;
         }
+
+        .profile-image-label{
+            background-color: whitesmoke;
+            color: rgb(47, 47, 47);
+            padding-inline: 1rem;
+            padding-block: 0.5rem;
+            border-radius: 1rem;
+            cursor: pointer;
+        }
     }
+    
+
 }

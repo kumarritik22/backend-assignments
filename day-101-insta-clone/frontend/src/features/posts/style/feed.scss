@@ -1,7 +1,8 @@
 .feed-page{
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    flex-direction: column;
 
     .feed{
         max-width: 300px;
@@ -61,7 +62,7 @@
                 svg{
                     width: 1rem;
                     aspect-ratio: 1/1;
-                    color: green;
+                    color: white;
                 }
                 button{
                     background-color: transparent;

@@ -1,10 +1,29 @@
 const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const ImageKit = require("@imagekit/nodejs");
+const {toFile} = require("@imagekit/nodejs");
 
+
+const imagekit = new ImageKit({
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY
+})
 
 async function registerController(req, res) {
-    const {username, email, password, bio, profileImage} = req.body
+
+    const file = await imagekit.files.upload({
+        file: await toFile(Buffer.from(req.file.buffer), "file"),
+        fileName: "image",
+        folder: "Cohort-2-insta-clone-posts"
+    })
+
+    if (!req.file) {
+        return res.status(400).json({
+            message: "Profile image is required"
+        })
+    }
+
+    const {username, email, password, bio} = req.body
 
     const isUserAlreadyExists = await userModel.findOne({
         $or: [
@@ -22,7 +41,11 @@ async function registerController(req, res) {
     const hash = await bcrypt.hash(password, 10)
 
     const user = await userModel.create({
-        username, email, password: hash, bio, profileImage
+        username,
+        email,
+        password: hash, 
+        bio, 
+        profileImage: file.url
     })
 
     const token = jwt.sign(
