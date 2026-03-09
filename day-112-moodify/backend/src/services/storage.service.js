@@ -1,5 +1,4 @@
 const imageKit = require("@imagekit/nodejs");
-// const {toFile} = require("@imagekit/nodejs");
 
 const client = new imageKit({
     privatekey: process.env.IMAGEKIT_PRIVATE_KEY
