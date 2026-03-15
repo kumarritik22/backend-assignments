@@ -16,7 +16,7 @@ transporter.verify()
     .catch((err) => { console.error("Email transporter verification failed:", err); });
 
 
-export async function sendEmail({ to, subject, html, text }) {
+export async function sendEmail({ to, subject, html, text = ""}) {
 
     const mailOptions = {
         from: process.env.GOOGLE_USER,
