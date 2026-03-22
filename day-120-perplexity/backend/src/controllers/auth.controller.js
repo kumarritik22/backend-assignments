@@ -28,6 +28,8 @@ export async function register(req, res) {
         email: user.email
     }, process.env.JWT_SECRET)
 
+    console.log("Register reached before sending email.")
+
     await sendEmail({
         to: email,
         subject: "Welcome to Perplexity!",
@@ -92,7 +94,7 @@ export async function login(req, res) {
     const token = jwt.sign({
         id: user._id,
         username: user.username
-    }, process.env.JWT_SECRET, {expiresIn: "7d"})
+    }, process.env.JWT_SECRET, {expiresIn: "10d"})
 
     res.cookie("token", token)
 
