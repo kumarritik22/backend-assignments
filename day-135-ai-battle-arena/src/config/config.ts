@@ -1,17 +1,11 @@
-import {config as dotenvConfig} from "dotenv";
-dotenvConfig();
+import dotenv from "dotenv";
 
-type CONFIG = {
-    readonly GOOGLE_API_KEY: string;
-    readonly MISTRAL_API_KEY: string;
-    readonly COHERE_API_KEY: string;
-}
+dotenv.config();
 
-const config: CONFIG = {
+const config = {
     GOOGLE_API_KEY: process.env.GOOGLE_API_KEY || "",
     MISTRAL_API_KEY: process.env.MISTRAL_API_KEY || "",
-    COHERE_API_KEY: process.env.COHERE_API_KEY || "",
+    COHERE_API_KEY: process.env.COHERE_API_KEY || ""
 }
 
 export default config;
-
