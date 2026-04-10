@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 
 function MarkdownRenderer({ content }) {
   return (
-    <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none text-slate-800 dark:text-slate-200">
+    <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none text-slate-900 dark:text-gray-100">
       <ReactMarkdown 
         remarkPlugins={[remarkGfm]}
         components={{

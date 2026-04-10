@@ -35,10 +35,10 @@ function JudgePanel({ judgeData }) {
           {/* Solution 1 Evaluation */}
           <div className="space-y-4 pr-0 md:pr-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-semibold text-sm text-slate-700 dark:text-slate-300">Solution 1 (MistralAI)</h4>
+              <h4 className="font-semibold text-sm text-slate-800 dark:text-slate-200">Solution 1 (MistralAI)</h4>
               <ScoreBadge score={judgeData.solution_1_score} />
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
               {judgeData.solution_1_reasoning}
             </div>
           </div>
@@ -46,10 +46,10 @@ function JudgePanel({ judgeData }) {
           {/* Solution 2 Evaluation */}
           <div className="space-y-4 pl-0 md:pl-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-semibold text-sm text-slate-700 dark:text-slate-300">Solution 2 (Cohere)</h4>
+              <h4 className="font-semibold text-sm text-slate-800 dark:text-slate-200">Solution 2 (Cohere)</h4>
               <ScoreBadge score={judgeData.solution_2_score} />
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
               {judgeData.solution_2_reasoning}
             </div>
           </div>

@@ -17,9 +17,9 @@ function ScoreBadge({ score }) {
   }
 
   return (
-    <div className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-full border ${bgClass} ${borderClass} font-semibold text-sm`}>
-      <span>{score}</span>
-      <span className="opacity-60 text-xs font-medium">/ 10</span>
+    <div className={`flex items-center space-x-2 px-3 py-1.5 rounded-full border ${bgClass} ${borderClass} font-semibold text-sm`}>
+      <span className="text-lg font-bold">{score}</span>
+      <span className="opacity-70 text-xs font-bold uppercase tracking-wide">/ 10</span>
     </div>
   );
 }

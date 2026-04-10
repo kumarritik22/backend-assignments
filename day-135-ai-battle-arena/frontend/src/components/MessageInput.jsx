@@ -15,7 +15,7 @@ function MessageInput({ onSendMessage, isWaiting }) {
   return (
     <div className="relative max-w-4xl mx-auto w-full">
       <form onSubmit={handleSubmit} className="relative z-20">
-        <div className="relative flex items-center overflow-hidden rounded-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 shadow-lg shadow-slate-200/20 dark:shadow-none focus-within:ring-2 focus-within:ring-blue-500/50 focus-within:border-blue-500 transition-all">
+        <div className="relative flex items-center overflow-hidden rounded-full bg-white dark:bg-slate-900 border border-slate-300 shadow-xl shadow-slate-200/50 dark:border-slate-700 dark:shadow-none focus-within:ring-4 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-300">
           <div className="pl-6 text-slate-400 dark:text-slate-500 flex-shrink-0">
             <Sparkles size={20} />
           </div>
@@ -25,7 +25,7 @@ function MessageInput({ onSendMessage, isWaiting }) {
             onChange={(e) => setInput(e.target.value)}
             disabled={isWaiting}
             placeholder={isWaiting ? "Please wait for AI response..." : "Ask the AI models..."}
-            className="w-full bg-transparent border-none focus:outline-none px-4 py-4 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 disabled:opacity-50"
+            className="w-full bg-transparent border-none focus:outline-none px-4 py-5 text-base text-slate-900 dark:text-gray-100 placeholder-slate-400 dark:placeholder-slate-500 disabled:opacity-50"
           />
           <div className="pr-2 flex-shrink-0">
             <button
