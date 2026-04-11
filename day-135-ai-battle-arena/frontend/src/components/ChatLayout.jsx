@@ -3,10 +3,18 @@ import Sidebar from './Sidebar';
 import ChatWindow from './ChatWindow';
 import { MOCK_CHAT_HISTORY } from '../data/mockData';
 import { Menu, PanelLeftOpen } from 'lucide-react';
+import axios from 'axios';
 
 function ChatLayout() {
-  const [chatHistory, setChatHistory] = useState(MOCK_CHAT_HISTORY);
-  const [activeChatId, setActiveChatId] = useState(MOCK_CHAT_HISTORY[0]?.id || null);
+  const [chatHistory, setChatHistory] = useState([
+    {
+      id: 'chat-initial',
+      title: 'New Conversation',
+      messages: []
+    },
+    ...MOCK_CHAT_HISTORY
+  ]);
+  const [activeChatId, setActiveChatId] = useState('chat-initial');
   
   // Use essentially a global toggle for sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
@@ -38,7 +46,7 @@ function ChatLayout() {
     if (window.innerWidth < 768) setIsSidebarOpen(false);
   };
 
-  const handleSendMessage = (text) => {
+  const handleSendMessage = async (text) => {
     if (!activeChatId) return;
 
     // Add user message optimistically
@@ -65,34 +73,36 @@ function ChatLayout() {
     setChatHistory(updatedHistory);
     setIsWaiting(true);
 
-    // Simulate AI response delay
-    setTimeout(() => {
+    try {
+      // Make the actual API call
+      const response = await axios.post("http://localhost:3000/invoke", {
+        input: text
+      });
+      const data = response.data;
+
+      // Update the chat history with the real response
       setChatHistory(currentHistory => {
         return currentHistory.map(chat => {
           if (chat.id === activeChatId) {
             const updatedMessages = [...chat.messages];
             const latestIndex = updatedMessages.length - 1;
             
-            // Populate mock responses
+            // Populate actual responses from the backend
             updatedMessages[latestIndex] = {
               ...updatedMessages[latestIndex],
-              solution_1: `Here is a simulated MistralAI generic response for:\n\n> ${text}\n\nThis demonstrates markdown rendering with **bold text**, *italics*, and \`inline code\`.\n\n### Explanation\nThis model is typically good at concise technical descriptions.`,
-              solution_2: `This is the Cohere simulated response for the prompt:\n\n> ${text}\n\nCohere focuses on enterprise logic. Here's a bulleted list to answer:\n- Point 1: It scales well.\n- Point 2: It is highly embedded.\n\nEnjoy assessing the quality!`,
-              judge: {
-                solution_1_score: Math.floor(Math.random() * 3) + 7, // 7-9
-                solution_2_score: Math.floor(Math.random() * 4) + 6, // 6-9
-                solution_1_reasoning: "The directness is appreciated. It leverages markdown well to structure the response effectively.",
-                solution_2_reasoning: "Good structured format but slightly brief. The bullet points are clear.",
-                recommendation: Math.random() > 0.5 ? 1 : 2
-              }
+              ...data.result
             };
             return { ...chat, messages: updatedMessages };
           }
           return chat;
         });
       });
+    } catch (error) {
+      console.error("Failed to fetch AI response:", error);
+      // Optional: Handle error state in UI here if needed
+    } finally {
       setIsWaiting(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -109,7 +119,7 @@ function ChatLayout() {
       {/* Sidebar - Positioned fixed for Mobile, relative for Desktop */}
       <div 
         className={`
-          fixed md:relative z-30 h-full transition-all duration-300 ease-in-out flex-shrink-0
+          fixed md:relative z-30 h-full transition-all duration-300 ease-in-out shrink-0
           ${isSidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full md:-ml-72 w-72'}
         `}
       >

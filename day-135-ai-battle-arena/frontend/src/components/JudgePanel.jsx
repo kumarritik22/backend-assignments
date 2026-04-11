@@ -6,7 +6,7 @@ function JudgePanel({ judgeData }) {
   return (
     <div className="mt-8 rounded-2xl border border-amber-200/60 dark:border-amber-900/30 overflow-hidden shadow-sm">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 px-4 md:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-amber-100 dark:border-amber-900/40">
+      <div className="bg-linear-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 px-4 md:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-amber-100 dark:border-amber-900/40">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400">
             <Gavel size={20} />
@@ -22,7 +22,13 @@ function JudgePanel({ judgeData }) {
         {/* Recommendation Badge */}
         <div className="flex items-center self-stretch sm:self-auto justify-center gap-2 px-3 py-2 sm:py-1.5 rounded-full bg-yellow-400 dark:bg-yellow-500 text-yellow-950 font-bold text-sm shadow-sm ring-1 ring-yellow-500/50">
           <Trophy size={16} />
-          <span>Winner: {judgeData.recommendation === 1 ? 'MistralAI' : 'Cohere'}</span>
+          <span>Winner: {
+            Number(judgeData.solution_1_score) > Number(judgeData.solution_2_score) 
+              ? 'MistralAI' 
+              : Number(judgeData.solution_2_score) > Number(judgeData.solution_1_score)
+                ? 'Cohere'
+                : 'Tie'
+          }</span>
         </div>
       </div>
 

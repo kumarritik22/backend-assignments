@@ -86,7 +86,7 @@ function Sidebar({
 
         {/* Profile Card */}
         <button className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 transition-colors border border-transparent text-left">
-          <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/60 border border-blue-200 dark:border-blue-800/80 overflow-hidden flex items-center justify-center flex-shrink-0 text-blue-600 dark:text-blue-400">
+          <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/60 border border-blue-200 dark:border-blue-800/80 overflow-hidden flex items-center justify-center shrink-0 text-blue-600 dark:text-blue-400">
             <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=2563eb&color=fff&bold=true" alt="User Profile" className="w-full h-full object-cover" />
           </div>
           <div className="flex-1 truncate">

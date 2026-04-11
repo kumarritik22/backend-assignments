@@ -25,7 +25,7 @@ function SolutionCard({ modelName, content, colorTheme }) {
       </div>
       
       {/* Body */}
-      <div className="p-5 flex-grow">
+      <div className="p-5 grow">
         <MarkdownRenderer content={content} />
       </div>
     </div>
