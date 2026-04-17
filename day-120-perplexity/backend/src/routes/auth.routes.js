@@ -10,7 +10,7 @@ const authRouter = Router();
 // @description Register a new user
 // @access Public
 // @body {username, email, password}
-authRouter.post("/register",registerValidator, register);
+authRouter.post("/register", registerValidator, register);
 
 
 // @route POST /api/auth/login
