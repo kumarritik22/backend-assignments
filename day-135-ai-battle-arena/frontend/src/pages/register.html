@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Join the Arena - AI Battle Arena</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-dim": "#d4cdee",
+                        "on-primary-container": "#97d8ff",
+                        "on-surface": "#dee5ff",
+                        "primary-fixed": "#c4e7ff",
+                        "surface-container-high": "#031d4b",
+                        "on-background": "#dee5ff",
+                        "on-primary-fixed": "#00445e",
+                        "secondary-fixed-dim": "#cad5ed",
+                        "on-secondary-fixed-variant": "#515c70",
+                        "error-container": "#7f2927",
+                        "surface-variant": "#00225a",
+                        "secondary": "#939eb5",
+                        "secondary-fixed": "#d8e3fb",
+                        "background": "#060e20",
+                        "on-tertiary-container": "#514d68",
+                        "error": "#ee7d77",
+                        "outline": "#5b74b1",
+                        "tertiary-container": "#e3dbfd",
+                        "secondary-dim": "#939eb5",
+                        "primary-container": "#004c69",
+                        "surface-container-highest": "#00225a",
+                        "on-secondary-container": "#b4c0d7",
+                        "surface-container-low": "#06122d",
+                        "tertiary-fixed": "#e3dbfd",
+                        "on-error": "#490106",
+                        "surface-variant": "#00225a",
+                        "inverse-on-surface": "#4d556b",
+                        "inverse-primary": "#00668b",
+                        "surface": "#060e20",
+                        "on-surface-variant": "#91aaeb",
+                        "on-secondary": "#152032",
+                        "on-primary-fixed-variant": "#006286",
+                        "on-primary": "#004560",
+                        "inverse-surface": "#faf8ff",
+                        "on-error-container": "#ff9993",
+                        "error-dim": "#bb5551",
+                        "primary": "#7bd0ff",
+                        "primary-dim": "#47c4ff",
+                        "on-tertiary-fixed": "#3e3a54",
+                        "surface-bright": "#002867",
+                        "on-tertiary-fixed-variant": "#5b5672",
+                        "surface-dim": "#060e20",
+                        "surface-container": "#05183c",
+                        "outline-variant": "#2b4680",
+                        "secondary-container": "#313c4f",
+                        "surface-tint": "#7bd0ff",
+                        "primary-fixed-dim": "#a2dcff",
+                        "on-tertiary": "#5a5571",
+                        "tertiary-fixed-dim": "#d4cdee"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #060e20;
+        }
+        .glass-panel {
+            background: rgba(0, 40, 103, 0.4);
+            backdrop-filter: blur(24px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #7bd0ff 0%, #004c69 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+<!-- Background Decorative Elements -->
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-surface-bright/20 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-5%] right-[-5%] w-[40%] h-[40%] bg-primary-container/10 rounded-full blur-[100px]"></div>
+<!-- Header / Brand Logo -->
+<header class="w-full flex justify-between items-center fixed top-0 left-0 px-6 py-4 z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">security</span>
+<h1 class="text-xl font-extrabold text-on-surface tracking-tighter">AI Battle Arena</h1>
+</div>
+</header>
+<main class="w-full max-w-sm flex flex-col mt-12 mb-10">
+<!-- Hero Branding Section -->
+<div class="mb-10 text-center">
+<div class="w-20 h-20 mx-auto mb-6 relative">
+<div class="absolute inset-0 bg-primary/20 rounded-full animate-pulse"></div>
+<div class="absolute inset-2 bg-surface-container-highest rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">swords</span>
+</div>
+</div>
+<h2 class="text-3xl font-extrabold tracking-tight text-on-surface mb-2 leading-tight">Join the Arena</h2>
+<p class="text-secondary text-sm font-medium">Create your commander profile to begin.</p>
+</div>
+<!-- Registration Form -->
+<form class="space-y-5">
+<!-- Full Name -->
+<div class="space-y-1.5">
+<label class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest ml-1">Commander Name</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-secondary group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">person</span>
+</div>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-low border-0 rounded-xl text-on-surface placeholder-secondary/40 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-highest transition-all outline-none" placeholder="e.g. John 'The Blade' Smith" type="text"/>
+</div>
+</div>
+<!-- Email Address -->
+<div class="space-y-1.5">
+<label class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest ml-1">Data Stream Address</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-secondary group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">alternate_email</span>
+</div>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-low border-0 rounded-xl text-on-surface placeholder-secondary/40 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-highest transition-all outline-none" placeholder="commander@hq.net" type="email"/>
+</div>
+</div>
+<!-- Access Code -->
+<div class="space-y-1.5">
+<label class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest ml-1">Access Code</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-secondary group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-low border-0 rounded-xl text-on-surface placeholder-secondary/40 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-highest transition-all outline-none" placeholder="••••••••••••" type="password"/>
+<button class="absolute inset-y-0 right-4 flex items-center text-secondary/60" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<!-- Confirm Access Code -->
+<div class="space-y-1.5">
+<label class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest ml-1">Verify Code</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-secondary group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-low border-0 rounded-xl text-on-surface placeholder-secondary/40 focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-highest transition-all outline-none" placeholder="••••••••••••" type="password"/>
+</div>
+</div>
+<!-- CTA Section -->
+<div class="pt-4 flex flex-col gap-4">
+<button class="primary-gradient w-full h-14 rounded-full flex items-center justify-center gap-3 active:scale-95 transition-transform" type="submit">
+<span class="text-on-primary font-extrabold tracking-tight">Initialize Account</span>
+<span class="material-symbols-outlined text-on-primary">arrow_forward</span>
+</button>
+<div class="flex items-center gap-4 py-2">
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+<span class="text-[10px] text-secondary font-bold uppercase tracking-[0.2em]">Deployment Protocol</span>
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+</div>
+<div class="flex justify-center">
+<a class="text-secondary text-sm font-medium hover:text-primary transition-colors group" href="#">
+                        Already a commander? <span class="text-on-surface group-hover:text-primary font-bold ml-1">Log In</span>
+</a>
+</div>
+</div>
+</form>
+</main>
+<!-- Footer Security Badge -->
+<footer class="w-full flex flex-col items-center gap-4 mt-auto">
+<div class="flex items-center gap-6 opacity-40">
+<span class="material-symbols-outlined" title="Secure Encryption">encrypted</span>
+<span class="material-symbols-outlined" title="Cloud Synced">cloud_done</span>
+<span class="material-symbols-outlined" title="Biometric Ready">fingerprint</span>
+</div>
+<p class="text-[10px] text-secondary/60 text-center font-medium max-w-[240px] leading-relaxed">
+            By initializing, you agree to the Arena Engagement Terms and Neural Data Privacy Policies.
+        </p>
+</footer>
+<!-- Decorative Edge Lines -->
+<div class="fixed top-0 left-0 h-full w-[2px] bg-gradient-to-b from-primary/20 via-transparent to-transparent"></div>
+<div class="fixed top-0 right-0 h-full w-[2px] bg-gradient-to-b from-primary/20 via-transparent to-transparent"></div>
+</body></html>

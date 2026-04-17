@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import ChatWindow from './ChatWindow';
 import { MOCK_CHAT_HISTORY } from '../data/mockData';
-import { Menu, PanelLeftOpen } from 'lucide-react';
+import { Menu, PanelLeftOpen, LogOut } from 'lucide-react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 function ChatLayout() {
   const [chatHistory, setChatHistory] = useState([
@@ -15,6 +16,8 @@ function ChatLayout() {
     ...MOCK_CHAT_HISTORY
   ]);
   const [activeChatId, setActiveChatId] = useState('chat-initial');
+  
+  const { user, logout } = useAuth();
   
   // Use essentially a global toggle for sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
@@ -106,7 +109,7 @@ function ChatLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-slate-100 dark:bg-[#060e20] overflow-hidden md:flex-row relative">
+    <div className="flex h-screen bg-[#060e20] text-[#dee5ff] overflow-hidden md:flex-row relative">
       
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
@@ -137,21 +140,39 @@ function ChatLayout() {
         
         {/* Top Bar for Mobile AND Desktop (when Sidebar is closed) */}
         <div className={`
-          flex items-center p-4 bg-white dark:bg-[#06122d] border-b border-slate-200 dark:border-slate-800 z-10 transition-all
+          flex items-center p-4 bg-[#06122d] border-b border-[#12244e] z-10 transition-all
           ${(!isSidebarOpen || window.innerWidth < 768) ? 'justify-between md:justify-start' : 'hidden'}
         `}>
           <button 
             onClick={() => setIsSidebarOpen(true)}
-            className="p-2 -ml-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors flex items-center justify-center"
+            className="p-2 -ml-2 text-[#939eb5] hover:text-[#7bd0ff] hover:bg-[#00225a] rounded-lg transition-colors flex items-center justify-center"
             title="Open Sidebar"
           >
             <Menu size={24} className="md:hidden" />
             <PanelLeftOpen size={20} className="hidden md:block" />
           </button>
-          <div className="font-bold text-lg text-slate-800 dark:text-slate-100 md:ml-4">
-            Model<span className="font-light text-blue-600">Arena</span>
+          <div className="font-extrabold text-lg tracking-tighter text-[#dee5ff] md:ml-4">
+            AI Battle <span className="font-medium text-[#7bd0ff]">Arena</span>
           </div>
-          <div className="w-8 md:hidden"></div> {/* Spacer for centering on mobile */}
+          
+          <div className="flex-1"></div>
+          
+          {user && (
+            <div className="hidden md:flex items-center gap-3 mr-4">
+              <span className="text-sm text-[#939eb5] font-medium tracking-wide">
+                {user.name}
+              </span>
+            </div>
+          )}
+          
+          <button 
+            onClick={logout}
+            className="p-2 text-[#939eb5] hover:text-[#ff9993] hover:bg-[#7f2927]/30 rounded-lg transition-colors flex items-center justify-center gap-2"
+            title="Log Out"
+          >
+            <span className="hidden md:block text-sm font-medium">Logout</span>
+            <LogOut size={18} />
+          </button>
         </div>
         
         {/* Desktop floating button if top bar is completely hidden */}

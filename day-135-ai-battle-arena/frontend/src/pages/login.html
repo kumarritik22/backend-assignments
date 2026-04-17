@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#7bd0ff",
+                      "surface-container-lowest": "#000000",
+                      "surface-container": "#05183c",
+                      "secondary-fixed-dim": "#cad5ed",
+                      "secondary": "#939eb5",
+                      "secondary-container": "#313c4f",
+                      "surface-container-low": "#06122d",
+                      "surface-container-highest": "#00225a",
+                      "on-surface": "#dee5ff",
+                      "on-secondary-fixed-variant": "#515c70",
+                      "on-primary": "#004560",
+                      "surface-variant": "#00225a",
+                      "secondary-fixed": "#d8e3fb",
+                      "surface": "#060e20",
+                      "primary": "#7bd0ff",
+                      "on-background": "#dee5ff",
+                      "on-primary-fixed": "#00445e",
+                      "on-secondary-fixed": "#354053",
+                      "inverse-surface": "#faf8ff",
+                      "surface-bright": "#002867",
+                      "tertiary-fixed-dim": "#d4cdee",
+                      "inverse-primary": "#00668b",
+                      "inverse-on-surface": "#4d556b",
+                      "outline-variant": "#2b4680",
+                      "error-container": "#7f2927",
+                      "on-error": "#490106",
+                      "primary-fixed-dim": "#a2dcff",
+                      "on-tertiary-container": "#514d68",
+                      "surface-container-high": "#031d4b",
+                      "surface-dim": "#060e20",
+                      "on-secondary-container": "#b4c0d7",
+                      "error": "#ee7d77",
+                      "primary-container": "#004c69",
+                      "on-primary-container": "#97d8ff",
+                      "on-primary-fixed-variant": "#006286",
+                      "on-tertiary-fixed-variant": "#5b5672",
+                      "on-error-container": "#ff9993",
+                      "outline": "#5b74b1",
+                      "primary-fixed": "#c4e7ff",
+                      "tertiary-fixed": "#e3dbfd",
+                      "on-secondary": "#152032",
+                      "on-tertiary-fixed": "#3e3a54",
+                      "secondary-dim": "#939eb5",
+                      "primary-dim": "#47c4ff",
+                      "error-dim": "#bb5551",
+                      "on-surface-variant": "#91aaeb",
+                      "tertiary-dim": "#d4cdee",
+                      "tertiary-container": "#e3dbfd",
+                      "tertiary": "#f1ebff",
+                      "on-tertiary": "#5a5571",
+                      "background": "#060e20"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Manrope"],
+                      "body": ["Manrope"],
+                      "label": ["Manrope"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .arena-gradient {
+            background: linear-gradient(135deg, #7bd0ff 0%, #004c69 100%);
+        }
+        .glass-panel {
+            background: rgba(0, 40, 103, 0.6);
+            backdrop-filter: blur(24px);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col items-center justify-center overflow-hidden">
+<!-- Top Navigation Suppression: Not rendered per "Destination Rule" for login screens -->
+<main class="relative w-full max-w-md px-8 py-12 flex flex-col items-center z-10">
+<!-- Background Ambient Element -->
+<div class="absolute -top-24 -left-24 w-64 h-64 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute -bottom-24 -right-24 w-64 h-64 bg-surface-bright/20 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Logo Section -->
+<div class="mb-12 flex flex-col items-center">
+<div class="w-20 h-20 bg-surface-container-highest rounded-2xl flex items-center justify-center mb-6 shadow-[0_16px_32px_rgba(0,0,0,0.4)]">
+<span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<h2 class="text-primary font-extrabold tracking-[0.2em] text-sm uppercase">AI BATTLE ARENA</h2>
+</div>
+<!-- Headline Content -->
+<div class="text-center mb-10">
+<h1 class="text-on-surface text-4xl font-extrabold tracking-tight mb-3">Welcome Back</h1>
+<p class="text-secondary text-sm font-medium leading-relaxed">Enter your credentials to enter the arena.</p>
+</div>
+<!-- Form Section -->
+<div class="w-full space-y-6">
+<!-- Email Input -->
+<div class="space-y-2">
+<label class="block text-secondary text-[10px] font-bold uppercase tracking-widest ml-1">Email Address</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg group-focus-within:text-primary transition-colors">mail</span>
+</div>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-highest border-none rounded-xl text-on-surface placeholder:text-secondary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all duration-300" placeholder="commander@arena.ai" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-2">
+<label class="block text-secondary text-[10px] font-bold uppercase tracking-widest ml-1">Access Code</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-lg group-focus-within:text-primary transition-colors">lock</span>
+</div>
+<input class="w-full h-14 pl-12 pr-4 bg-surface-container-highest border-none rounded-xl text-on-surface placeholder:text-secondary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all duration-300" placeholder="••••••••" type="password"/>
+<div class="absolute inset-y-0 right-4 flex items-center">
+<span class="material-symbols-outlined text-secondary/60 cursor-pointer hover:text-primary text-lg">visibility</span>
+</div>
+</div>
+<div class="flex justify-end">
+<a class="text-primary/70 text-xs font-semibold hover:text-primary transition-colors" href="#">Forgot Access Code?</a>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="arena-gradient w-full h-14 rounded-xl text-on-primary font-bold text-base shadow-[0_8px_24px_rgba(123,208,255,0.25)] hover:shadow-[0_12px_32px_rgba(123,208,255,0.35)] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 mt-4">
+<span>Log In</span>
+<span class="material-symbols-outlined text-xl">login</span>
+</button>
+</div>
+<!-- Secondary Action -->
+<div class="mt-10 text-center">
+<p class="text-secondary text-sm">
+                Don't have an account? 
+                <a class="text-primary font-bold hover:underline decoration-2 underline-offset-4 ml-1" href="#">Sign up</a>
+</p>
+</div>
+<!-- Biometric / Alternative Option (Curated Layout) -->
+<div class="mt-12 w-full pt-12 flex flex-col items-center">
+<div class="flex items-center gap-4 w-full mb-8">
+<div class="h-px flex-1 bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent"></div>
+<span class="text-secondary/40 text-[10px] font-bold tracking-widest uppercase">Or synchronize via</span>
+<div class="h-px flex-1 bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent"></div>
+</div>
+<div class="flex gap-4">
+<button class="w-14 h-14 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-surface-container-high transition-colors shadow-sm">
+<img alt="Google" class="w-5 h-5 opacity-70" data-alt="minimalist google identity provider icon with subtle transparency" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu1AARVwBr2BPswMKVRkLebqMZRGQyUgUMulMO7IAnd68FQuGz2woMGJ01asoMHqLOYY1qaM2G9nrXt3q3t2o_IvJsybbiuDUmekUet62sDJaGuXACar3pMEVk5OAErjJYJocgMx_KruIn3lud5Hljx1E6R5bjYxSAZYJjxPKQ8j34n95ZE9aWs4Wlt9XtDjfdW00t-r5K1huUontc60i6cZP8vPxGizgJrX-d6WxbeakqV0TeVh5rbFJ2JOXYhzBpt3cJfM6O71g"/>
+</button>
+<button class="w-14 h-14 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-surface-container-high transition-colors shadow-sm">
+<span class="material-symbols-outlined text-on-surface/70" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Footer Decorative Element -->
+<div class="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+<!-- Background Decoration Image -->
+<div class="fixed inset-0 -z-10 opacity-10 pointer-events-none">
+<img alt="Network UI background" class="w-full h-full object-cover mix-blend-overlay" data-alt="abstract digital network visualization with glowing nodes and connecting lines on a deep blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_1xjntDKyNOB-tbAN6mWxWb9MlP-4a8Yrt6Pc7ez7tJEIW9paEk09NhACPFQAVWrhHFZFV3XZTvyw8kSRrVF-nYsBCkUMVLY0AmP7XxpfVCyqOGYeT8AsMW3Vmc32a8MgKslAZ5g0uBgOIVb7DnC3Bi596Zt3vIZ2nVCKhTRujUh0ihTXly3OL_8QGlSZNamZ-nDcNspmgYxdglMRtUj2K2WXAIR_60FJJ79T6jaLg9fra8QgSkJRZRyaR7-ZvVgImz9uWSZNqsQ"/>
+</div>
+</body></html>

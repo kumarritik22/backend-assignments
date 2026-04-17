@@ -7,25 +7,25 @@ function SolutionCard({ modelName, content, colorTheme }) {
   const isMistral = colorTheme === 'cyan';
   
   const bgAccent = isMistral 
-    ? "bg-cyan-50 dark:bg-cyan-950/20" 
-    : "bg-fuchsia-50 dark:bg-fuchsia-950/20";
+    ? "bg-[#00225a]" 
+    : "bg-[#12244e]";
     
   const iconColor = isMistral
-    ? "text-cyan-600 dark:text-cyan-400"
-    : "text-fuchsia-600 dark:text-fuchsia-400";
+    ? "text-[#7bd0ff]"
+    : "text-[#dee5ff]";
 
   return (
-    <div className={`flex flex-col h-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden transition-all duration-200 hover:shadow-md`}>
+    <div className={`flex flex-col h-full rounded-2xl border border-[#12244e] bg-[#06122d] overflow-hidden transition-all duration-200 hover:shadow-md`}>
       {/* Header */}
-      <div className={`px-5 py-3 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 ${bgAccent}`}>
-        <div className={`p-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm ${iconColor}`}>
+      <div className={`px-5 py-3 flex items-center gap-3 border-b border-[#12244e] ${bgAccent}`}>
+        <div className={`p-1.5 rounded-lg bg-[#06122d] shadow-sm ${iconColor}`}>
           <Bot size={18} />
         </div>
-        <h3 className="font-semibold text-sm text-slate-800 dark:text-slate-200">{modelName}</h3>
+        <h3 className="font-bold text-sm text-[#dee5ff] uppercase tracking-wide">{modelName}</h3>
       </div>
       
       {/* Body */}
-      <div className="p-5 grow">
+      <div className="p-5 grow text-[#939eb5]">
         <MarkdownRenderer content={content} />
       </div>
     </div>
