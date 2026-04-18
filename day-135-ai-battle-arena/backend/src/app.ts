@@ -7,6 +7,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from './routes/auth.routes.js';
 import { connectDB } from './config/db.js';
+import { validateRequest } from './middlewares/validate.middleware.js';
+import { invokeSchema } from './validators/ai.validator.js';
 
 const app = express();
 
@@ -30,7 +32,7 @@ app.get("/", async (req, res) => {
     res.json(result);
 })
 
-app.post("/invoke", async (req, res) => {
+app.post("/invoke", validateRequest(invokeSchema), async (req, res) => {
     const {input} = req.body
 
     const result = await runGraph(input)
