@@ -29,15 +29,15 @@ app.use(cors({
 
 // Initialize limiters
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 mins
-  max: 15,
-  message: { success: false, message: 'Too many authentication attempts from this IP, please try again in 15 minutes.' }
+  windowMs: 24 * 60 * 60 * 1000, // 24 hours
+  max: 5,
+  message: { success: false, message: 'Daily authentication limit reached. Please try again tomorrow.' }
 });
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
+  windowMs: 24 * 60 * 60 * 1000, // 24 hours
   max: 50, 
-  message: { success: false, message: 'AI Request quota exceeded. Please try again shortly.' }
+  message: { success: false, message: 'Daily AI Request quota exceeded. Please try again tomorrow.' }
 });
 
 // Mount Routes
