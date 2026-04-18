@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, MessageSquare, Menu, X, PanelLeftClose, Swords } from 'lucide-react';
+import { Plus, MessageSquare, Menu, X, PanelLeftClose, Swords, Trash2, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 function Sidebar({ 
@@ -7,6 +7,7 @@ function Sidebar({
   activeChatId, 
   onSelectChat, 
   onNewChat,
+  onDeleteChat,
   onCloseMobile
 }) {
   const { user } = useAuth();
@@ -52,18 +53,33 @@ function Sidebar({
           Recent Encounters
         </div>
         {chatHistory.map(chat => (
-          <button
+          <div
             key={chat.id}
-            onClick={() => onSelectChat(chat.id)}
-            className={`w-full text-left p-3 flex items-center gap-3 rounded-lg text-sm transition-all truncate hover:bg-[#00225a] hover:text-[#dee5ff] group
+            className={`w-full relative group rounded-lg transition-all
               ${activeChatId === chat.id 
-                ? 'bg-[#00225a] text-[#7bd0ff] font-medium border border-[#12244e]' 
-                : 'text-[#939eb5] border border-transparent'
+                ? 'bg-[#00225a] border border-[#12244e]' 
+                : 'border border-transparent hover:bg-[#00225a]'
               }`}
           >
-            <MessageSquare size={16} className={`${activeChatId === chat.id ? 'text-[#7bd0ff]' : 'text-[#939eb5] group-hover:text-[#7bd0ff]'}`} />
-            <span className="truncate">{chat.title}</span>
-          </button>
+            <button
+              onClick={() => onSelectChat(chat.id)}
+              className={`w-full text-left p-3 flex items-center gap-3 text-sm truncate rounded-lg
+                ${activeChatId === chat.id 
+                  ? 'text-[#7bd0ff] font-medium' 
+                  : 'text-[#939eb5] hover:text-[#dee5ff]'
+                }`}
+            >
+              <MessageSquare size={16} className={`${activeChatId === chat.id ? 'text-[#7bd0ff]' : 'text-[#939eb5] group-hover:text-[#7bd0ff]'}`} />
+              <span className="truncate pr-6">{chat.title}</span>
+            </button>
+            <button
+              onClick={(e) => onDeleteChat ? onDeleteChat(e, chat.id) : null}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-[#12244e] rounded-md"
+              title="Delete chat"
+            >
+              <Trash2 size={14} className="text-[#939eb5] hover:text-[#ff9993] transition-colors" />
+            </button>
+          </div>
         ))}
       </div>
 

@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import ChatWindow from './ChatWindow';
-import { MOCK_CHAT_HISTORY } from '../data/mockData';
 import { Menu, PanelLeftOpen, LogOut } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
 function ChatLayout() {
-  const [chatHistory, setChatHistory] = useState([
-    {
-      id: 'chat-initial',
-      title: 'New Conversation',
-      messages: []
-    },
-    ...MOCK_CHAT_HISTORY
-  ]);
-  const [activeChatId, setActiveChatId] = useState('chat-initial');
+  const [chatHistory, setChatHistory] = useState(() => {
+    const saved = localStorage.getItem('arena_chatHistory');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error("Failed to parse chat history", e);
+      }
+    }
+    return [
+      {
+        id: `chat-${Date.now()}`,
+        title: 'New Conversation',
+        messages: []
+      }
+    ];
+  });
+
+  const [activeChatId, setActiveChatId] = useState(() => {
+    return chatHistory[0]?.id || `chat-${Date.now()}`;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('arena_chatHistory', JSON.stringify(chatHistory));
+  }, [chatHistory]);
   
   const { user, logout } = useAuth();
   
@@ -32,6 +48,27 @@ function ChatLayout() {
   const [isWaiting, setIsWaiting] = useState(false);
 
   const activeChat = chatHistory.find(c => c.id === activeChatId);
+
+  const handleDeleteChat = (e, id) => {
+    e.stopPropagation();
+    const updatedHistory = chatHistory.filter(chat => chat.id !== id);
+    let newActiveId = activeChatId;
+    if (activeChatId === id) {
+      if (updatedHistory.length > 0) {
+        newActiveId = updatedHistory[0].id;
+      } else {
+        const newChat = {
+          id: `chat-${Date.now()}`,
+          title: 'New Conversation',
+          messages: []
+        };
+        updatedHistory.push(newChat);
+        newActiveId = newChat.id;
+      }
+    }
+    setChatHistory(updatedHistory);
+    setActiveChatId(newActiveId);
+  };
 
   const handleNewChat = () => {
     const newChat = {
@@ -131,6 +168,7 @@ function ChatLayout() {
           activeChatId={activeChatId}
           onSelectChat={handleSelectChat}
           onNewChat={handleNewChat}
+          onDeleteChat={handleDeleteChat}
           onCloseMobile={() => setIsSidebarOpen(false)}
         />
       </div>
