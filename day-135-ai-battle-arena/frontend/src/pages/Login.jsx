@@ -23,7 +23,7 @@ const Login = () => {
     try {
       const res = await axios.post('http://localhost:3000/auth/login', { email, password });
       if (res.data.success) {
-        login(res.data.token, res.data.user);
+        login(res.data.user);
         navigate('/');
       }
     } catch (err) {
@@ -87,7 +87,7 @@ const Login = () => {
               </div>
               <input 
                 className="w-full h-14 pl-12 pr-4 bg-[#00225a] border-none rounded-xl text-[#dee5ff] placeholder:text-[#939eb5]/40 focus:ring-2 focus:ring-[#7bd0ff]/20 focus:outline-none transition-all duration-300" 
-                placeholder="commander@arena.ai" 
+                placeholder="commander@gmail.com" 
                 type="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, MessageSquare, Menu, X, PanelLeftClose, Swords, Trash2, User } from 'lucide-react';
+import { Plus, MessageSquare, Menu, X, PanelLeftClose, Swords, Trash2, User, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 function Sidebar({ 
@@ -10,7 +10,7 @@ function Sidebar({
   onDeleteChat,
   onCloseMobile
 }) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div className="w-72 bg-[#06122d] border-r border-[#12244e] h-screen flex flex-col transition-colors z-30 shadow-lg md:shadow-none absolute md:relative">
@@ -83,8 +83,17 @@ function Sidebar({
         ))}
       </div>
 
-      {/* Footer (Profile) */}
-      <div className="p-4 border-t border-[#12244e] mt-auto space-y-2">
+      {/* Footer (Profile and Action) */}
+      <div className="p-4 border-t border-[#12244e] mt-auto">
+        {user && (
+          <button 
+            onClick={logout}
+            className="w-full mb-3 flex items-center justify-center gap-2 p-2.5 rounded-xl text-[#ff9993] hover:text-[#fff] hover:bg-[#7f2927] transition-colors font-medium border border-[#7f2927]/50 shadow-sm bg-[#7f2927]/20"
+          >
+            <LogOut size={16} />
+            <span className="text-sm tracking-wide">Secure Logout</span>
+          </button>
+        )}
         {/* Profile Card */}
         <div className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-[#00225a] text-[#dee5ff] transition-colors border border-transparent text-left cursor-default">
           <div className="w-9 h-9 rounded-full bg-[#004c69] border border-[#7bd0ff]/30 overflow-hidden flex items-center justify-center shrink-0 text-[#7bd0ff]">

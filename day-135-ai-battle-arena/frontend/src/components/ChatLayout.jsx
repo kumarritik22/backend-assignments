@@ -6,8 +6,12 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
 function ChatLayout() {
+  const { user, logout } = useAuth();
+  
+  const getStorageKey = () => `arena_chatHistory_${user ? user.id : 'anonymous'}`;
+
   const [chatHistory, setChatHistory] = useState(() => {
-    const saved = localStorage.getItem('arena_chatHistory');
+    const saved = localStorage.getItem(getStorageKey());
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -30,10 +34,8 @@ function ChatLayout() {
   });
 
   useEffect(() => {
-    localStorage.setItem('arena_chatHistory', JSON.stringify(chatHistory));
-  }, [chatHistory]);
-  
-  const { user, logout } = useAuth();
+    localStorage.setItem(getStorageKey(), JSON.stringify(chatHistory));
+  }, [chatHistory, user]);
   
   // Use essentially a global toggle for sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
@@ -139,7 +141,23 @@ function ChatLayout() {
       });
     } catch (error) {
       console.error("Failed to fetch AI response:", error);
-      // Optional: Handle error state in UI here if needed
+      const errorMessage = error.response?.data?.message || "AI models are currently overwhelmed with requests. Please try your request again shortly.";
+      setChatHistory(currentHistory => {
+        return currentHistory.map(chat => {
+          if (chat.id === activeChatId) {
+            const updatedMessages = [...chat.messages];
+            const latestIndex = updatedMessages.length - 1;
+            updatedMessages[latestIndex] = {
+              ...updatedMessages[latestIndex],
+              judge: { error: true, message: errorMessage },
+              solution_1: "Request failed due to excessive load.",
+              solution_2: "Request failed due to excessive load."
+            };
+            return { ...chat, messages: updatedMessages };
+          }
+          return chat;
+        });
+      });
     } finally {
       setIsWaiting(false);
     }
@@ -193,24 +211,6 @@ function ChatLayout() {
             AI Battle <span className="font-medium text-[#7bd0ff]">Arena</span>
           </div>
           
-          <div className="flex-1"></div>
-          
-          {user && (
-            <div className="hidden md:flex items-center gap-3 mr-4">
-              <span className="text-sm text-[#939eb5] font-medium tracking-wide">
-                {user.name}
-              </span>
-            </div>
-          )}
-          
-          <button 
-            onClick={logout}
-            className="p-2 text-[#939eb5] hover:text-[#ff9993] hover:bg-[#7f2927]/30 rounded-lg transition-colors flex items-center justify-center gap-2"
-            title="Log Out"
-          >
-            <span className="hidden md:block text-sm font-medium">Logout</span>
-            <LogOut size={18} />
-          </button>
         </div>
         
         {/* Desktop floating button if top bar is completely hidden */}

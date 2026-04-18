@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Shield, Swords, User, Mail, Lock, Eye, EyeOff, ShieldCheck, ArrowRight } from 'lucide-react';
@@ -14,6 +14,26 @@ const Register = () => {
   const [successMsg, setSuccessMsg] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    let interval;
+    if (successMsg && email) {
+      interval = setInterval(async () => {
+        try {
+          const res = await axios.get(`http://localhost:3000/auth/check-status?email=${encodeURIComponent(email)}`);
+          if (res.data.verified) {
+            clearInterval(interval);
+            navigate('/login?verified=true');
+          }
+        } catch (err) {
+          console.error("Error checking verification status", err);
+        }
+      }, 3000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [successMsg, email, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -25,7 +45,7 @@ const Register = () => {
     try {
       const res = await axios.post('http://localhost:3000/auth/register', { name, email, password });
       if (res.data.success) {
-        setSuccessMsg({ text: res.data.message, link: res.data.previewUrl });
+        setSuccessMsg({ text: res.data.message });
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
@@ -74,11 +94,6 @@ const Register = () => {
         {successMsg && (
           <div className="w-full mb-6 p-4 rounded-xl bg-[#004c69] text-[#dee5ff] text-sm font-medium border border-[#7bd0ff]/30 text-center">
             <p className="mb-2">{successMsg.text}</p>
-            {successMsg.link && (
-              <a href={successMsg.link} className="text-[#7bd0ff] font-bold hover:underline">
-                [Open Test Verification Email]
-              </a>
-            )}
           </div>
         )}
         
