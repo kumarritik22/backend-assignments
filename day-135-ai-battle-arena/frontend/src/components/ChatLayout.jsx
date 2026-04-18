@@ -8,34 +8,31 @@ import { useAuth } from '../context/AuthContext';
 function ChatLayout() {
   const { user, logout } = useAuth();
   
-  const getStorageKey = () => `arena_chatHistory_${user ? user.id : 'anonymous'}`;
-
-  const [chatHistory, setChatHistory] = useState(() => {
-    const saved = localStorage.getItem(getStorageKey());
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.length > 0) return parsed;
-      } catch (e) {
-        console.error("Failed to parse chat history", e);
-      }
-    }
-    return [
-      {
-        id: `chat-${Date.now()}`,
-        title: 'New Conversation',
-        messages: []
-      }
-    ];
-  });
-
-  const [activeChatId, setActiveChatId] = useState(() => {
-    return chatHistory[0]?.id || `chat-${Date.now()}`;
-  });
-
+  const [chatHistory, setChatHistory] = useState([]);
+  const [activeChatId, setActiveChatId] = useState(null);
+  
+  // Fetch chats on mount
   useEffect(() => {
-    localStorage.setItem(getStorageKey(), JSON.stringify(chatHistory));
-  }, [chatHistory, user]);
+    const fetchChats = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/chats');
+        if (res.data.success && res.data.chats.length > 0) {
+          setChatHistory(res.data.chats);
+          setActiveChatId(res.data.chats[0].id);
+        } else {
+          // If no chats exist, implicitly create one using a direct POST
+          const createRes = await axios.post('http://localhost:3000/chats', { title: 'New Conversation' });
+          if (createRes.data.success) {
+            setChatHistory([createRes.data.chat]);
+            setActiveChatId(createRes.data.chat.id);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch chats", err);
+      }
+    };
+    if (user) fetchChats();
+  }, [user]);
   
   // Use essentially a global toggle for sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
@@ -51,36 +48,43 @@ function ChatLayout() {
 
   const activeChat = chatHistory.find(c => c.id === activeChatId);
 
-  const handleDeleteChat = (e, id) => {
+  const handleDeleteChat = async (e, id) => {
     e.stopPropagation();
-    const updatedHistory = chatHistory.filter(chat => chat.id !== id);
-    let newActiveId = activeChatId;
-    if (activeChatId === id) {
-      if (updatedHistory.length > 0) {
-        newActiveId = updatedHistory[0].id;
-      } else {
-        const newChat = {
-          id: `chat-${Date.now()}`,
-          title: 'New Conversation',
-          messages: []
-        };
-        updatedHistory.push(newChat);
-        newActiveId = newChat.id;
+    try {
+      const res = await axios.delete(`http://localhost:3000/chats/${id}`);
+      if (res.data.success) {
+        const updatedHistory = chatHistory.filter(chat => chat.id !== id);
+        let newActiveId = null;
+        if (activeChatId === id) {
+          if (updatedHistory.length > 0) {
+            newActiveId = updatedHistory[0].id;
+          } else {
+            handleNewChat();
+            return;
+          }
+        } else {
+          newActiveId = activeChatId;
+        }
+        setChatHistory(updatedHistory);
+        if (newActiveId) setActiveChatId(newActiveId);
       }
+    } catch (err) {
+      console.error("Failed to delete chat", err);
     }
-    setChatHistory(updatedHistory);
-    setActiveChatId(newActiveId);
   };
 
-  const handleNewChat = () => {
-    const newChat = {
-      id: `chat-${Date.now()}`,
-      title: 'New Conversation',
-      messages: []
-    };
-    setChatHistory([newChat, ...chatHistory]);
-    setActiveChatId(newChat.id);
-    if (window.innerWidth < 768) setIsSidebarOpen(false);
+  const handleNewChat = async () => {
+    try {
+      const res = await axios.post('http://localhost:3000/chats', { title: 'New Conversation' });
+      if (res.data.success) {
+        const newChat = res.data.chat;
+        setChatHistory(curr => [newChat, ...curr]);
+        setActiveChatId(newChat.id);
+        if (window.innerWidth < 768) setIsSidebarOpen(false);
+      }
+    } catch (err) {
+      console.error("Failed to create chat", err);
+    }
   };
 
   const handleSelectChat = (id) => {
@@ -101,24 +105,24 @@ function ChatLayout() {
       judge: null
     };
 
-    const updatedHistory = chatHistory.map(chat => {
+    setChatHistory(currentHistory => currentHistory.map(chat => {
       if (chat.id === activeChatId) {
         return {
           ...chat,
-          title: chat.messages.length === 0 ? text.substring(0, 30) + '...' : chat.title,
+          title: chat.messages.length === 0 ? text.substring(0, 30) + (text.length > 30 ? '...' : '') : chat.title,
           messages: [...chat.messages, newInteraction]
         };
       }
       return chat;
-    });
+    }));
 
-    setChatHistory(updatedHistory);
     setIsWaiting(true);
 
     try {
       // Make the actual API call
-      const response = await axios.post("http://localhost:3000/invoke", {
-        input: text
+      const response = await axios.post(`http://localhost:3000/chats/${activeChatId}/messages`, {
+        input: text,
+        messageId: userMessageId
       });
       const data = response.data;
 
@@ -129,12 +133,9 @@ function ChatLayout() {
             const updatedMessages = [...chat.messages];
             const latestIndex = updatedMessages.length - 1;
             
-            // Populate actual responses from the backend
-            updatedMessages[latestIndex] = {
-              ...updatedMessages[latestIndex],
-              ...data.result
-            };
-            return { ...chat, messages: updatedMessages };
+            // Re-map the exact model response from DB format
+            updatedMessages[latestIndex] = data.message;
+            return { ...chat, messages: updatedMessages, title: data.chatTitle || chat.title };
           }
           return chat;
         });

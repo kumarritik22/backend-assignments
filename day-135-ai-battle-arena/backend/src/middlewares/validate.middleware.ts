@@ -10,13 +10,19 @@ export const validateRequest = (schema: any) => {
         params: req.params,
       });
       next();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        const errorMessage = (error as any).errors.map((err: any) => err.message).join(', ');
-        res.status(400).json({ success: false, message: errorMessage });
-      } else {
-        res.status(400).json({ success: false, message: 'Invalid request data' });
+    } catch (error: any) {
+      try {
+        const issues = JSON.parse(error.message);
+        if (Array.isArray(issues)) {
+          const errorMessage = issues.map((issue: any) => issue.message).join(' | ');
+          res.status(400).json({ success: false, message: errorMessage });
+          return;
+        }
+      } catch (e) {
+        // Fallback if error.message is not a Zod JSON string
       }
+      
+      res.status(400).json({ success: false, message: error?.message || 'Invalid request data' });
     }
   };
 };

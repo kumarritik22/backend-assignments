@@ -43,7 +43,7 @@ function Sidebar({
           style={{ background: 'linear-gradient(135deg, #7bd0ff 0%, #004c69 100%)' }}
         >
           <Plus size={18} />
-          New Deployment
+          New Conversation
         </button>
       </div>
 
@@ -52,7 +52,7 @@ function Sidebar({
         <div className="px-3 pb-2 text-[10px] font-bold text-[#91aaeb] uppercase tracking-widest">
           Recent Encounters
         </div>
-        {chatHistory.map(chat => (
+        {chatHistory.filter(chat => chat.messages.length > 0 || chat.id === activeChatId).map(chat => (
           <div
             key={chat.id}
             className={`w-full relative group rounded-lg transition-all
