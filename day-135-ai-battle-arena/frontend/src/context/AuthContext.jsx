@@ -3,6 +3,8 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -15,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/auth/me');
+        const response = await axios.get(`${BASE_URL}/auth/me`);
         setUser(response.data.user);
       } catch (error) {
         setUser(null);
@@ -33,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post('http://localhost:3000/auth/logout');
+      await axios.post(`${BASE_URL}/auth/logout`);
     } catch (err) {
       console.error("Logout failed", err);
     } finally {
