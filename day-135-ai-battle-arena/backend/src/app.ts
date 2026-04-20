@@ -10,6 +10,8 @@ import rateLimit from "express-rate-limit";
 import authRoutes from './routes/auth.routes.js';
 import chatRoutes from './routes/chat.routes.js';
 import { connectDB } from './config/db.js';
+import { fileURLToPath } from 'url';
+import path from "path";
 
 const app = express();
 
@@ -26,6 +28,7 @@ app.use(cors({
     methods: ["GET", "POST"],
     credentials: true
 }));
+app.use(express.static("./public"));
 
 // Initialize limiters
 const authLimiter = rateLimit({
@@ -48,6 +51,13 @@ app.get("/", async (req, res) => {
     const result = await runGraph("Write a factorial function in JavaScript?")
 
     res.json(result);
-})
+});
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use("*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "/public/index.html"))
+});
 
 export default app
