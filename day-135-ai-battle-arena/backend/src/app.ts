@@ -16,7 +16,18 @@ import path from "path";
 const app = express();
 
 // Secure Express headers against well-known web vulnerabilities
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        connectSrc: [
+          "'self'",
+          "https://ai-battle-arena-n7hl.onrender.com"
+        ]
+      }
+    }
+  }));
 
 // Connect to MongoDB
 connectDB();
@@ -26,6 +37,7 @@ app.use(cookieParser());
 app.use(cors({
     origin: [
       "http://localhost:5173",
+      "http://localhost:3000",
       "https://ai-battle-arena-n7hl.onrender.com"
     ],
     methods: ["GET", "POST"],
@@ -34,20 +46,14 @@ app.use(cors({
 app.use(express.static("./public"));
 
 // Initialize limiters
-const authLimiter = rateLimit({
-  windowMs: 24 * 60 * 60 * 1000, // 24 hours
-  max: 5,
-  message: { success: false, message: 'Daily authentication limit reached. Please try again tomorrow.' }
-});
-
 const apiLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hours
-  max: 50, 
+  max: 100, 
   message: { success: false, message: 'Daily AI Request quota exceeded. Please try again tomorrow.' }
 });
 
 // Mount Routes
-app.use('/auth', authLimiter, authRoutes);
+app.use('/auth', authRoutes);
 app.use('/chats', apiLimiter, chatRoutes);
 
 app.get("/", async (req, res) => {
