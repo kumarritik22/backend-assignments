@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import { Shield, Mail, Lock, Eye, EyeOff, LogIn, Swords } from 'lucide-react';
 
@@ -21,7 +21,7 @@ const Login = () => {
     setError(null);
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3000/auth/login', { email, password });
+      const res = await api.post('/auth/login', { email, password });
       if (res.data.success) {
         login(res.data.user);
         navigate('/');

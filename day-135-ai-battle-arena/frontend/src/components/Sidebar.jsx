@@ -1,7 +1,7 @@
 import React from 'react';
-import { Plus, MessageSquare, Menu, X, PanelLeftClose, Swords, Trash2, User, LogOut } from 'lucide-react';
+import { Plus, MessageSquare, Menu, X, PanelLeftClose, Swords, Trash2, User, LogOut, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-
+import { useTheme } from '../hooks/useTheme';
 function Sidebar({ 
   chatHistory, 
   activeChatId, 
@@ -11,7 +11,7 @@ function Sidebar({
   onCloseMobile
 }) {
   const { user, logout } = useAuth();
-
+  const { theme, toggleTheme } = useTheme();
   return (
     <div className="w-72 bg-[#06122d] border-r border-[#12244e] h-screen flex flex-col transition-colors z-30 shadow-lg md:shadow-none absolute md:relative">
       
@@ -85,6 +85,13 @@ function Sidebar({
 
       {/* Footer (Profile and Action) */}
       <div className="p-4 border-t border-[#12244e] mt-auto">
+        <button
+          onClick={toggleTheme}
+          className="w-full mb-3 flex items-center justify-center gap-2 p-2.5 rounded-xl text-[#939eb5] hover:text-[#dee5ff] hover:bg-[#00225a] transition-colors font-medium border border-transparent shadow-sm"
+        >
+          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+          <span className="text-sm tracking-wide">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+        </button>
         {user && (
           <button 
             onClick={logout}

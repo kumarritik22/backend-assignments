@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Send, Sparkles } from 'lucide-react';
-import axios from "axios";
 
 function MessageInput({ onSendMessage, isWaiting }) {
   const [input, setInput] = useState('');

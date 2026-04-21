@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import { Shield, Swords, User, Mail, Lock, Eye, EyeOff, ShieldCheck, ArrowRight } from 'lucide-react';
 
 const Register = () => {
@@ -19,7 +19,7 @@ const Register = () => {
     if (successMsg && email) {
       interval = setInterval(async () => {
         try {
-          const res = await axios.get(`http://localhost:3000/auth/check-status?email=${encodeURIComponent(email)}`);
+          const res = await api.get(`/auth/check-status?email=${encodeURIComponent(email)}`);
           if (res.data.verified) {
             clearInterval(interval);
             navigate('/login?verified=true');
@@ -43,7 +43,7 @@ const Register = () => {
     setError(null);
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3000/auth/register', { name, email, password });
+      const res = await api.post('/auth/register', { name, email, password });
       if (res.data.success) {
         setSuccessMsg({ text: res.data.message });
       }

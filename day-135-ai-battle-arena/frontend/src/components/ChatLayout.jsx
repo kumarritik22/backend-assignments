@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import ChatWindow from './ChatWindow';
 import { Menu, PanelLeftOpen, LogOut } from 'lucide-react';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../context/AuthContext';
 
 function ChatLayout() {
@@ -15,13 +15,13 @@ function ChatLayout() {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/chats');
+        const res = await api.get('/chats');
         if (res.data.success && res.data.chats.length > 0) {
           setChatHistory(res.data.chats);
           setActiveChatId(res.data.chats[0].id);
         } else {
           // If no chats exist, implicitly create one using a direct POST
-          const createRes = await axios.post('http://localhost:3000/chats', { title: 'New Conversation' });
+          const createRes = await api.post('/chats', { title: 'New Conversation' });
           if (createRes.data.success) {
             setChatHistory([createRes.data.chat]);
             setActiveChatId(createRes.data.chat.id);
@@ -51,7 +51,7 @@ function ChatLayout() {
   const handleDeleteChat = async (e, id) => {
     e.stopPropagation();
     try {
-      const res = await axios.delete(`http://localhost:3000/chats/${id}`);
+      const res = await api.delete(`/chats/${id}`);
       if (res.data.success) {
         const updatedHistory = chatHistory.filter(chat => chat.id !== id);
         let newActiveId = null;
@@ -75,7 +75,7 @@ function ChatLayout() {
 
   const handleNewChat = async () => {
     try {
-      const res = await axios.post('http://localhost:3000/chats', { title: 'New Conversation' });
+      const res = await api.post('/chats', { title: 'New Conversation' });
       if (res.data.success) {
         const newChat = res.data.chat;
         setChatHistory(curr => [newChat, ...curr]);
@@ -120,7 +120,7 @@ function ChatLayout() {
 
     try {
       // Make the actual API call
-      const response = await axios.post(`http://localhost:3000/chats/${activeChatId}/messages`, {
+      const response = await api.post(`/chats/${activeChatId}/messages`, {
         input: text,
         messageId: userMessageId
       });
