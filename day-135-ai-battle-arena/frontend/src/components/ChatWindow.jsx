@@ -13,36 +13,45 @@ function ChatWindow({ messages, onSendMessage, isWaiting }) {
   }, [messages, isWaiting]);
 
   return (
-    <div className="flex-1 flex flex-col h-screen relative bg-[#060e20] overflow-hidden">
+    <div className="flex-1 flex flex-col h-screen relative overflow-hidden" style={{ backgroundColor: 'var(--bg-base)' }}>
       
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto px-4 md:px-8 pb-32 pt-6 custom-scrollbar">
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center min-h-[80%] text-[#939eb5] max-w-2xl mx-auto text-center px-4 py-12 transition-all">
-            <div className="bg-[#004c69] text-[#dee5ff] p-4 rounded-full inline-flex items-center justify-center mb-6 ring-4 ring-[#06122d]">
+          <div className="flex flex-col items-center justify-center min-h-[80%] max-w-2xl mx-auto text-center px-4 py-12 transition-all" style={{ color: 'var(--text-secondary)' }}>
+            <div 
+              className="p-4 rounded-full inline-flex items-center justify-center mb-6"
+              style={{ backgroundColor: 'var(--accent-surface)', color: 'var(--text-primary)', boxShadow: `0 0 0 4px var(--bg-surface)` }}
+            >
               <Bot size={42} strokeWidth={1.5} />
             </div>
             
-            <div className="inline-flex items-center justify-center mb-3 px-3 py-1 rounded-full bg-[#00225a] text-[#7bd0ff] text-xs font-bold tracking-widest uppercase shadow-sm border border-[#12244e]">
+            <div 
+              className="inline-flex items-center justify-center mb-3 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase shadow-sm"
+              style={{ backgroundColor: 'var(--bg-elevated)', color: 'var(--accent)', border: '1px solid var(--border)' }}
+            >
               Welcome to
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-extrabold text-[#dee5ff] tracking-tight mb-3">
-              AI Battle <span className="text-[#7bd0ff]">Arena</span>
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-3" style={{ color: 'var(--text-primary)' }}>
+              AI Battle <span style={{ color: 'var(--accent)' }}>Arena</span>
             </h1>
             
-            <h2 className="text-xl md:text-2xl font-semibold text-[#dee5ff]/80 mb-6">
+            <h2 className="text-xl md:text-2xl font-semibold mb-6" style={{ color: 'var(--text-primary)', opacity: 0.8 }}>
               Compare. Evaluate. Discover the best solution.
             </h2>
             
-            <p className="text-base text-[#939eb5] max-w-xl mx-auto mb-10 leading-relaxed font-medium">
+            <p className="text-base max-w-xl mx-auto mb-10 leading-relaxed font-medium" style={{ color: 'var(--text-secondary)' }}>
               Ask once and see multiple models respond side-by-side. Let our impartial AI judge evaluate the answers and crown a winner.
             </p>
             
-            <div className="inline-flex items-center justify-center gap-3 text-sm font-medium text-[#c0cced] bg-[#00225a] px-5 py-2.5 rounded-full border border-[#12244e] shadow-sm">
+            <div 
+              className="inline-flex items-center justify-center gap-3 text-sm font-medium px-5 py-2.5 rounded-full shadow-sm"
+              style={{ backgroundColor: 'var(--bg-elevated)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}
+            >
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7bd0ff] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#004c69]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: 'var(--accent)' }}></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ backgroundColor: 'var(--accent-surface)' }}></span>
               </span>
               Type a prompt below to begin
             </div>
@@ -78,12 +87,12 @@ function ChatWindow({ messages, onSendMessage, isWaiting }) {
             {/* Loading / Generating State */}
             {isWaiting && (
               <div className="animate-pulse space-y-8 mt-12 max-w-5xl mx-auto">
-                <div className="h-6 w-48 bg-[#00225a] rounded-md"></div>
+                <div className="h-6 w-48 rounded-md" style={{ backgroundColor: 'var(--skeleton)' }}></div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="bg-[#06122d] rounded-2xl h-64 border border-[#12244e]"></div>
-                  <div className="bg-[#06122d] rounded-2xl h-64 border border-[#12244e]"></div>
+                  <div className="rounded-2xl h-64" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border)' }}></div>
+                  <div className="rounded-2xl h-64" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border)' }}></div>
                 </div>
-                <div className="bg-[#06122d] rounded-2xl h-40 border border-[#b28a2a]/30"></div>
+                <div className="rounded-2xl h-40" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--judge-border)', borderWidth: '1px', opacity: 0.3 }}></div>
               </div>
             )}
             
@@ -93,7 +102,10 @@ function ChatWindow({ messages, onSendMessage, isWaiting }) {
       </div>
 
       {/* Input Area (Fixed Bottom) */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-linear-to-t from-[#060e20] via-[#060e20] to-transparent pt-12 pointer-events-none">
+      <div 
+        className="absolute bottom-0 left-0 right-0 p-4 md:p-6 pt-12 pointer-events-none"
+        style={{ background: `linear-gradient(to top, var(--fade-from), var(--fade-from), transparent)` }}
+      >
         <div className="pointer-events-auto">
           <MessageInput onSendMessage={onSendMessage} isWaiting={isWaiting} />
         </div>

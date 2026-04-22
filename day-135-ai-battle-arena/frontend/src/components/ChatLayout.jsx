@@ -165,12 +165,16 @@ function ChatLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-[#060e20] text-[#dee5ff] overflow-hidden md:flex-row relative">
+    <div 
+      className="flex h-screen overflow-hidden md:flex-row relative"
+      style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
+    >
       
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black/60 z-20 backdrop-blur-sm"
+          className="md:hidden fixed inset-0 z-20 backdrop-blur-sm"
+          style={{ backgroundColor: 'var(--bg-overlay)' }}
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -196,20 +200,29 @@ function ChatLayout() {
       <div className="flex-1 flex flex-col h-screen min-w-0 transition-all duration-300">
         
         {/* Top Bar for Mobile AND Desktop (when Sidebar is closed) */}
-        <div className={`
-          flex items-center p-4 bg-[#06122d] border-b border-[#12244e] z-10 transition-all
-          ${(!isSidebarOpen || window.innerWidth < 768) ? 'justify-between md:justify-start' : 'hidden'}
-        `}>
+        <div 
+          className={`
+            flex items-center p-4 z-10 transition-all
+            ${(!isSidebarOpen || window.innerWidth < 768) ? 'justify-between md:justify-start' : 'hidden'}
+          `}
+          style={{ 
+            backgroundColor: 'var(--bg-surface)', 
+            borderBottom: '1px solid var(--border)' 
+          }}
+        >
           <button 
             onClick={() => setIsSidebarOpen(true)}
-            className="p-2 -ml-2 text-[#939eb5] hover:text-[#7bd0ff] hover:bg-[#00225a] rounded-lg transition-colors flex items-center justify-center"
+            className="p-2 -ml-2 rounded-lg transition-colors flex items-center justify-center"
+            style={{ color: 'var(--text-secondary)' }}
             title="Open Sidebar"
+            onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.backgroundColor = 'var(--bg-elevated)'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
           >
             <Menu size={24} className="md:hidden" />
             <PanelLeftOpen size={20} className="hidden md:block" />
           </button>
-          <div className="font-extrabold text-lg tracking-tighter text-[#dee5ff] md:ml-4">
-            AI Battle <span className="font-medium text-[#7bd0ff]">Arena</span>
+          <div className="font-extrabold text-lg tracking-tighter md:ml-4" style={{ color: 'var(--text-primary)' }}>
+            AI Battle <span className="font-medium" style={{ color: 'var(--accent)' }}>Arena</span>
           </div>
           
         </div>

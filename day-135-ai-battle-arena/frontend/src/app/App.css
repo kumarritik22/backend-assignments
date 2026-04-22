@@ -6,16 +6,241 @@
   --color-fuchsia-950: #4a044e;
 }
 
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   THEME SYSTEM — CSS Custom Properties
+   Light and Dark palettes, toggled by .dark on <html>
+   ============================================================ */
+
+:root {
+  /* ---- Page backgrounds ---- */
+  --bg-base: #f0f4f8;           /* main page background */
+  --bg-surface: #ffffff;         /* cards, sidebar, panels */
+  --bg-surface-alt: #e8edf4;    /* secondary surface (inputs, etc) */
+  --bg-elevated: #dce3ec;       /* hover states, elevated elements */
+  --bg-overlay: rgba(0,0,0,0.25); /* mobile sidebar overlay */
+
+  /* ---- Input / Field backgrounds ---- */
+  --bg-input: #e8edf4;
+  --bg-input-focus: #dce3ec;
+
+  /* ---- Accent / Brand ---- */
+  --accent: #0077b6;            /* primary accent */
+  --accent-light: #0096d6;      /* hover variant */
+  --accent-surface: #d4eaf7;    /* accent tinted surfaces */
+  --accent-text: #004560;       /* text on accent bg */
+  --accent-glow: rgba(0,119,182,0.15);
+
+  /* ---- Text colors ---- */
+  --text-primary: #1a2332;
+  --text-secondary: #5a6a7e;
+  --text-tertiary: #8494a7;
+  --text-muted: #a0aec0;
+  --text-on-accent: #ffffff;
+
+  /* ---- Borders ---- */
+  --border: #d1d9e6;
+  --border-subtle: #e2e8f0;
+
+  /* ---- Sidebar specific ---- */
+  --sidebar-bg: #f7f9fc;
+  --sidebar-active: #e1ebf5;
+  --sidebar-hover: #eaf0f7;
+  --sidebar-label: #6b82a6;
+
+  /* ---- Solution card accents ---- */
+  --solution-cyan-bg: #d4eaf7;
+  --solution-fuchsia-bg: #f0e0f5;
+
+  /* ---- Judge panel ---- */
+  --judge-border: #d4a017;
+  --judge-surface: rgba(212,160,23,0.08);
+  --judge-gold: #b8860b;
+  --judge-gold-light: #d4a017;
+  --judge-badge-bg: #d4a017;
+
+  /* ---- Error / Danger ---- */
+  --error-bg: #fde8e8;
+  --error-text: #c53030;
+  --error-border: #fc8181;
+  --error-surface: rgba(197,48,48,0.06);
+
+  /* ---- Success / Info ---- */
+  --info-bg: #d4eaf7;
+  --info-text: #0077b6;
+  --info-border: rgba(0,119,182,0.3);
+
+  /* ---- Code blocks ---- */
+  --code-bg: #f0f4f8;
+  --code-header-bg: #e2e8f0;
+  --code-header-text: #5a6a7e;
+  --code-text: #1a2332;
+  --code-inline-bg: #e2e8f0;
+  --code-inline-text: #0077b6;
+
+  /* ---- Markdown prose ---- */
+  --prose-body: #5a6a7e;
+  --prose-heading: #1a2332;
+  --prose-strong: #1a2332;
+  --prose-link: #0077b6;
+  --prose-blockquote-border: #d1d9e6;
+  --prose-blockquote-text: #5a6a7e;
+  --prose-marker: #8494a7;
+
+  /* ---- Skeleton / Loading ---- */
+  --skeleton: #dce3ec;
+
+  /* ---- Gradient fade (input area bottom) ---- */
+  --fade-from: #f0f4f8;
+
+  /* ---- Shadow strength ---- */
+  --shadow-color: rgba(0,0,0,0.08);
+  --shadow-heavy: rgba(0,0,0,0.12);
+
+  /* ---- Score badge ---- */
+  --score-default-bg: #f1f5f9;
+  --score-default-text: #475569;
+  --score-default-border: #e2e8f0;
+  --score-good-bg: #ecfdf5;
+  --score-good-text: #047857;
+  --score-good-border: #a7f3d0;
+  --score-mid-bg: #fffbeb;
+  --score-mid-text: #b45309;
+  --score-mid-border: #fcd34d;
+  --score-bad-bg: #fff1f2;
+  --score-bad-text: #be123c;
+  --score-bad-border: #fecdd3;
+
+  /* ---- Blockquote ---- */
+  --blockquote-border: #d1d9e6;
+  --blockquote-text: #5a6a7e;
+}
+
+/* ===== DARK THEME ===== */
+.dark {
+  --bg-base: #060e20;
+  --bg-surface: #06122d;
+  --bg-surface-alt: #00225a;
+  --bg-elevated: #00225a;
+  --bg-overlay: rgba(0,0,0,0.60);
+
+  --bg-input: #00225a;
+  --bg-input-focus: #00225a;
+
+  --accent: #7bd0ff;
+  --accent-light: #97dbff;
+  --accent-surface: #004c69;
+  --accent-text: #004560;
+  --accent-glow: rgba(123,208,255,0.20);
+
+  --text-primary: #dee5ff;
+  --text-secondary: #939eb5;
+  --text-tertiary: #5b74b1;
+  --text-muted: #5b74b1;
+  --text-on-accent: #004560;
+
+  --border: #12244e;
+  --border-subtle: #12244e;
+
+  --sidebar-bg: #06122d;
+  --sidebar-active: #00225a;
+  --sidebar-hover: #00225a;
+  --sidebar-label: #91aaeb;
+
+  --solution-cyan-bg: #00225a;
+  --solution-fuchsia-bg: #12244e;
+
+  --judge-border: #b28a2a;
+  --judge-surface: rgba(178,138,42,0.20);
+  --judge-gold: #e6b741;
+  --judge-gold-light: #e6b741;
+  --judge-badge-bg: #e6b741;
+
+  --error-bg: #7f2927;
+  --error-text: #ff9993;
+  --error-border: #bb5551;
+  --error-surface: rgba(127,41,39,0.10);
+
+  --info-bg: #004c69;
+  --info-text: #97d8ff;
+  --info-border: rgba(123,208,255,0.30);
+
+  --code-bg: #00173d;
+  --code-header-bg: #00225a;
+  --code-header-text: #5b74b1;
+  --code-text: #dee5ff;
+  --code-inline-bg: #00225a;
+  --code-inline-text: #7bd0ff;
+
+  --prose-body: #939eb5;
+  --prose-heading: #dee5ff;
+  --prose-strong: #dee5ff;
+  --prose-link: #7bd0ff;
+  --prose-blockquote-border: #12244e;
+  --prose-blockquote-text: #5b74b1;
+  --prose-marker: #5b74b1;
+
+  --skeleton: #00225a;
+
+  --fade-from: #060e20;
+
+  --shadow-color: rgba(0,0,0,0.30);
+  --shadow-heavy: rgba(0,0,0,0.40);
+
+  --score-default-bg: rgba(51,65,85,0.4);
+  --score-default-text: #cbd5e1;
+  --score-default-border: #334155;
+  --score-good-bg: rgba(6,78,59,0.4);
+  --score-good-text: #34d399;
+  --score-good-border: rgba(6,78,59,0.6);
+  --score-mid-bg: rgba(120,53,15,0.4);
+  --score-mid-text: #fbbf24;
+  --score-mid-border: rgba(120,53,15,0.6);
+  --score-bad-bg: rgba(136,19,55,0.4);
+  --score-bad-text: #fb7185;
+  --score-bad-border: rgba(136,19,55,0.6);
+
+  --blockquote-border: #12244e;
+  --blockquote-text: #5b74b1;
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+
 @layer base {
   body {
     @apply antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Global cursor:pointer for all buttons and clickable elements */
+  button,
+  [role="button"],
+  a,
+  select,
+  label[for],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"] {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
   }
 }
 
-@custom-variant dark (&:is(.dark *));
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
 
-/* Custom Scrollbar for sleek UI */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -26,17 +251,19 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full;
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-slate-700/80;
+  background-color: var(--border);
+  border-radius: 9999px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-300;
+  background-color: var(--text-tertiary);
 }
 
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-600;
+/* ============================================================
+   SMOOTH THEME TRANSITION on key elements
+   ============================================================ */
+
+.theme-transition,
+.theme-transition * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
