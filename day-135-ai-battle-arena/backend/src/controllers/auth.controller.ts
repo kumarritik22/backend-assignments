@@ -2,7 +2,7 @@ import {type Request, type Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User.js';
-import { sendVerificationEmail } from '../services/email.service.js';
+import { sendVerificationEmail, sendPasswordResetEmail } from '../services/email.service.js';
 import crypto from 'crypto';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev';
@@ -173,4 +173,69 @@ export const checkVerificationStatus = async (req: Request, res: Response): Prom
 export const logout = async (req: Request, res: Response): Promise<void> => {
   res.clearCookie('token');
   res.json({ success: true, message: 'Logged out successfully' });
+};
+
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email } = req.body;
+
+    // Always respond with the same message to prevent user enumeration
+    const genericResponse = {
+      success: true,
+      message: 'If an account with that email exists, a password reset link has been sent.',
+    };
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.json(genericResponse);
+      return;
+    }
+
+    // Generate a secure random reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    // Store token and set 1-hour expiry
+    user.password_reset_token = resetToken;
+    user.password_reset_expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    await user.save();
+
+    // Send the reset email
+    const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+    const resetUrl = `${baseUrl}/reset-password?token=${resetToken}`;
+    await sendPasswordResetEmail(email, resetUrl);
+
+    res.json(genericResponse);
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { token, password } = req.body;
+
+    // Find user with a matching, non-expired reset token
+    const user = await User.findOne({
+      password_reset_token: token,
+      password_reset_expires: { $gt: new Date() }, // Token must not be expired
+    });
+
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'This password reset link is invalid or has expired. Please request a new one.',
+      });
+      return;
+    }
+
+    // Hash the new password and clear the reset token fields
+    user.password_hash = await bcrypt.hash(password, 10);
+    user.password_reset_token = null as any;
+    user.password_reset_expires = null as any;
+    await user.save();
+
+    res.json({ success: true, message: 'Password has been reset successfully. You can now log in.' });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };

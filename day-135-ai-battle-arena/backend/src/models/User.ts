@@ -5,7 +5,9 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password_hash: { type: String, required: true },
   is_verified: { type: Boolean, default: false },
-  verification_token: { type: String }
+  verification_token: { type: String },
+  password_reset_token: { type: String, default: null },
+  password_reset_expires: { type: Date, default: null },
 }, {
   timestamps: true
 });
