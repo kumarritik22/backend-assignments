@@ -30,14 +30,14 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     await newUser.save();
 
-    // Send the email
-    const verifyUrl = `http://localhost:3000/auth/verify?token=${verification_token}`;
-    const previewUrl = await sendVerificationEmail(email, verifyUrl);
+    // Send the email — use APP_URL env var so it works on both local and Render
+    const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+    const verifyUrl = `${baseUrl}/auth/verify?token=${verification_token}`;
+    await sendVerificationEmail(email, verifyUrl);
 
     res.status(201).json({ 
       success: true, 
       message: 'Account successfully initialized! Please check your email and verify your email address to proceed.',
-      previewUrl // for the dev outbox
     });
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.message });
