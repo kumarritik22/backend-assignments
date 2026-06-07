@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import ChatLayout from '../components/ChatLayout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
 import { useAuth } from '../context/AuthContext';
 
 // Protected Route wrapper
@@ -20,6 +22,8 @@ const App = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={
         <ProtectedRoute>
           <ChatLayout />
