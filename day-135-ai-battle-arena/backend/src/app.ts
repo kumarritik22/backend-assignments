@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from "express";
-import runGraph from "./ai/graph.ai.js"
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
@@ -10,7 +9,6 @@ import rateLimit from "express-rate-limit";
 import authRoutes from './routes/auth.routes.js';
 import chatRoutes from './routes/chat.routes.js';
 import { connectDB } from './config/db.js';
-import { fileURLToPath } from 'url';
 import path from "path";
 
 const app = express();
@@ -41,7 +39,7 @@ app.use(cors({
       "http://localhost:3000",
       "https://ai-battle-arena-n7hl.onrender.com"
     ],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true
 }));
 app.use(express.static("./public"));
@@ -56,15 +54,6 @@ const apiLimiter = rateLimit({
 // Mount Routes
 app.use('/auth', authRoutes);
 app.use('/chats', apiLimiter, chatRoutes);
-
-app.get("/", async (req, res) => {
-    const result = await runGraph("Write a factorial function in JavaScript?")
-
-    res.json(result);
-});
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 app.use("*name", (req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "index.html"))
