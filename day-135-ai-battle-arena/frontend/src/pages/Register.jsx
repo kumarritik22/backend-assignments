@@ -109,6 +109,9 @@ const Register = () => {
             style={{ backgroundColor: 'var(--info-bg)', color: 'var(--text-primary)', border: `1px solid var(--info-border)` }}
           >
             <p className="mb-2">{successMsg.text}</p>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '12px' }}>
+              📬 Don't see the email? Please check your <strong>spam / junk folder</strong>.
+            </p>
           </div>
         )}
         
@@ -214,9 +217,9 @@ const Register = () => {
             </button>
             
             <div className="flex items-center gap-4 py-2">
-              <div className="h-[1px] flex-grow" style={{ backgroundColor: 'var(--border)', opacity: 0.5 }}></div>
+              <div className="h-px grow" style={{ backgroundColor: 'var(--border)', opacity: 0.5 }}></div>
               <span className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: 'var(--text-secondary)' }}>Deployment Protocol</span>
-              <div className="h-[1px] flex-grow" style={{ backgroundColor: 'var(--border)', opacity: 0.5 }}></div>
+              <div className="h-px grow" style={{ backgroundColor: 'var(--border)', opacity: 0.5 }}></div>
             </div>
             
             <div className="flex justify-center">
