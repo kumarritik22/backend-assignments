@@ -1,17 +1,26 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Create Brevo SMTP transporter
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false, // Use STARTTLS (not SSL)
+  auth: {
+    user: process.env.BREVO_SMTP_USER,
+    pass: process.env.BREVO_SMTP_KEY,
+  },
+});
 
 export const sendVerificationEmail = async (email: string, verifyUrl: string) => {
   try {
-    const { data, error } = await resend.emails.send({
-      from: 'AI Battle Arena <onboarding@resend.dev>',
+    const info = await transporter.sendMail({
+      from: `"AI Battle Arena" <${process.env.BREVO_SMTP_USER}>`,
       to: email,
       subject: 'AI Battle Arena - Email Verification',
       html: `
         <div style="font-family: sans-serif; padding: 20px;">
           <h2>Welcome to AI Battle Arena!</h2>
-          <p>Thanks for registering on AI Battle Arena, please verify your email by clicking on the link below:</p>
+          <p>Thanks for registering on AI Battle Arena. Please verify your email by clicking the link below:</p>
           <a href="${verifyUrl}" style="display:inline-block; padding: 10px 20px; background-color: #7bd0ff; color:#004c69; text-decoration:none; font-weight:bold; border-radius:8px;">
             Verify Email
           </a>
@@ -20,12 +29,7 @@ export const sendVerificationEmail = async (email: string, verifyUrl: string) =>
       `,
     });
 
-    if (error) {
-      console.error('Error sending verification mail:', error);
-      return;
-    }
-
-    console.log('Verification email sent successfully. ID:', data?.id);
+    console.log('Verification email sent successfully. MessageId:', info.messageId);
     return null;
   } catch (err) {
     console.error('Error sending verification mail:', err);
@@ -34,8 +38,8 @@ export const sendVerificationEmail = async (email: string, verifyUrl: string) =>
 
 export const sendPasswordResetEmail = async (email: string, resetUrl: string) => {
   try {
-    const { data, error } = await resend.emails.send({
-      from: 'AI Battle Arena <onboarding@resend.dev>',
+    const info = await transporter.sendMail({
+      from: `"AI Battle Arena" <${process.env.BREVO_SMTP_USER}>`,
       to: email,
       subject: 'AI Battle Arena - Password Reset Request',
       html: `
@@ -51,12 +55,7 @@ export const sendPasswordResetEmail = async (email: string, resetUrl: string) =>
       `,
     });
 
-    if (error) {
-      console.error('Error sending password reset mail:', error);
-      return;
-    }
-
-    console.log('Password reset email sent successfully. ID:', data?.id);
+    console.log('Password reset email sent successfully. MessageId:', info.messageId);
     return null;
   } catch (err) {
     console.error('Error sending password reset mail:', err);

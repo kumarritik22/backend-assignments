@@ -14,6 +14,7 @@ import { fileURLToPath } from 'url';
 import path from "path";
 
 const app = express();
+app.set('trust proxy', 1); // Trust the first proxy (Render's load balancer)
 
 // Secure Express headers against well-known web vulnerabilities
 app.use(
