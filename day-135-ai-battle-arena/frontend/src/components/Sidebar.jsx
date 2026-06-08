@@ -95,7 +95,7 @@ function Sidebar({
             </button>
             <button
               onClick={(e) => onDeleteChat ? onDeleteChat(e, chat.id) : null}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 rounded-md"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10 rounded-md"
               title="Delete chat"
               style={{ color: 'var(--error-text)' }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--sidebar-hover)'; }}
