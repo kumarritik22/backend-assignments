@@ -47,7 +47,7 @@ export const register = async (req, res) => {
             email,
             contact,
             password,
-            role: isSeller ? "seller" : "Buyer"
+            role: isSeller ? "seller" : "buyer"
         });
 
         await sendTokenResponse(user, res, "User registered successfully")
@@ -55,7 +55,29 @@ export const register = async (req, res) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            message: "Server error"
+            message: "error.message"
         });
     }
+}
+
+export const login = async (req, res) => {
+    const {email, password} = req.body;
+
+    const user = await userModel.findOne({email});
+
+    if (!user) {
+        return res.status(400).json({
+            message: "Invalid email or password"
+        })
+    }
+
+    const isPasswordMatching = await user.comparePassword(password);
+
+    if (!isPasswordMatching) {
+        return res.status(400).json({
+            message: "Wrong password"
+        })
+    }
+
+    await sendTokenResponse(user, res, "User logged in successfully")
 }
