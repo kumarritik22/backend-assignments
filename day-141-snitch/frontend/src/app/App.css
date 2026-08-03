@@ -10,9 +10,13 @@
 }
 
 /* ── Global resets ── */
-html, body, #root {
-  height: 100%;
-  overflow: hidden;
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: #0a0a0a;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ── Keyframe (can't be expressed with Tailwind utilities) ── */

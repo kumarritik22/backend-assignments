@@ -87,10 +87,10 @@ const Login = () => {
        * Desktop : h-screen, flex-row — form LEFT, model RIGHT (flipped from Register)
        * Mobile  : flex-col — model image strip on TOP, form BELOW (natural scroll)
        */}
-      <main className="flex h-screen w-full overflow-hidden bg-[#0a0a0a] flex-col-reverse md:flex-row">
+      <main className="flex flex-col-reverse md:flex-row min-h-screen md:h-screen md:overflow-hidden bg-[#0a0a0a]">
 
         {/*  LEFT — Login Form Panel */}
-        <section className="flex-1 h-full flex flex-col justify-center overflow-y-auto bg-[#0f0f0f] border-r border-[#1a1a1a] px-8 py-10 sm:px-12 md:px-10 lg:px-16 xl:px-20">
+        <section className="flex-1 flex items-center justify-center bg-[#111] md:border-r md:border-white/5 overflow-y-auto px-6 py-10 sm:px-10 md:px-10 lg:px-12 xl:px-16">
           <div className="w-full max-w-100 mx-auto">
 
             {/* Header */}
@@ -231,7 +231,7 @@ const Login = () => {
         {/* RIGHT — Brand / Model Panel */}
         <section
           aria-label="Velora brand panel"
-          className="relative w-full h-65 md:w-[48%] md:h-full shrink-0 overflow-hidden"
+          className="relative w-full h-64 sm:h-80 md:w-[48%] md:h-full shrink-0 overflow-hidden"
         >
           {/* Hero image */}
           <img
@@ -240,31 +240,32 @@ const Login = () => {
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
 
-          {/* Left-side fade → into form panel */}
-          <div className="absolute inset-0 bg-linear-to-l from-[#0a0a0a]/5 to-[#0a0a0a]/65" />
-          {/* Top & bottom fades */}
-          <div className="absolute inset-0 bg-linear-to-b from-[#0a0a0a]/60 via-transparent to-[#0a0a0a]/92" />
+          {/* Lighter overlays — let the image breathe */}
+          {/* Left-edge feather into form panel */}
+          <div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-[#0a0a0a]/35" />
+          {/* Top vignette + bottom for text legibility */}
+          <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/70" />
 
-          {/* Logo — top right */}
-          <div className="absolute top-8 right-8 z-10 h-20 w-20 object-contain">
-            <img src='/logo.png' />
+          {/* Logo — Velora image, top right */}
+          <div className="absolute top-5 right-5 md:top-7 md:right-7 z-10">
+            <img src="/logo.png" alt="Velora" className="h-8 md:h-15 w-auto object-contain" />
           </div>
 
           {/* Bottom brand copy — desktop only */}
-          <div className="hidden md:block absolute bottom-0 left-0 right-0 z-10 p-9">
+          <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-7 md:px-9 md:pb-10">
             <div className="w-9 h-0.5 bg-gold mb-4" />
-            <h2 className="font-bodoni text-4xl font-bold leading-[1.1] tracking-tight text-white m-0">
+            <h2 className="font-bodoni text-[28px] sm:text-[32px] md:text-[38px] font-bold leading-[1.1] tracking-tight text-white">
               Welcome<br />
               <span className="text-gold">Back.</span>
             </h2>
-            <p className="font-inter text-sm text-white/50 mt-2.5 font-light leading-relaxed max-w-67.5">
+            <p className="font-inter text-xs sm:text-sm text-white/60 mt-2 font-light leading-relaxed max-w-65">
               Your style. Your story. Pick up where you left off.
             </p>
-            <div className="flex gap-7 mt-5">
+            <div className="flex gap-6 mt-4">
               {[['120K+', 'Members'], ['50+', 'Collections'], ['🌍', 'Worldwide']].map(([num, lbl]) => (
                 <div key={lbl}>
-                  <div className="font-inter text-base font-bold text-gold">{num}</div>
-                  <div className="font-inter text-[10px] text-white/40 tracking-[0.08em] uppercase mt-0.5">{lbl}</div>
+                  <div className="font-inter text-sm font-bold text-gold">{num}</div>
+                  <div className="font-inter text-[9px] text-white/50 tracking-widest uppercase mt-0.5">{lbl}</div>
                 </div>
               ))}
             </div>
@@ -272,38 +273,6 @@ const Login = () => {
         </section>
 
       </main>
-
-      {/* ── Responsive overrides ── */}
-      <style>{`
-        /* Tablet & mobile: stack vertically, model on top */
-        @media (max-width: 767px) {
-          main {
-            flex-direction: column !important;
-            height: auto !important;
-            overflow-y: auto !important;
-          }
-          /* Model image strip on top */
-          main > section:last-child {
-            width: 100% !important;
-            height: 260px !important;
-            flex-shrink: 0 !important;
-          }
-          /* Form below */
-          main > section:first-child {
-            height: auto !important;
-            overflow: visible !important;
-            padding-left: 24px !important;
-            padding-right: 24px !important;
-          }
-        }
-        @media (max-width: 480px) {
-          main > section:last-child { height: 220px !important; }
-          main > section:first-child {
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-        }
-      `}</style>
     </>
   )
 }
