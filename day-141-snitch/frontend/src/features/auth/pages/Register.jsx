@@ -92,7 +92,7 @@ const Register = () => {
 
     alert('Welcome to Snitch! 🎉')
 
-    navigate("/");
+    navigate("/login");
   }
 
   return (
@@ -217,8 +217,8 @@ const Register = () => {
               <button type="submit" id="create-account-btn"
                 className={[
                   'w-full rounded-lg py-3.5 px-6 font-inter font-bold text-[11px] tracking-[0.16em] uppercase',
-                  'bg-gradient-to-br from-gold to-gold-dark text-[#0a0a0a]',
-                  'hover:from-gold-light hover:to-gold transition-all duration-[220ms] active:scale-[0.985]',
+                  'bg-linear-to-br from-gold to-gold-dark text-[#0a0a0a]',
+                  'hover:from-gold-light hover:to-gold transition-all duration-220 active:scale-[0.985]',
                   'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.48s] [animation-fill-mode:both]',
                 ].join(' ')}>
                 Create Account
