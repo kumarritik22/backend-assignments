@@ -1,10 +1,5 @@
 import React, { useState } from 'react'
 
-// ─────────────────────────────────────────────────────────
-//  Velora – Register Page
-//  Styled 100% with Tailwind CSS v4 utility classes
-// ─────────────────────────────────────────────────────────
-
 // ── InputField (defined outside to avoid re-mount on render) ──
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
   <div className="flex flex-col gap-1.5">
@@ -50,7 +45,7 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
   </div>
 )
 
-// ── Register Page ─────────────────────────────────────────
+// Register Page
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [isSeller, setIsSeller]         = useState(false)
@@ -88,9 +83,7 @@ const Register = () => {
 
   return (
     <>
-      {/* ════════════════════════════════════════════
-          Main — full-screen split layout
-      ════════════════════════════════════════════ */}
+          {/* Main — full-screen split layout */}
       <main className="flex h-screen w-full overflow-hidden bg-[#0a0a0a]">
 
         {/* ── LEFT : Brand + Fashion Model ─────── */}
@@ -111,10 +104,8 @@ const Register = () => {
           <div className="absolute inset-0 bg-linear-to-b from-[#0a0a0a]/65 via-transparent to-[#0a0a0a]/90" />
 
           {/* Logo */}
-          <div className="absolute top-7 left-8 z-10">
-            <span className="font-bodoni text-2xl font-bold tracking-tight text-white">
-              VELORA
-            </span>
+          <div className="absolute top-8 left-8 z-10 h-20 w-20 object-contain">
+            <img src='/logo.png' />
           </div>
 
           {/* Bottom brand copy */}
