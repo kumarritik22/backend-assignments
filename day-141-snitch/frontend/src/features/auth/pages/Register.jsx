@@ -212,6 +212,8 @@ const Register = () => {
                 onChange={e => setIsSeller(e.target.checked)} className="sr-only" aria-label="Register as seller" />
             </div>
 
+            <a href='/api/auth/google' className='underline text-sm text-amber-500'>Continue with Google</a>
+
             <hr className="border-t border-white/5 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.35s] [animation-fill-mode:both]" />
 
             <button
