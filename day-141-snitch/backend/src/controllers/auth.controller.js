@@ -96,7 +96,7 @@ export const googleCallback = async (req, res) => {
         user = await userModel.create({
             email,
             googleId: id,
-            fullName: displayName
+            fullname: displayName
         })
     }
 

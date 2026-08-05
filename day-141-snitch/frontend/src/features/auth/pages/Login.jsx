@@ -181,14 +181,7 @@ const Login = () => {
                 Sign In
               </button>
 
-              {/* Or continue with */}
-              <div className="flex items-center gap-3 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.32s] [animation-fill-mode:both]">
-                <div className="flex-1 border-t border-[#1e1e1e]" />
-                <span className="font-inter text-[10px] text-[#444] shrink-0 tracking-wide">
-                  or continue with
-                </span>
-                <div className="flex-1 border-t border-[#1e1e1e]" />
-              </div>
+              <div className="flex-1 border-t border-[#1e1e1e]" />
 
               {/* Continue with Google button */}
               <ContinueWithGoogle />

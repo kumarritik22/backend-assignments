@@ -227,6 +227,8 @@ const Register = () => {
               Create Account
             </button>
 
+            <div className="flex-1 border-t border-[#1e1e1e]" />
+
             {/* Continue with Google button */}
             <ContinueWithGoogle />
 
