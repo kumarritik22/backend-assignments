@@ -137,8 +137,8 @@ const Register = () => {
       </section>
 
       {/* RIGHT — Registration Form */}
-      <section className="flex-1 flex items-center justify-center bg-[#111] lg:border-l lg:border-white/5 overflow-y-auto px-6 py-10 sm:px-10 md:px-14 lg:px-10 xl:px-14">
-        <div className="w-full max-w-97.5">
+      <section className="flex-1 flex flex-col bg-[#111] lg:border-l lg:border-white/5 overflow-y-auto px-6 sm:px-10 md:px-14 lg:px-10 xl:px-14">
+        <div className="w-full max-w-97.5 mx-auto my-auto py-10">
 
           {/* Header */}
           <div className="mb-7 animate-[fadeInUp_0.5s_ease_both]">
