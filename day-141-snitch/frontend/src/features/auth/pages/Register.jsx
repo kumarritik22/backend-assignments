@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../hook/useAuth'
 import { useNavigate } from 'react-router'
+import ContinueWithGoogle from '../components/ContinueWithGoogle'
 
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
   <div className="flex flex-col gap-1.5">
@@ -212,8 +213,6 @@ const Register = () => {
                 onChange={e => setIsSeller(e.target.checked)} className="sr-only" aria-label="Register as seller" />
             </div>
 
-            <a href='/api/auth/google' className='underline text-sm text-amber-500'>Continue with Google</a>
-
             <hr className="border-t border-white/5 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.35s] [animation-fill-mode:both]" />
 
             <button
@@ -227,6 +226,9 @@ const Register = () => {
             >
               Create Account
             </button>
+
+            {/* Continue with Google button */}
+            <ContinueWithGoogle />
 
             <p className="font-inter text-center text-[10px] text-[#444] leading-relaxed animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.43s] [animation-fill-mode:both]">
               By continuing you agree to our{' '}
