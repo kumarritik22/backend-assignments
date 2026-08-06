@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
     },
     seller: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: user,
+        ref: "user",
         required: true
     },
     price: {
@@ -25,14 +25,15 @@ const productSchema = new mongoose.Schema({
             default: "INR"
         }
     },
-    images: {
-        url: {
-            type: String,
-            required: true
+    images: [
+        {
+            url: {
+                type: String,
+                required: true
+            }
         }
-    },
-    timestamps: true
-})
+    ],
+}, { timestamps: true })
 
 const productModel = mongoose.model("product", productSchema);
 
