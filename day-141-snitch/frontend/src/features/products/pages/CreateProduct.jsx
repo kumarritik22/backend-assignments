@@ -1,27 +1,20 @@
 import React, { useState, useRef } from 'react'
+import { useNavigate } from 'react-router'
 import axios from 'axios'
-
-// ─────────────────────────────────────────────────────────────
-//  Velora — Create Product Page
-//  Designed with Google Stitch | Tailwind CSS v4
-//  Layout: Split — Form (left) + Live Preview (right, sticky)
-//  Responsive: stacked on mobile/tablet → split on lg+
-//  Backend: POST /api/products  multipart/form-data  (ImageKit)
-// ─────────────────────────────────────────────────────────────
 
 const CURRENCIES = ['INR', 'USD', 'EUR', 'GBP', 'JPY']
 const MAX_IMAGES = 7
-// No API_BASE — use relative URLs so Vite proxy handles routing to localhost:3000
 
-// ── Tiny helpers ──────────────────────────────────────────────
+// ── Tiny helpers ──
 const SectionLabel = ({ children }) => (
-  <p className="font-inter text-[10px] font-bold tracking-[0.14em] text-gold uppercase mb-5">
+  <p className="font-inter text-[10px] font-bold tracking-[0.16em] text-gold uppercase mb-5 flex items-center gap-3">
+    <span className="w-6 h-px bg-gold/40 shrink-0" />
     {children}
   </p>
 )
 
 const Field = ({ id, label, error, children }) => (
-  <div className="flex flex-col gap-[7px]">
+  <div className="flex flex-col gap-1.75">
     {label && (
       <label htmlFor={id}
         className={`font-inter text-[11px] font-medium tracking-[0.04em] ${error ? 'text-red-400' : 'text-[#888]'}`}>
@@ -34,14 +27,14 @@ const Field = ({ id, label, error, children }) => (
 )
 
 const inputBase = [
-  'w-full bg-[#141414] border border-[#252525] rounded-lg font-inter text-sm text-white',
-  'placeholder:text-[#3d3d3d] outline-none transition-all duration-200',
+  'w-full bg-[#1a1a1a] border border-[#2d2d2d] rounded-lg font-inter text-sm text-white',
+  'placeholder:text-[#444] outline-none transition-all duration-200',
   'focus:border-gold focus:ring-2 focus:ring-gold/10',
 ].join(' ')
 
 const inputError = 'border-red-400/60 ring-2 ring-red-400/10'
 
-// ── Live Preview Card ─────────────────────────────────────────
+// ── Live Preview Card ──
 const LivePreview = ({ title, description, amount, currency, coverImage }) => {
   const formatPrice = () => {
     if (!amount) return null
@@ -50,17 +43,17 @@ const LivePreview = ({ title, description, amount, currency, coverImage }) => {
   }
 
   return (
-    <div className="sticky top-[72px]">
+    <div className="sticky top-18">
       {/* Label */}
       <div className="flex items-center gap-2 mb-5">
-        <div className="w-[5px] h-[5px] rounded-full bg-gold shrink-0" />
+        <div className="w-1.25 h-1.25 rounded-full bg-gold shrink-0" />
         <span className="font-inter text-[9px] font-bold tracking-[0.16em] text-gold uppercase">Live Preview</span>
       </div>
 
       {/* Card */}
-      <div className="rounded-xl overflow-hidden border border-white/8 bg-[#111] shadow-2xl shadow-black/60">
+      <div className="rounded-xl overflow-hidden border border-white/10 bg-[#141414] shadow-2xl shadow-black/60">
         {/* Image area */}
-        <div className="relative aspect-[3/4] w-full bg-[#0e0e0e] overflow-hidden">
+        <div className="relative aspect-3/4 w-full bg-[#0e0e0e] overflow-hidden">
           {coverImage ? (
             <img src={coverImage} alt="Cover" className="absolute inset-0 w-full h-full object-cover" />
           ) : (
@@ -112,8 +105,9 @@ const LivePreview = ({ title, description, amount, currency, coverImage }) => {
   )
 }
 
-// ─────────────────────────────────────────────────────────────
+
 const CreateProduct = () => {
+  const navigate = useNavigate()
   const fileInputRef = useRef(null)
   const [isDragging, setIsDragging]   = useState(false)
   const [isLoading, setIsLoading]     = useState(false)
@@ -124,7 +118,7 @@ const CreateProduct = () => {
   const [images, setImages]   = useState([])  // { file, preview }[]
   const [errors, setErrors]   = useState({})
 
-  // ── Form handlers ─────────────────────────────────────────
+  // ── Form handlers ──
   const handleChange = (e) => {
     const { name, value } = e.target
     setForm(p => ({ ...p, [name]: value }))
@@ -157,7 +151,7 @@ const CreateProduct = () => {
     addImages(e.dataTransfer.files)
   }
 
-  // ── Validation ────────────────────────────────────────────
+  // ── Validation ──
   const validate = () => {
     const err = {}
     if (!form.title.trim())        err.title       = 'Title is required'
@@ -169,7 +163,7 @@ const CreateProduct = () => {
     return err
   }
 
-  // ── API call ──────────────────────────────────────────────
+  // ── API call ──
   const submitProduct = async () => {
     const ve = validate()
     if (Object.keys(ve).length) { setErrors(ve); return }
@@ -198,6 +192,8 @@ const CreateProduct = () => {
         images.forEach(img => URL.revokeObjectURL(img.preview))
         setImages([])
         setErrors({})
+        // Navigate to home after brief delay to show success message
+        setTimeout(() => navigate('/'), 1000)
       }
     } catch (err) {
       const msg = err?.response?.data?.message
@@ -212,11 +208,11 @@ const CreateProduct = () => {
   const coverImage = images[0]?.preview || null
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#0c0c0c] text-white">
 
-      {/* ── Sticky Header ──────────────────────────────────── */}
-      <header className="sticky top-0 z-20 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5 px-5 sm:px-8 py-4">
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between">
+      {/* ── Sticky Header ── */}
+      <header className="sticky top-0 z-20 bg-[#0c0c0c]/90 backdrop-blur-md border-b border-gold/10 px-5 sm:px-8 py-4">
+        <div className="max-w-300 mx-auto flex items-center justify-between">
           <a href="/products"
             className="inline-flex items-center gap-2 font-inter text-[12px] text-[#666] hover:text-gold transition-colors duration-200 group">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -230,26 +226,28 @@ const CreateProduct = () => {
         </div>
       </header>
 
-      {/* ── Main — Split Layout ─────────────────────────────── */}
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-10 sm:py-14 flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-20">
+      {/* ── Main — Split Layout ─── */}
+      <div className="max-w-300 mx-auto px-5 sm:px-8 py-10 sm:py-14 flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-20">
 
-        {/* ════════════════════════════════
-            LEFT — Form
-        ════════════════════════════════ */}
+        {/*  LEFT — Form */}
         <div className="flex-1 min-w-0">
 
-          {/* Page heading */}
-          <div className="mb-10 animate-[fadeInUp_0.5s_ease_both]">
-            <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-3 py-[5px] mb-5">
-              <span className="w-[5px] h-[5px] rounded-full bg-gold shrink-0" />
-              <span className="font-inter text-[9px] font-bold tracking-[0.14em] text-gold uppercase">New Listing</span>
+          {/* Page heading — with ambient gold glow */}
+          <div className="relative mb-10 animate-[fadeInUp_0.5s_ease_both]">
+            {/* Subtle background glow */}
+            <div className="absolute -top-6 -left-6 w-64 h-48 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative">
+              <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 rounded-full px-3 py-1.25 mb-5">
+                <span className="w-1.25 h-1.25 rounded-full bg-gold shrink-0" />
+                <span className="font-inter text-[9px] font-bold tracking-[0.14em] text-gold uppercase">New Listing</span>
+              </div>
+              <h1 className="font-bodoni text-[36px] sm:text-[44px] font-bold tracking-tight text-white leading-[1.1]">
+                Create Product
+              </h1>
+              <p className="font-inter text-sm text-[#777] mt-2.5 leading-relaxed">
+                Add a new item to the Velora collection.
+              </p>
             </div>
-            <h1 className="font-bodoni text-[36px] sm:text-[44px] font-bold tracking-tight text-white leading-[1.1]">
-              Create Product
-            </h1>
-            <p className="font-inter text-sm text-[#666] mt-2.5 leading-relaxed">
-              Add a new item to the Velora collection.
-            </p>
           </div>
 
           {/* ── Success / Error banners ── */}
@@ -272,8 +270,7 @@ const CreateProduct = () => {
             </div>
           )}
 
-          {/* ── SECTION 1 — Product Details ── */}
-          <section className="mb-9 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.07s] [animation-fill-mode:both]">
+              <section className="mb-9 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.07s] [animation-fill-mode:both] bg-[#111] border border-white/5 rounded-xl p-6">
             <SectionLabel>Product Details</SectionLabel>
             <div className="flex flex-col gap-5">
               <Field id="title" label="Title" error={errors.title}>
@@ -294,10 +291,8 @@ const CreateProduct = () => {
             </div>
           </section>
 
-          <div className="border-t border-white/5 mb-9" />
-
           {/* ── SECTION 2 — Pricing ── */}
-          <section className="mb-9 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.14s] [animation-fill-mode:both]">
+          <section className="mb-9 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.14s] [animation-fill-mode:both] bg-[#111] border border-white/5 rounded-xl p-6">
             <SectionLabel>Pricing</SectionLabel>
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_140px] gap-4">
               <Field id="amount" label="Amount" error={errors.amount}>
@@ -324,10 +319,8 @@ const CreateProduct = () => {
             </div>
           </section>
 
-          <div className="border-t border-white/5 mb-9" />
-
           {/* ── SECTION 3 — Images ── */}
-          <section className="mb-10 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.21s] [animation-fill-mode:both]">
+          <section className="mb-10 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.21s] [animation-fill-mode:both] bg-[#111] border border-white/5 rounded-xl p-6">
             <div className="flex items-center justify-between mb-5">
               <SectionLabel>Product Images</SectionLabel>
               <span className="font-inter text-[11px] text-[#444] -mt-5">
@@ -420,9 +413,9 @@ const CreateProduct = () => {
           <div className="flex flex-col gap-3 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.28s] [animation-fill-mode:both]">
             <button type="button" id="publish-product-btn" onClick={submitProduct} disabled={isLoading}
               className={[
-                'w-full rounded-lg py-[14px] font-inter font-bold text-[11px] tracking-[0.18em] uppercase',
-                'text-[#0a0a0a] bg-gradient-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold',
-                'transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100',
+                'w-full rounded-lg py-3.5 font-inter font-bold text-[11px] tracking-[0.18em] uppercase',
+                'text-[#0a0a0a] bg-linear-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold',
+                'transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100 cursor-pointer',
               ].join(' ')}>
               {isLoading ? (
                 <span className="inline-flex items-center gap-2 justify-center">
@@ -433,20 +426,13 @@ const CreateProduct = () => {
                 </span>
               ) : 'Publish Product'}
             </button>
-
-            <button type="button" id="save-draft-btn" disabled={isLoading}
-              className="w-full rounded-lg py-[13px] font-inter font-medium text-[11px] tracking-[0.18em] uppercase text-gold bg-transparent border border-gold/30 hover:border-gold/60 hover:bg-gold/5 transition-all duration-200 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100">
-              Save as Draft
-            </button>
           </div>
 
           <div className="h-12" />
         </div>
 
-        {/* ════════════════════════════════
-            RIGHT — Live Preview (lg+ only)
-        ════════════════════════════════ */}
-        <div className="hidden lg:block w-[280px] xl:w-[300px] shrink-0">
+        {/* RIGHT — Live Preview (lg+ only) */}
+        <div className="hidden lg:block w-70 xl:w-75 shrink-0">
           <LivePreview
             title={form.title}
             description={form.description}
