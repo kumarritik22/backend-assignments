@@ -61,7 +61,7 @@ export const authenticateUser = async (req, res, next) => {
             })
         }
 
-        user = req.user
+        req.user = user;
 
         next()
         
