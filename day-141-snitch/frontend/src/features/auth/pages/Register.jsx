@@ -224,7 +224,7 @@ const Register = () => {
                 'w-full rounded-lg py-3.25 font-inter font-bold text-[11px] tracking-[0.18em] uppercase text-[#0a0a0a]',
                 'bg-linear-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold',
                 'transition-all duration-200 active:scale-[0.98]',
-                'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.39s] [animation-fill-mode:both]',
+                'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.39s] [animation-fill-mode:both] cursor-pointer',
               ].join(' ')}
             >
               Create Account
