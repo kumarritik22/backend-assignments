@@ -218,7 +218,10 @@ const CreateProduct = () => {
             </svg>
             Products
           </a>
-          <img src="/logo.png" alt="Velora" className="h-7 w-auto object-contain opacity-80" />
+          <div className="flex items-center gap-2.5">
+            <img src="/logo.png" alt="Velora" className="h-6 w-auto object-contain opacity-90 drop-shadow-md" />
+            <span className="font-bodoni text-[16px] font-bold tracking-[0.2em] text-white uppercase mt-0.5">Velora</span>
+          </div>
         </div>
       </header>
 

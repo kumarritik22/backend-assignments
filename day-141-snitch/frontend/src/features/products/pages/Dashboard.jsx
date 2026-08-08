@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useProduct } from '../hooks/useProduct'
 
 const Dashboard = () => {
-  const sellerProducts = useSelector(state => state.product.sellerProducts)
+  const products = useSelector(state => state.product.sellerProducts) || []
   const { handleGetSellerProduct } = useProduct()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
@@ -45,7 +45,10 @@ const Dashboard = () => {
             </svg>
             Home
           </Link>
-          <img src="/logo.png" alt="Velora" className="h-7 w-auto object-contain opacity-80" />
+          <div className="flex items-center gap-2.5">
+            <img src="/logo.png" alt="Velora" className="h-6 w-auto object-contain opacity-90 drop-shadow-md" />
+            <span className="font-bodoni text-[16px] font-bold tracking-[0.2em] text-white uppercase mt-0.5">Velora</span>
+          </div>
           
           <Link to="/seller/create-product" className="hidden sm:inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.14em] uppercase text-gold hover:text-white transition-colors duration-200">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

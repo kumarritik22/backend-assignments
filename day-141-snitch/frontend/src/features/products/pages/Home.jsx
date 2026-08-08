@@ -4,10 +4,12 @@ import { useSelector } from 'react-redux'
 import { useProduct } from '../hooks/useProduct'
 
 const Home = () => {
-  const products = useSelector(state => state.product.products)
+  const { products } = useSelector(state => state.product)
+  const { user } = useSelector(state => state.auth)
   const { handleGetAllProducts } = useProduct()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   useEffect(() => {
     fetchProducts()
@@ -34,26 +36,72 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-gold/30">
+    <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
 
       {/* ── Minimal Navbar ── */}
-      <nav className="fixed top-0 inset-x-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/5 px-5 sm:px-10 py-4">
+      <nav className="fixed top-0 inset-x-0 z-50 bg-[#0c0c0c]/80 backdrop-blur-md border-b border-gold/10 px-5 sm:px-10 py-4">
         <div className="max-w-350 mx-auto flex items-center justify-between">
           
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Velora" className="h-6 sm:h-7 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity" />
+          <Link to="/" className="flex items-center gap-2.5">
+            <img src="/logo.png" alt="Velora Logo" className="h-6 sm:h-7 w-auto object-contain opacity-90 drop-shadow-md" />
+            <span className="font-bodoni text-[18px] font-bold tracking-[0.2em] text-white uppercase mt-0.5">Velora</span>
           </Link>
           
-          {/* Auth/Action Links */}
-          <div className="flex items-center gap-6 sm:gap-8">
-            <Link to="/login" className="font-inter text-[11px] font-medium tracking-widest uppercase text-[#888] hover:text-white transition-colors">
-              Sign In
-            </Link>
-            <Link to="/register" className="hidden sm:inline-flex rounded px-5 py-2 font-inter font-bold text-[10px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-gold hover:bg-gold-light transition-colors">
-              Join Velora
-            </Link>
-          </div>
+          {/* Auth/Profile Action Links */}
+          {user ? (
+            <div className="flex items-center gap-4 relative">
+              <span className="font-inter text-[12px] font-medium text-[#ccc] hidden sm:block">
+                {user.fullname || 'Profile'}
+              </span>
+              <button 
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="w-8 h-8 rounded-full bg-linear-to-tr from-gold to-gold-dark flex items-center justify-center text-[#0a0a0a] font-bold font-inter text-[13px] shadow-[0_0_15px_rgba(201,169,110,0.3)] hover:scale-105 transition-transform cursor-pointer"
+              >
+                {((user.fullname || 'U')[0]).toUpperCase()}
+              </button>
+              
+              {user.role === 'seller' ? (
+                <Link to="/seller/dashboard" className="hidden sm:inline-flex rounded-full border border-white/10 px-4 py-1.5 font-inter font-bold text-[10px] tracking-[0.15em] uppercase text-white hover:border-gold hover:text-gold transition-colors ml-2">
+                  Dashboard
+                </Link>
+              ) : null}
+
+              {/* Profile Dropdown */}
+              {isProfileOpen && (
+                <div className="absolute top-12 right-0 w-64 bg-[#111] border border-white/10 rounded-xl shadow-2xl p-5 z-50 animate-[fadeIn_0.2s_ease_both]">
+                  <div className="flex flex-col items-center mb-4 pb-4 border-b border-white/5">
+                    <div className="w-12 h-12 rounded-full bg-linear-to-tr from-gold to-gold-dark flex items-center justify-center text-[#0a0a0a] font-bold font-inter text-[20px] mb-3">
+                      {((user.fullname || 'U')[0]).toUpperCase()}
+                    </div>
+                    <h4 className="font-inter font-bold text-white text-[14px] text-center">{user.fullname}</h4>
+                    <p className="font-inter text-[11px] text-gold uppercase tracking-widest mt-1">{user.role}</p>
+                  </div>
+                  <div className="flex flex-col gap-3 font-inter text-[12px]">
+                    <div>
+                      <span className="text-[#555] block text-[10px] uppercase tracking-wider mb-0.5">Email</span>
+                      <span className="text-[#ccc] truncate block">{user.email}</span>
+                    </div>
+                    {user.contact && (
+                      <div>
+                        <span className="text-[#555] block text-[10px] uppercase tracking-wider mb-0.5">Contact</span>
+                        <span className="text-[#ccc]">{user.contact}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-6 sm:gap-8">
+              <Link to="/login" className="font-inter text-[11px] font-medium tracking-widest uppercase text-[#888] hover:text-white transition-colors">
+                Sign In
+              </Link>
+              <Link to="/register" className="hidden sm:inline-flex rounded px-5 py-2 font-inter font-bold text-[10px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-gold hover:bg-gold-light shadow-[0_0_15px_rgba(201,169,110,0.2)] transition-colors">
+                Join Velora
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -65,16 +113,20 @@ const Home = () => {
           <img 
             src="/model-hero.png" 
             alt="Velora Collection" 
-            className="w-full h-full object-cover object-top opacity-60 scale-105 animate-[kenBurns_20s_ease-out_forwards]"
+            className="w-full h-full object-cover object-top opacity-70 scale-105 animate-[kenBurns_20s_ease-out_forwards]"
             onError={(e) => { e.target.src = '/login-model.png' }} // Fallback if model-hero missing
           />
-          <div className="absolute inset-0 bg-linear-to-b from-[#0a0a0a]/60 via-transparent to-[#0a0a0a]" />
-          <div className="absolute inset-0 bg-linear-to-r from-[#0a0a0a]/80 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-b from-[#0c0c0c]/60 via-transparent to-[#0c0c0c]" />
+          <div className="absolute inset-0 bg-linear-to-r from-[#0c0c0c]/80 via-[#0c0c0c]/20 to-transparent" />
         </div>
 
         {/* Hero Content */}
         <div className="relative z-10 text-center px-5 max-w-3xl mx-auto animate-[fadeInUp_1s_ease_both]">
-          <div className="inline-flex items-center gap-3 mb-6">
+          {/* Subtle gold glow behind hero text */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gold/10 rounded-full blur-[100px] pointer-events-none" />
+          
+          <div className="relative">
+            <div className="inline-flex items-center gap-3 mb-6">
             <span className="w-8 h-px bg-gold/50" />
             <span className="font-inter text-[10px] font-bold tracking-[0.2em] text-gold uppercase">New Arrivals</span>
             <span className="w-8 h-px bg-gold/50" />
@@ -94,11 +146,12 @@ const Home = () => {
               <path d="M12 5v14M19 12l-7 7-7-7"/>
             </svg>
           </button>
+          </div>
         </div>
       </section>
 
       {/* ── Featured Collection Grid ── */}
-      <section id="collection" className="py-20 sm:py-32 px-5 sm:px-10 max-w-350 mx-auto bg-[#0a0a0a]">
+      <section id="collection" className="py-20 sm:py-32 px-5 sm:px-10 max-w-350 mx-auto bg-[#0c0c0c]">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
@@ -146,10 +199,10 @@ const Home = () => {
             {products.map((product) => {
               const coverImg = product.images?.[0]?.url
               return (
-                <div key={product._id} className="group relative flex flex-col cursor-pointer">
+                <div key={product._id} className="group relative flex flex-col cursor-pointer bg-[#141414] border border-white/5 rounded-xl p-3 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(201,169,110,0.05)] transition-all duration-300">
                   
                   {/* Image Container */}
-                  <div className="relative aspect-3/4 w-full bg-[#111] rounded-lg overflow-hidden mb-5">
+                  <div className="relative aspect-3/4 w-full bg-[#0e0e0e] rounded-lg overflow-hidden mb-5">
                     {coverImg ? (
                       <img 
                         src={coverImg} 

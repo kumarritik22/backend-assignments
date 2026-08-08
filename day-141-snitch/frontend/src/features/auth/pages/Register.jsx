@@ -111,9 +111,12 @@ const Register = () => {
         <div className="absolute inset-0 bg-linear-to-b from-black/25 via-transparent to-black/75" />
 
         {/* Logo — Velora image */}
-        <div className="absolute top-5 left-5 lg:top-7 lg:left-7 z-10">
-          <img src="/logo.png" alt="Velora" className="h-8 lg:h-15 w-auto object-contain" />
-        </div>
+        <a href="/" className="absolute top-5 left-5 lg:top-7 lg:left-7 z-10 flex items-center gap-3">
+          <img src="/logo.png" alt="Velora Logo" className="h-8 lg:h-12 w-auto object-contain drop-shadow-lg opacity-90" />
+          <span className="font-bodoni text-[22px] font-bold tracking-[0.2em] text-white uppercase drop-shadow-md">
+            Velora
+          </span>
+        </a>
 
         {/* Bottom brand copy — shown on all screens, adapts size */}
         <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-7 lg:px-9 lg:pb-10">
