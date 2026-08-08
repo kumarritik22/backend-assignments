@@ -75,11 +75,17 @@ const Login = () => {
     e.preventDefault()
     const ve = validate()
     if (Object.keys(ve).length) { setErrors(ve); return }
-    await handleLogin({
+    
+    const user = await handleLogin({
         email: form.email,
         password: form.password
     })
-    navigate("/");
+
+    if (user.role == "buyer") {
+      navigate("/")
+    } else if (user.role == "seller") {
+      navigate("/seller/dashboard")
+    }
   }
 
   return (
