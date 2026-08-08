@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router'
-import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { useProduct } from '../hooks/useProduct'
 
 const Dashboard = () => {
-  const [products, setProducts] = useState([])
+  const sellerProducts = useSelector(state => state.product.sellerProducts)
+  const { handleGetSellerProduct } = useProduct()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -15,12 +17,7 @@ const Dashboard = () => {
     setIsLoading(true)
     setError('')
     try {
-      const res = await axios.get('/api/products/seller', {
-        withCredentials: true // send JWT cookie to auth as seller
-      })
-      // Assuming response is an array of products or { products: [...] }
-      const data = res.data?.products || res.data || []
-      setProducts(Array.isArray(data) ? data : [])
+      await handleGetSellerProduct()
     } catch (err) {
       console.error(err)
       setError('Failed to load your products. Please try again later.')

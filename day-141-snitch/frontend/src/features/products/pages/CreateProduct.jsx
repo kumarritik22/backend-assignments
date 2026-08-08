@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
-import axios from 'axios'
+import { useProduct } from '../hooks/useProduct'
 
 const CURRENCIES = ['INR', 'USD', 'EUR', 'GBP', 'JPY']
 const MAX_IMAGES = 7
@@ -108,6 +108,7 @@ const LivePreview = ({ title, description, amount, currency, coverImage }) => {
 
 const CreateProduct = () => {
   const navigate = useNavigate()
+  const { handleCreateProduct } = useProduct()
   const fileInputRef = useRef(null)
   const [isDragging, setIsDragging]   = useState(false)
   const [isLoading, setIsLoading]     = useState(false)
@@ -180,21 +181,16 @@ const CreateProduct = () => {
       fd.append('priceCurrency', form.currency)
       images.forEach(img => fd.append('images', img.file))
 
-      const res = await axios.post('/api/products', fd, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true,   // send JWT cookie
-      })
+      await handleCreateProduct(fd)
 
-      if (res.status === 201 || res.status === 200) {
-        setSuccessMsg('Product published successfully! 🎉')
-        // Reset form
-        setForm({ title: '', description: '', amount: '', currency: 'INR' })
-        images.forEach(img => URL.revokeObjectURL(img.preview))
-        setImages([])
-        setErrors({})
-        // Navigate to home after brief delay to show success message
-        setTimeout(() => navigate('/'), 1000)
-      }
+      setSuccessMsg('Product published successfully! 🎉')
+      // Reset form
+      setForm({ title: '', description: '', amount: '', currency: 'INR' })
+      images.forEach(img => URL.revokeObjectURL(img.preview))
+      setImages([])
+      setErrors({})
+      // Navigate to home after brief delay to show success message
+      setTimeout(() => navigate('/'), 1000)
     } catch (err) {
       const msg = err?.response?.data?.message
         || err?.response?.data?.error

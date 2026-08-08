@@ -26,7 +26,7 @@ router.get("/seller", authenticateSeller, getSellerProducts);
 
 
 // @route GET /api/products/
-// @description User can see all the products listed by user
+// @description Get all products
 // @access public
 router.get("/", getAllProducts);
 
