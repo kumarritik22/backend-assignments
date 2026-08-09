@@ -209,14 +209,14 @@ const CreateProduct = () => {
       {/* ── Sticky Header ── */}
       <header className="sticky top-0 z-20 bg-[#0c0c0c]/90 backdrop-blur-md border-b border-gold/10 px-5 sm:px-8 py-4">
         <div className="max-w-300 mx-auto flex items-center justify-between">
-          <a href="/products"
+          <a href="/"
             className="inline-flex items-center gap-2 font-inter text-[12px] text-[#666] hover:text-gold transition-colors duration-200 group">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
               className="transition-transform duration-200 group-hover:-translate-x-0.5">
               <path d="M19 12H5M12 5l-7 7 7 7" />
             </svg>
-            Products
+            Home
           </a>
           <div className="flex items-center gap-2.5">
             <img src="/logo.png" alt="Velora" className="h-6 w-auto object-contain opacity-90 drop-shadow-md" />

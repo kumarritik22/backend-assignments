@@ -1,19 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useParams, Link } from 'react-router'
 import { useProduct } from '../hooks/useProduct'
 
 const ProductDetail = () => {
 
     const {productId} = useParams()
-    console.log(productId)
 
     const [product, setProduct] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const [activeImage, setActiveImage] = useState(0)
+
+    const nextImage = () => {
+        if (product?.images?.length > 1) {
+            setActiveImage((prev) => (prev + 1) % product.images.length)
+        }
+    }
+
+    const prevImage = () => {
+        if (product?.images?.length > 1) {
+            setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))
+        }
+    }
 
     const {handleGetProductById} = useProduct()
 
     async function fetchProductDetails() {
-        const data = await handleGetProductById(productId)
-        setProduct(data);
+        setIsLoading(true)
+        try {
+            const data = await handleGetProductById(productId)
+            setProduct(data);
+        } catch (e) {
+            console.error(e)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     useEffect(() => {
@@ -22,12 +42,165 @@ const ProductDetail = () => {
 
     console.log(product);
     
+    // Currency symbol formatter
+    const formatPrice = (amount, currency) => {
+        if (amount == null) return ''
+        const symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥' }
+        return `${symbols[currency] || ''}${Number(amount).toLocaleString()}`
+    }
 
-  return (
-    <div>
-      ProductDetail
-    </div>
-  )
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-[#0c0c0c] flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+            </div>
+        )
+    }
+
+    if (!product) {
+        return (
+            <div className="min-h-screen bg-[#0c0c0c] text-white flex flex-col items-center justify-center">
+                <h1 className="text-2xl font-bodoni mb-4">Product Not Found</h1>
+                <Link to="/" className="text-gold hover:underline">Return to Home</Link>
+            </div>
+        )
+    }
+
+    return (
+        <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
+            {/* ── Sticky Header ── */}
+            <header className="sticky top-0 z-30 bg-[#0c0c0c]/90 backdrop-blur-md border-b border-gold/10 px-5 sm:px-8 py-4">
+                <div className="max-w-350 mx-auto flex items-center justify-between">
+                    <Link to="/" className="inline-flex items-center gap-2 font-inter text-[12px] text-[#666] hover:text-gold transition-colors duration-200 group">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:-translate-x-0.5">
+                            <path d="M19 12H5M12 5l-7 7 7 7" />
+                        </svg>
+                        Back
+                    </Link>
+                    <Link to="/" className="flex items-center gap-2.5">
+                        <img src="/logo.png" alt="Velora Logo" className="h-6 w-auto object-contain opacity-90 drop-shadow-md" />
+                        <span className="font-bodoni text-[18px] font-bold tracking-[0.2em] text-white uppercase mt-0.5">Velora</span>
+                    </Link>
+                    <div className="w-16" /> {/* Spacer for precise centering */}
+                </div>
+            </header>
+
+            {/* ── Main Content ── */}
+            <main className="max-w-350 mx-auto px-5 sm:px-8 py-10 sm:py-16 animate-[fadeInUp_0.5s_ease_both]">
+                <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
+                    
+                    {/* Left: Image Gallery (Minimalist Premium Look) */}
+                    <div className="w-full lg:w-[45%] xl:w-1/2 flex flex-col gap-4">
+                        {/* Main Image Viewer */}
+                        <div className="w-full aspect-4/5 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
+                            {product.images && product.images.length > 0 ? (
+                                <>
+                                    <img 
+                                        src={product.images[activeImage]?.url} 
+                                        alt={product.title} 
+                                        className="w-full h-full object-cover object-center transition-transform duration-700"
+                                    />
+                                    
+                                    {/* Left/Right Navigation Arrows */}
+                                    {product.images.length > 1 && (
+                                        <>
+                                            <button 
+                                                onClick={prevImage}
+                                                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/60 border border-white/10 cursor-pointer"
+                                            >
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                                            </button>
+                                            
+                                            <button 
+                                                onClick={nextImage}
+                                                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/60 border border-white/10 cursor-pointer"
+                                            >
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                                            </button>
+                                            
+                                            {/* Dot Indicators */}
+                                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                                                {product.images.map((_, idx) => (
+                                                    <button 
+                                                        key={idx}
+                                                        onClick={() => setActiveImage(idx)}
+                                                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeImage === idx ? 'bg-gold w-4' : 'bg-white/40 hover:bg-white/80'}`}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+                                </>
+                            ) : (
+                                <div className="absolute inset-0 flex items-center justify-center text-[#333] font-inter text-sm">No Image Available</div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Right: Product Details */}
+                    <div className="w-full lg:w-[55%] xl:w-1/2 flex flex-col justify-center">
+                        
+                        {/* Badge */}
+                        <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 rounded-full px-3 py-1.5 mb-6 self-start">
+                            <span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0 animate-pulse" />
+                            <span className="font-inter text-[9px] font-bold tracking-[0.15em] text-gold uppercase">In Stock</span>
+                        </div>
+                        
+                        {/* Title */}
+                        <h1 className="font-bodoni text-[32px] sm:text-[42px] lg:text-[48px] font-bold text-white leading-[1.1] tracking-tight mb-4 drop-shadow-md">
+                            {product.title}
+                        </h1>
+                        
+                        {/* Price */}
+                        <div className="font-inter text-[24px] sm:text-[28px] text-gold font-light mb-8">
+                            {formatPrice(product.price?.amount, product.price?.currency)}
+                        </div>
+                        
+                        <div className="w-full h-px bg-white/10 mb-8" />
+                        
+                        {/* Description */}
+                        <div className="mb-12">
+                            <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#888] uppercase mb-4">Details</h3>
+                            <p className="font-inter text-sm sm:text-base text-[#ccc] leading-relaxed font-light">
+                                {product.description}
+                            </p>
+                        </div>
+                        
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+                            <button className="flex-1 bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer">
+                                Buy Now
+                            </button>
+                            <button className="flex-1 bg-transparent border border-white/20 hover:border-gold text-white hover:text-gold rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer">
+                                Add to Cart
+                            </button>
+                        </div>
+                        
+                        {/* Value Props */}
+                        <div className="grid grid-cols-2 gap-y-6 gap-x-4 mt-12 pt-8 border-t border-white/5">
+                            <div className="flex items-center gap-3 text-[#777]">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                <span className="font-inter text-[11px] uppercase tracking-wider">Premium Quality</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-[#777]">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <span className="font-inter text-[11px] uppercase tracking-wider">Secure Checkout</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-[#777]">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                                <span className="font-inter text-[11px] uppercase tracking-wider">Free Returns</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-[#777]">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <span className="font-inter text-[11px] uppercase tracking-wider">24/7 Support</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </main>
+        </div>
+    )
 }
 
 export default ProductDetail
