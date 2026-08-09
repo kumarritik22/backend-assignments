@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useProduct } from '../hooks/useProduct'
 
@@ -10,6 +10,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [isProfileOpen, setIsProfileOpen] = useState(false)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchProducts()
@@ -199,7 +201,7 @@ const Home = () => {
             {products.map((product) => {
               const coverImg = product.images?.[0]?.url
               return (
-                <div key={product._id} className="group relative flex flex-col cursor-pointer bg-[#141414] border border-white/5 rounded-xl p-3 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(201,169,110,0.05)] transition-all duration-300">
+                <div key={product._id} className="group relative flex flex-col bg-[#141414] border border-white/5 rounded-xl p-3 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(201,169,110,0.05)] transition-all duration-300">
                   
                   {/* Image Container */}
                   <div className="relative aspect-3/4 w-full bg-[#0e0e0e] rounded-lg overflow-hidden mb-5">
@@ -218,7 +220,8 @@ const Home = () => {
                     
                     {/* Hover Overlay — Quick Add */}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                      <button className="transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-white text-black px-8 py-3 rounded-full font-inter text-[11px] font-bold tracking-[0.15em] uppercase hover:bg-gold hover:text-white">
+                      <button onClick={() => navigate(`/product/${product._id}`)} 
+                      className="transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-white text-black px-8 py-3 rounded-full font-inter text-[11px] font-bold tracking-[0.15em] uppercase cursor-pointer hover:bg-gold hover:text-white">
                         View Details
                       </button>
                     </div>
