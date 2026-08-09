@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useProduct } from '../hooks/useProduct'
 
@@ -8,6 +8,8 @@ const Dashboard = () => {
   const { handleGetSellerProduct } = useProduct()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchProducts()
@@ -140,7 +142,7 @@ const Dashboard = () => {
             {products.map((product) => {
               const coverImg = product.images?.[0]?.url
               return (
-                <div key={product._id} className="group relative bg-[#141414] border border-white/10 rounded-xl overflow-hidden hover:border-gold/30 transition-all duration-300 hover:shadow-2xl hover:shadow-gold/5 flex flex-col">
+                <div onClick={() => {navigate(`/seller/product/${product._id}`)}} key={product._id} className="group relative bg-[#141414] border border-white/10 rounded-xl overflow-hidden hover:border-gold/30 transition-all duration-300 hover:shadow-2xl hover:shadow-gold/5 flex flex-col cursor-pointer">
                   
                   {/* Image Area */}
                   <div className="relative aspect-3/4 w-full bg-[#0e0e0e] overflow-hidden">
