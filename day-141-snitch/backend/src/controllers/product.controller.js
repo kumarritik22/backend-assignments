@@ -92,13 +92,17 @@ export async function addProductVariant(req, res) {
 
     const images = []
 
-    if (files || files.length !== 0) {
-        (await Promise.all(files.map(async (file) => {
-            const image = await uploadFile({
-                buffer: file.buffer,
-                fileName: file.originalName
+    if (files && files.length !== 0) {
+        const uploadedImages = await Promise.all(
+            files.map(async (file) => {
+                const image = await uploadFile({
+                    buffer: file.buffer,
+                    fileName: file.originalname
+                })
+                return image
             })
-        }))).map(image => images.push(image))
+        )
+        images.push(...uploadedImages)
     }
 
     const price = req.body.priceAmount
@@ -108,5 +112,23 @@ export async function addProductVariant(req, res) {
     const attributes = JSON.parse(req.body.attributes || "{}")
 
     console.log(product, images, price, stock, attributes);
+
+    product.variants.push({
+        images, 
+        price: {
+            amount: Number(price) || product.price.amount,
+            currency: req.body.priceCurrency || product.price.currency
+        },
+        stock,
+        attributes
+    })
+
+    await product.save();
+
+    return res.status(200).json({
+        message: "Product variant added successfully",
+        success: true,
+        product
+    });
 }
 

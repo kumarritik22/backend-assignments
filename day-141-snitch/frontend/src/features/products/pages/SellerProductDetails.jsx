@@ -1,39 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
-
-// Dummy data for purely UI purposes. The user will replace this with real hooks.
-const DUMMY_PRODUCT = {
-    _id: "6a773c6fc2ce173c05a09aeb",
-    title: "Navy Blue Denim Side Button",
-    description: "Some co-ord sets rely on prints and patterns. This one keeps things cleaner. The Dora Dori Navy Blue Denim Side Button Detail Co-Ord Set pairs a denim top with matching straight-fit pants in a solid navy blue finish. A collar neckline shapes the upper portion, while three fourth sleeves add to the overall silhouette. Finished as a coordinated two-piece set. Easy to wear when you want everything to work together from the start.",
-    price: { amount: 20, currency: "USD" },
-    images: [{ url: "https://ik.imagekit.io/dxx6gjzju/velora/dom-hill-nimElTcTNyY-unsplash_voemjwSFh.jpg" }],
-    variants: [
-        {
-            _id: "v1",
-            stock: 15,
-            attributes: { "Size": "M", "Color": "Navy Blue" },
-            price: { amount: 25, currency: "USD" },
-            images: [{ url: "https://ik.imagekit.io/dxx6gjzju/velora/dom-hill-nimElTcTNyY-unsplash_voemjwSFh.jpg" }]
-        }
-    ]
-};
+import { useProduct } from '../hooks/useProduct';
 
 const SellerProductDetails = () => {
+
     const { productId } = useParams();
+
+    const [product, setProduct] = useState(null)
+
+    const {handleGetProductById, handleAddProductVariant} = useProduct()
+
+    async function fetchProductDetails() {
+        const data = await handleGetProductById(productId)
+        setProduct(data)
+    }
+
+    useEffect(() => {
+      fetchProductDetails()
+    }, [productId])
+
+    console.log(product);
     
     // --- State for Product Overview (Buyer View Mockup) ---
     const [activeImage, setActiveImage] = useState(0);
 
     const nextImage = () => {
-        if (DUMMY_PRODUCT?.images?.length > 1) {
-            setActiveImage((prev) => (prev + 1) % DUMMY_PRODUCT.images.length)
+        if (product?.images?.length > 1) {
+            setActiveImage((prev) => (prev + 1) % product.images.length)
         }
     }
 
     const prevImage = () => {
-        if (DUMMY_PRODUCT?.images?.length > 1) {
-            setActiveImage((prev) => (prev === 0 ? DUMMY_PRODUCT.images.length - 1 : prev - 1))
+        if (product?.images?.length > 1) {
+            setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))
         }
     }
 
@@ -44,8 +43,17 @@ const SellerProductDetails = () => {
     const [newAttributes, setNewAttributes] = useState([{ key: '', value: '' }]);
     const [newStock, setNewStock] = useState(0);
     const [newPriceAmount, setNewPriceAmount] = useState('');
-    const [newPriceCurrency, setNewPriceCurrency] = useState('USD');
     const [newImages, setNewImages] = useState([]); // Array of File objects for preview
+    const [newPriceCurrency, setNewPriceCurrency] = useState("");
+
+    const handleStartAddingVariant = () => {
+        setNewPriceCurrency(product?.price?.currency || "")
+        setIsAddingVariant(true)
+
+        console.log("Product currency:", product?.price?.currency)
+        console.log("Setting variant currency:", product?.price?.currency || "")
+    }
+    
 
     // --- Handlers for dynamic attributes ---
     const handleAddAttributeField = () => {
@@ -79,7 +87,7 @@ const SellerProductDetails = () => {
     };
 
     // Form submit mockup
-    const handleSaveVariant = (e) => {
+    const handleSaveVariant = async (e) => {
         e.preventDefault();
         const attributesObj = {};
         let hasValidAttribute = false;
@@ -98,12 +106,12 @@ const SellerProductDetails = () => {
         const variantData = {
             attributes: attributesObj,
             stock: Number(newStock),
-            price: newPriceAmount ? { amount: Number(newPriceAmount), currency: newPriceCurrency } : null,
-            images: newImages
+            price: newPriceAmount ? Number(newPriceAmount) : null,
+            images: newImages.map(file => ({file}))
         };
 
-        console.log("Variant to save:", variantData);
-        alert("Variant created! (Check console for data object)");
+        const updatedProduct = await handleAddProductVariant(productId, variantData)
+        setProduct(updatedProduct);
         
         setNewAttributes([{ key: '', value: '' }]);
         setNewStock(0);
@@ -111,6 +119,8 @@ const SellerProductDetails = () => {
         setNewImages([]);
         setIsAddingVariant(false);
     };
+
+    console.log("Current variant currency:", newPriceCurrency)
 
     return (
         <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30 pb-20">
@@ -139,16 +149,16 @@ const SellerProductDetails = () => {
                         {/* Left: Image Gallery */}
                         <div className="w-full lg:w-[45%] xl:w-1/2 flex flex-col gap-4">
                             <div className="w-full aspect-4/5 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
-                                {DUMMY_PRODUCT.images && DUMMY_PRODUCT.images.length > 0 ? (
+                                {product?.images && product?.images.length > 0 ? (
                                     <>
                                         <img 
-                                            src={DUMMY_PRODUCT.images[activeImage]?.url} 
-                                            alt={DUMMY_PRODUCT.title} 
+                                            src={product.images[activeImage]?.url} 
+                                            alt={product.title} 
                                             className="w-full h-full object-cover object-center transition-transform duration-700"
                                         />
                                         
                                         {/* Left/Right Navigation Arrows */}
-                                        {DUMMY_PRODUCT.images.length > 1 && (
+                                        {product?.images.length > 1 && (
                                             <>
                                                 <button 
                                                     onClick={prevImage}
@@ -166,7 +176,7 @@ const SellerProductDetails = () => {
                                                 
                                                 {/* Dot Indicators */}
                                                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-                                                    {DUMMY_PRODUCT.images.map((_, idx) => (
+                                                    {product.images.map((_, idx) => (
                                                         <button 
                                                             key={idx}
                                                             onClick={() => setActiveImage(idx)}
@@ -192,11 +202,11 @@ const SellerProductDetails = () => {
                             </div>
                             
                             <h1 className="font-bodoni text-[32px] sm:text-[42px] lg:text-[48px] font-bold text-white leading-[1.1] tracking-tight mb-4 drop-shadow-md">
-                                {DUMMY_PRODUCT.title}
+                                {product?.title}
                             </h1>
                             
                             <div className="font-inter text-[24px] sm:text-[28px] text-gold font-light mb-8">
-                                {DUMMY_PRODUCT.price?.amount} {DUMMY_PRODUCT.price?.currency}
+                                {product?.price?.amount} {product?.price?.currency}
                             </div>
                             
                             <div className="w-full h-px bg-white/10 mb-8" />
@@ -204,7 +214,7 @@ const SellerProductDetails = () => {
                             <div className="mb-12">
                                 <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#888] uppercase mb-4">Details</h3>
                                 <p className="font-inter text-sm sm:text-base text-[#ccc] leading-relaxed font-light">
-                                    {DUMMY_PRODUCT.description}
+                                    {product?.description}
                                 </p>
                             </div>
                             
@@ -350,7 +360,7 @@ const SellerProductDetails = () => {
                                     </div>
                                 </div>
 
-                                <button type="submit" className="w-full rounded-lg py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-linear-to-tr from-gold to-gold-dark hover:from-gold-light hover:to-gold transition-all duration-300 mt-4 cursor-pointer">
+                                <button onClick={handleStartAddingVariant} type="submit" className="w-full rounded-lg py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-linear-to-tr from-gold to-gold-dark hover:from-gold-light hover:to-gold transition-all duration-300 mt-4 cursor-pointer">
                                     Save Variant
                                 </button>
                             </form>
@@ -361,17 +371,17 @@ const SellerProductDetails = () => {
                     <div>
                         <h2 className="font-bodoni text-[24px] font-bold text-white mb-6">Existing Variants</h2>
                         
-                        {DUMMY_PRODUCT.variants.length === 0 ? (
+                        {product?.variants.length === 0 ? (
                             <p className="font-inter text-sm text-[#555]">No variants created yet.</p>
                         ) : (
                             <div className="flex flex-col gap-4">
-                                {DUMMY_PRODUCT.variants.map((v, i) => (
+                                {product?.variants.map((v, i) => (
                                     <div key={i} className="flex flex-col sm:flex-row gap-6 p-5 bg-[#141414] border border-white/5 rounded-xl hover:border-white/10 transition-colors">
                                         
                                         {/* Variant Image */}
                                         <div className="w-full sm:w-24 h-32 sm:h-24 shrink-0 bg-[#0a0a0a] rounded-lg overflow-hidden border border-white/5">
                                             {v.images?.length > 0 ? (
-                                                <img src={v.images[0].url} className="w-full h-full object-cover" alt="Variant" />
+                                                <img src={v.images[0]?.url} className="w-full h-full object-cover" alt="Variant" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-[10px] text-[#444] uppercase tracking-widest">No Img</div>
                                             )}
