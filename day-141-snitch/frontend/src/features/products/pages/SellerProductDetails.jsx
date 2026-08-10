@@ -49,9 +49,6 @@ const SellerProductDetails = () => {
     const handleStartAddingVariant = () => {
         setNewPriceCurrency(product?.price?.currency || "")
         setIsAddingVariant(true)
-
-        console.log("Product currency:", product?.price?.currency)
-        console.log("Setting variant currency:", product?.price?.currency || "")
     }
     
 
@@ -106,7 +103,7 @@ const SellerProductDetails = () => {
         const variantData = {
             attributes: attributesObj,
             stock: Number(newStock),
-            price: newPriceAmount ? Number(newPriceAmount) : null,
+            price: newPriceAmount ? { amount: Number(newPriceAmount), currency: newPriceCurrency } : undefined,
             images: newImages.map(file => ({file}))
         };
 
@@ -119,8 +116,6 @@ const SellerProductDetails = () => {
         setNewImages([]);
         setIsAddingVariant(false);
     };
-
-    console.log("Current variant currency:", newPriceCurrency)
 
     return (
         <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30 pb-20">
@@ -241,7 +236,7 @@ const SellerProductDetails = () => {
                     {/* ── Add Variant Button ── */}
                     {!isAddingVariant && (
                         <button 
-                            onClick={() => setIsAddingVariant(true)}
+                            onClick={handleStartAddingVariant}
                             className="w-full flex items-center justify-center gap-2 border border-dashed border-gold/30 rounded-xl py-6 hover:bg-gold/5 hover:border-gold/60 transition-colors duration-300 group mb-12 cursor-pointer"
                         >
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gold group-hover:scale-110 transition-transform"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -360,7 +355,7 @@ const SellerProductDetails = () => {
                                     </div>
                                 </div>
 
-                                <button onClick={handleStartAddingVariant} type="submit" className="w-full rounded-lg py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-linear-to-tr from-gold to-gold-dark hover:from-gold-light hover:to-gold transition-all duration-300 mt-4 cursor-pointer">
+                                <button type="submit" className="w-full rounded-lg py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-linear-to-tr from-gold to-gold-dark hover:from-gold-light hover:to-gold transition-all duration-300 mt-4 cursor-pointer">
                                     Save Variant
                                 </button>
                             </form>
@@ -371,11 +366,11 @@ const SellerProductDetails = () => {
                     <div>
                         <h2 className="font-bodoni text-[24px] font-bold text-white mb-6">Existing Variants</h2>
                         
-                        {product?.variants.length === 0 ? (
+                        {!product?.variants || product.variants.length === 0 ? (
                             <p className="font-inter text-sm text-[#555]">No variants created yet.</p>
                         ) : (
                             <div className="flex flex-col gap-4">
-                                {product?.variants.map((v, i) => (
+                                {product.variants.map((v, i) => (
                                     <div key={i} className="flex flex-col sm:flex-row gap-6 p-5 bg-[#141414] border border-white/5 rounded-xl hover:border-white/10 transition-colors">
                                         
                                         {/* Variant Image */}
