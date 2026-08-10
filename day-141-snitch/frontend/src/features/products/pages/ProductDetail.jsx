@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useParams, Link } from 'react-router'
 import { useProduct } from '../hooks/useProduct'
 
@@ -10,17 +10,8 @@ const ProductDetail = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [activeImage, setActiveImage] = useState(0)
 
-    const nextImage = () => {
-        if (product?.images?.length > 1) {
-            setActiveImage((prev) => (prev + 1) % product.images.length)
-        }
-    }
-
-    const prevImage = () => {
-        if (product?.images?.length > 1) {
-            setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))
-        }
-    }
+    // Variant Selection State
+    const [selectedAttributes, setSelectedAttributes] = useState({})
 
     const {handleGetProductById} = useProduct()
 
@@ -29,6 +20,11 @@ const ProductDetail = () => {
         try {
             const data = await handleGetProductById(productId)
             setProduct(data);
+            
+            // Set initial selected attributes to the first variant if available
+            if (data?.variants?.length > 0) {
+                setSelectedAttributes(data.variants[0].attributes)
+            }
         } catch (e) {
             console.error(e)
         } finally {
@@ -39,9 +35,81 @@ const ProductDetail = () => {
     useEffect(() => {
       fetchProductDetails()
     }, [productId])
-
-    console.log(product);
     
+    // --- Variant Computation Logic ---
+    // Extract unique attribute keys and their possible values
+    const attributeOptions = useMemo(() => {
+        if (!product?.variants) return {};
+        const options = {};
+        product.variants.forEach(variant => {
+            Object.entries(variant.attributes).forEach(([key, val]) => {
+                if (!options[key]) options[key] = new Set();
+                options[key].add(val);
+            });
+        });
+        
+        // Convert Sets to Arrays
+        Object.keys(options).forEach(key => {
+            options[key] = Array.from(options[key]);
+        });
+        return options;
+    }, [product]);
+
+    // Compute the active variant based on selected attributes
+    const activeVariant = useMemo(() => {
+        if (!product?.variants || Object.keys(selectedAttributes).length === 0) return null;
+        return product.variants.find(variant => {
+            return Object.entries(selectedAttributes).every(([key, val]) => variant.attributes[key] === val);
+        });
+    }, [product, selectedAttributes]);
+
+    // Handle attribute selection (Option B: Auto-switch to valid combination)
+    const handleAttributeSelect = (key, value) => {
+        const newSelected = { ...selectedAttributes, [key]: value };
+        
+        // Check if this exact combination exists
+        const combinationExists = product.variants.some(variant => 
+            Object.entries(newSelected).every(([k, v]) => variant.attributes[k] === v)
+        );
+
+        if (!combinationExists) {
+            // Find the first variant that has the newly selected value
+            const fallbackVariant = product.variants.find(v => v.attributes[key] === value);
+            if (fallbackVariant) {
+                setSelectedAttributes(fallbackVariant.attributes);
+                setActiveImage(0); // Reset image index on variant change
+                return;
+            }
+        }
+        
+        setSelectedAttributes(newSelected);
+        setActiveImage(0); // Reset image index on variant change
+    };
+
+    // Determine Display Data (Variant fallback to Main Product)
+    const displayPrice = activeVariant?.price || product?.price;
+    const displayImages = (activeVariant?.images?.length > 0) ? activeVariant.images : product?.images;
+    const displayStock = activeVariant ? activeVariant.stock : null;
+
+    // Reset activeImage if it goes out of bounds when displayImages changes
+    useEffect(() => {
+        if (displayImages && activeImage >= displayImages.length) {
+            setActiveImage(0);
+        }
+    }, [displayImages, activeImage]);
+
+    const nextImage = () => {
+        if (displayImages?.length > 1) {
+            setActiveImage((prev) => (prev + 1) % displayImages.length)
+        }
+    }
+
+    const prevImage = () => {
+        if (displayImages?.length > 1) {
+            setActiveImage((prev) => (prev === 0 ? displayImages.length - 1 : prev - 1))
+        }
+    }
+
     // Currency symbol formatter
     const formatPrice = (amount, currency) => {
         if (amount == null) return ''
@@ -89,20 +157,39 @@ const ProductDetail = () => {
             <main className="max-w-350 mx-auto px-5 sm:px-8 py-10 sm:py-16 animate-[fadeInUp_0.5s_ease_both]">
                 <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
                     
-                    {/* Left: Image Gallery (Minimalist Premium Look) */}
-                    <div className="w-full lg:w-[45%] xl:w-1/2 flex flex-col gap-4">
+                    {/* Left: Image Gallery */}
+                    <div className="w-full lg:w-[45%] xl:w-1/2 flex flex-col sm:flex-row gap-4 h-fit">
+                        
+                        {/* Thumbnails Strip (Desktop Only) */}
+                        {displayImages && displayImages.length > 1 && (
+                            <div className="hidden sm:flex flex-col gap-3 w-16 xl:w-20 shrink-0">
+                                {displayImages.map((img, idx) => (
+                                    <button 
+                                        key={idx}
+                                        onClick={() => setActiveImage(idx)}
+                                        className={`w-full aspect-4/5 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+                                            activeImage === idx 
+                                            ? 'border-gold opacity-100 shadow-[0_0_10px_rgba(201,169,110,0.2)]' 
+                                            : 'border-transparent opacity-50 hover:opacity-100 hover:border-white/20'
+                                        }`}
+                                    >
+                                        <img src={img.url} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
                         {/* Main Image Viewer */}
-                        <div className="w-full aspect-4/5 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
-                            {product.images && product.images.length > 0 ? (
+                        <div className="w-full flex-1 aspect-4/5 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
+                            {displayImages && displayImages.length > 0 ? (
                                 <>
                                     <img 
-                                        src={product.images[activeImage]?.url} 
+                                        src={displayImages[activeImage]?.url} 
                                         alt={product.title} 
                                         className="w-full h-full object-cover object-center transition-transform duration-700"
                                     />
                                     
-                                    {/* Left/Right Navigation Arrows */}
-                                    {product.images.length > 1 && (
+                                    {displayImages.length > 1 && (
                                         <>
                                             <button 
                                                 onClick={prevImage}
@@ -118,13 +205,12 @@ const ProductDetail = () => {
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
                                             </button>
                                             
-                                            {/* Dot Indicators */}
-                                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-                                                {product.images.map((_, idx) => (
+                                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex sm:hidden gap-2">
+                                                {displayImages.map((_, idx) => (
                                                     <button 
                                                         key={idx}
                                                         onClick={() => setActiveImage(idx)}
-                                                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeImage === idx ? 'bg-gold w-4' : 'bg-white/40 hover:bg-white/80'}`}
+                                                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${activeImage === idx ? 'bg-gold w-4' : 'bg-white/40 hover:bg-white/80'}`}
                                                     />
                                                 ))}
                                             </div>
@@ -140,38 +226,100 @@ const ProductDetail = () => {
                     {/* Right: Product Details */}
                     <div className="w-full lg:w-[55%] xl:w-1/2 flex flex-col justify-center">
                         
-                        {/* Badge */}
-                        <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 rounded-full px-3 py-1.5 mb-6 self-start">
-                            <span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0 animate-pulse" />
-                            <span className="font-inter text-[9px] font-bold tracking-[0.15em] text-gold uppercase">In Stock</span>
-                        </div>
-                        
-                        {/* Title */}
-                        <h1 className="font-bodoni text-[32px] sm:text-[42px] lg:text-[48px] font-bold text-white leading-[1.1] tracking-tight mb-4 drop-shadow-md">
-                            {product.title}
-                        </h1>
-                        
-                        {/* Price */}
-                        <div className="font-inter text-[24px] sm:text-[28px] text-gold font-light mb-8">
-                            {formatPrice(product.price?.amount, product.price?.currency)}
+                        {/* Title & Badge */}
+                        <div className="mb-6">
+                            {displayStock !== null && (
+                                <div className={`inline-flex items-center gap-2 border rounded-full px-3 py-1.5 mb-4 ${displayStock > 0 ? 'bg-gold/10 border-gold/25' : 'bg-red-500/10 border-red-500/25'}`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${displayStock > 0 ? 'bg-gold animate-pulse' : 'bg-red-500'}`} />
+                                    <span className={`font-inter text-[9px] font-bold tracking-[0.15em] uppercase ${displayStock > 0 ? 'text-gold' : 'text-red-500'}`}>
+                                        {displayStock > 0 ? 'In Stock' : 'Out of Stock'}
+                                    </span>
+                                </div>
+                            )}
+                            <h1 className="font-bodoni text-[32px] sm:text-[42px] lg:text-[48px] font-bold text-white leading-[1.1] tracking-tight mb-4 drop-shadow-md">
+                                {product.title}
+                            </h1>
+                            <div className="font-inter text-[24px] sm:text-[28px] text-gold font-light">
+                                {formatPrice(displayPrice?.amount, displayPrice?.currency)}
+                            </div>
                         </div>
                         
                         <div className="w-full h-px bg-white/10 mb-8" />
                         
+                        {/* Variant Attributes Selectors */}
+                        {Object.keys(attributeOptions).length > 0 && (
+                            <div className="mb-8 flex flex-col gap-6">
+                                {Object.entries(attributeOptions).map(([attrKey, values]) => (
+                                    <div key={attrKey}>
+                                        <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#888] uppercase mb-3 flex items-center gap-2">
+                                            {attrKey} 
+                                            <span className="text-white font-medium capitalize border-l border-white/20 pl-2">
+                                                {selectedAttributes[attrKey]}
+                                            </span>
+                                        </h3>
+                                        <div className="flex flex-wrap gap-3">
+                                            {values.map(val => {
+                                                const isSelected = selectedAttributes[attrKey] === val;
+                                                return (
+                                                    <button
+                                                        key={val}
+                                                        onClick={() => handleAttributeSelect(attrKey, val)}
+                                                        className={`px-5 py-2.5 border rounded-lg font-inter text-sm transition-all duration-300 cursor-pointer outline-none ${
+                                                            isSelected 
+                                                            ? 'border-gold text-gold bg-gold/5 shadow-[0_0_15px_rgba(201,169,110,0.1)]' 
+                                                            : 'border-white/10 text-[#aaa] hover:border-white/30 hover:text-white bg-[#141414]'
+                                                        }`}
+                                                    >
+                                                        {val}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                                
+                                <div className="w-full h-px bg-white/10 mt-2" />
+                            </div>
+                        )}
+                        
                         {/* Description */}
                         <div className="mb-12">
                             <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#888] uppercase mb-4">Details</h3>
-                            <p className="font-inter text-sm sm:text-base text-[#ccc] leading-relaxed font-light">
+                            <p className="font-inter text-sm sm:text-base text-[#ccc] leading-relaxed font-light whitespace-pre-wrap">
                                 {product.description}
                             </p>
                         </div>
                         
+                        {/* Premium Stock Indicator (Only shows when stock is low but not 0) */}
+                        {displayStock !== null && displayStock > 0 && displayStock <= 5 && (
+                            <div className="flex items-center gap-2 mb-4">
+                                <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shrink-0" />
+                                <span className="font-inter text-[10px] font-bold tracking-[0.15em] uppercase text-gold">
+                                    Limited Availability — Only {displayStock} remaining
+                                </span>
+                            </div>
+                        )}
+
                         {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-                            <button className="flex-1 bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer">
-                                Buy Now
+                            <button 
+                                disabled={displayStock === 0}
+                                className={`flex-1 rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform ${
+                                    displayStock === 0 
+                                    ? 'bg-white/10 text-[#555] cursor-not-allowed' 
+                                    : 'bg-white hover:bg-gold text-[#0a0a0a] hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer'
+                                }`}
+                            >
+                                {displayStock === 0 ? 'Out of Stock' : 'Buy Now'}
                             </button>
-                            <button className="flex-1 bg-transparent border border-white/20 hover:border-gold text-white hover:text-gold rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer">
+                            <button 
+                                disabled={displayStock === 0}
+                                className={`flex-1 border rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 ${
+                                    displayStock === 0
+                                    ? 'border-white/5 text-[#555] bg-transparent cursor-not-allowed'
+                                    : 'border-white/20 hover:border-gold text-white hover:text-gold bg-transparent cursor-pointer'
+                                }`}
+                            >
                                 Add to Cart
                             </button>
                         </div>

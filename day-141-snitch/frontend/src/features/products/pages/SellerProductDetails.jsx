@@ -142,8 +142,29 @@ const SellerProductDetails = () => {
                 <div className="mb-20 pb-16 border-b border-white/10">
                     <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
                         {/* Left: Image Gallery */}
-                        <div className="w-full lg:w-[45%] xl:w-1/2 flex flex-col gap-4">
-                            <div className="w-full aspect-4/5 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
+                        <div className="w-full lg:w-[45%] xl:w-1/2 flex flex-col sm:flex-row gap-4 h-fit">
+                            
+                            {/* Thumbnails Strip (Desktop Only) */}
+                            {product?.images && product.images.length > 1 && (
+                                <div className="hidden sm:flex flex-col gap-3 w-16 xl:w-20 shrink-0">
+                                    {product.images.map((img, idx) => (
+                                        <button 
+                                            key={idx}
+                                            onClick={() => setActiveImage(idx)}
+                                            className={`w-full aspect-4/5 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+                                                activeImage === idx 
+                                                ? 'border-gold opacity-100 shadow-[0_0_10px_rgba(201,169,110,0.2)]' 
+                                                : 'border-transparent opacity-50 hover:opacity-100 hover:border-white/20'
+                                            }`}
+                                        >
+                                            <img src={img.url} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Main Image Viewer */}
+                            <div className="w-full flex-1 aspect-4/5 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
                                 {product?.images && product?.images.length > 0 ? (
                                     <>
                                         <img 
@@ -170,7 +191,7 @@ const SellerProductDetails = () => {
                                                 </button>
                                                 
                                                 {/* Dot Indicators */}
-                                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex sm:hidden gap-2">
                                                     {product.images.map((_, idx) => (
                                                         <button 
                                                             key={idx}
