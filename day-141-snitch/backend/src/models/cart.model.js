@@ -9,7 +9,7 @@ const cartSchema = new mongoose.Schema({
     },
     items: [
         {
-            products: {
+            product: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "product",
                 required: true
@@ -22,7 +22,7 @@ const cartSchema = new mongoose.Schema({
                 type: Number,
                 default: 1
             },
-            Price: {
+            price: {
                 type: priceSchema,
                 required: true
             }
