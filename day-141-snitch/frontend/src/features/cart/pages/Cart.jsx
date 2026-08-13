@@ -4,11 +4,11 @@ import { useCart } from '../hooks/useCart'
 import { Link } from 'react-router'
 import { useCurrency, convertCurrency } from '../hooks/useCurrency.js'
 
-// --- STEP 1: Currency Config ---
+// --- Currency Config ---
 const SUPPORTED_CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'JPY']
 const CURRENCY_SYMBOLS = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥' }
 
-// --- STEP 4: Find most common currency in cart ---
+// --- Find most common currency in cart ---
 function getMostCommonCurrency(items) {
     if (!items || items.length === 0) return 'USD'
     const counts = {}
@@ -23,7 +23,7 @@ function getMostCommonCurrency(items) {
 const Cart = () => {
 
     const cartItems = useSelector(state => state.cart.items)
-    const { handleGetCart } = useCart()
+    const { handleGetCart, handleIncreaseCartItemQuantity } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
 
     // User's chosen display currency (defaults to most common in cart)
@@ -174,13 +174,16 @@ const Cart = () => {
                                                     {/* Quantity & Delete Row */}
                                                     <div className="flex items-center justify-between mt-4">
                                                         <div className="flex items-center gap-0 border border-white/10 rounded-lg overflow-hidden">
-                                                            <button className="w-9 h-9 flex items-center justify-center text-[#666] hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+                                                            <button
+                                                             className="w-9 h-9 flex items-center justify-center text-[#666] hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                                             </button>
                                                             <span className="w-10 h-9 flex items-center justify-center font-inter text-sm text-white border-l border-r border-white/10">
                                                                 {item.quantity || 1}
                                                             </span>
-                                                            <button className="w-9 h-9 flex items-center justify-center text-[#666] hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+                                                            <button 
+                                                             onClick={() => handleIncreaseCartItemQuantity({productId: item.product?._id, variantId: item.variant})}
+                                                             className="w-9 h-9 flex items-center justify-center text-[#666] hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                                             </button>
                                                         </div>
