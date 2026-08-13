@@ -222,7 +222,7 @@ const CreateProduct = () => {
                 <span className="font-inter text-[9px] font-bold tracking-[0.14em] text-gold uppercase">New Listing</span>
               </div>
               <h1 className="font-bodoni text-[36px] sm:text-[44px] font-bold tracking-tight text-white leading-[1.1]">
-                Create Product
+                List Product
               </h1>
               <p className="font-inter text-sm text-[#777] mt-2.5 leading-relaxed">
                 Add a new item to the Velora collection.

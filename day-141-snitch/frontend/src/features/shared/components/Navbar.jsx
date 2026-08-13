@@ -35,11 +35,12 @@ const Navbar = () => {
 
   // Dynamic Navigation Links based on User Role
   const navLinks = user?.role === 'seller' ? [
-    { name: 'Dashboard', path: '/seller/dashboard' },
-    { name: 'Add Product', path: '/seller/create-product' },
+    { name: 'Home', path: '/seller/dashboard' },
+    { name: 'List Product', path: '/seller/create-product' },
+    { name: 'About', path: '/about' },
   ] : [
     { name: 'Home', path: '/' },
-    { name: 'Shop', path: '/' },
+    { name: 'About', path: '/about' },
   ]
 
   return (
@@ -53,14 +54,8 @@ const Navbar = () => {
       >
         <div className="max-w-350 mx-auto px-5 sm:px-8 flex items-center justify-between">
           
-          {/* ── Left: Logo ── */}
-          <Link to="/" className="flex items-center gap-2.5 z-50">
-            <img src="/logo.png" alt="Velora" className="h-6 sm:h-7 w-auto object-contain opacity-90 drop-shadow-md" />
-            <span className="font-bodoni text-[18px] sm:text-[22px] font-bold tracking-[0.2em] text-white uppercase mt-0.5">Velora</span>
-          </Link>
-
-          {/* ── Center: Desktop Navigation ── */}
-          <nav className="hidden md:flex items-center gap-10 absolute left-1/2 -translate-x-1/2 pt-1">
+          {/* ── Left: Desktop Navigation ── */}
+          <nav className="hidden md:flex items-center gap-8 flex-1">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -74,8 +69,14 @@ const Navbar = () => {
             ))}
           </nav>
 
+          {/* ── Center: Logo ── */}
+          <Link to="/" className="flex items-center justify-center gap-2.5 z-50 flex-1 md:flex-none">
+            <img src="/logo.png" alt="Velora" className="h-6 sm:h-7 w-auto object-contain opacity-90 drop-shadow-md" />
+            <span className="font-bodoni text-[18px] sm:text-[22px] font-bold tracking-[0.2em] text-white uppercase mt-0.5">Velora</span>
+          </Link>
+
           {/* ── Right: Actions (Search, Cart & Profile) ── */}
-          <div className="flex items-center gap-5 sm:gap-6 z-50">
+          <div className="flex items-center justify-end gap-5 sm:gap-6 z-50 flex-1">
             
             {/* Search Bar */}
             <div className="hidden lg:flex items-center relative group">

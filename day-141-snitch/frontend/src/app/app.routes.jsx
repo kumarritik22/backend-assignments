@@ -4,11 +4,13 @@ import Login from "../features/auth/pages/Login.jsx";
 import CreateProduct from "../features/products/pages/CreateProduct.jsx";
 import Dashboard from "../features/products/pages/Dashboard.jsx";
 import Protected from "../features/auth/components/Protected.jsx";
+import ExcludeSeller from "../features/auth/components/ExcludeSeller.jsx";
 import Home from "../features/products/pages/Home.jsx";
 import ProductDetail from "../features/products/pages/ProductDetail.jsx";
 import SellerProductDetails from "../features/products/pages/SellerProductDetails.jsx";
 import Cart from "../features/cart/pages/Cart.jsx";
 import AppLayout from "./AppLayout.jsx";
+import About from "../features/products/pages/About.jsx";
 
 export const routes = createBrowserRouter([
     {
@@ -24,12 +26,19 @@ export const routes = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />
+                element: <ExcludeSeller>
+                    <Home />
+                </ExcludeSeller>
             },
-
+            {
+                path: "/about",
+                element: <About />
+            },
             {
                 path: "/product/:productId",
-                element: <ProductDetail />
+                element: <ExcludeSeller>
+                    <ProductDetail />
+                </ExcludeSeller>
             },
             {
                 path: "/cart",
