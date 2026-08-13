@@ -90,10 +90,10 @@ const Cart = () => {
                         </Link>
                     </div>
                 ) : (
-                    <div className="flex flex-col lg:flex-row gap-12 xl:gap-16 items-start">
+                    <div className="flex flex-col lg:flex-row gap-12 xl:gap-16 items-start overflow-hidden">
 
                         {/* ── Left: Cart Items ── */}
-                        <div className="w-full lg:flex-1">
+                        <div className="min-w-0 w-full lg:flex-1 overflow-hidden">
                             {/* Section Header */}
                             <div className="flex items-baseline gap-4 mb-8">
                                 <h1 className="font-bodoni text-[36px] sm:text-[42px] font-bold text-white leading-tight">Your Cart</h1>
@@ -109,7 +109,7 @@ const Cart = () => {
 
                                     return (
                                         <div key={item._id || index}>
-                                            <div className="flex gap-5 sm:gap-6 py-6 group">
+                                            <div className="flex gap-5 sm:gap-6 py-6 group min-w-0">
 
                                                 {/* Product Image */}
                                                 <Link
@@ -130,7 +130,7 @@ const Cart = () => {
                                                 </Link>
 
                                                 {/* Product Info */}
-                                                <div className="flex-1 flex flex-col justify-between min-w-0">
+                                                <div className="flex-1 flex flex-col justify-between min-w-0 overflow-hidden">
                                                     <div>
                                                         <Link to={`/product/${item.product?._id}`} className="hover:text-gold transition-colors duration-200">
                                                             <h3 className="font-inter font-semibold text-[15px] text-white leading-snug mb-2 truncate pr-4">

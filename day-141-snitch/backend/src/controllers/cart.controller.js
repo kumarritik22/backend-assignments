@@ -56,11 +56,13 @@ export const addToCart = async (req, res) => {
         })
     }
 
+    const variant = product.variants.find(v => v._id.toString() === variantId)
+
     cart.items.push({
         product: productId, 
         variant: variantId, 
         quantity, 
-        price: product.price
+        price: variant?.price || product.price
     })
 
     await cart.save();
