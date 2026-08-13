@@ -119,22 +119,6 @@ const SellerProductDetails = () => {
 
     return (
         <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30 pb-20">
-            {/* ── Header ── */}
-            <header className="sticky top-0 z-30 bg-[#0c0c0c]/90 backdrop-blur-md border-b border-gold/10 px-5 sm:px-8 py-4">
-                <div className="max-w-350 mx-auto flex items-center justify-between">
-                    <Link to="/seller/dashboard" className="inline-flex items-center gap-2 font-inter text-[12px] text-[#666] hover:text-gold transition-colors duration-200 group">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:-translate-x-0.5">
-                            <path d="M19 12H5M12 5l-7 7 7 7" />
-                        </svg>
-                        Dashboard
-                    </Link>
-                    <div className="flex items-center gap-2.5">
-                        <img src="/logo.png" alt="Velora" className="h-6 w-auto object-contain opacity-90 drop-shadow-md" />
-                        <span className="font-bodoni text-[16px] font-bold tracking-[0.2em] text-white uppercase mt-0.5">Velora</span>
-                    </div>
-                    <div className="w-20"></div>
-                </div>
-            </header>
 
             <main className="max-w-350 mx-auto px-5 sm:px-8 py-10 sm:py-16 animate-[fadeInUp_0.5s_ease_both]">
                 
