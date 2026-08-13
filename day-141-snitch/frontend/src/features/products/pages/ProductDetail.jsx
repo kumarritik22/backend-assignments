@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { useParams, Link } from 'react-router'
+import { useParams, Link, useNavigate } from 'react-router'
 import { useProduct } from '../hooks/useProduct.js'
 import { useCart } from '../../cart/hooks/useCart.js'
 
@@ -10,6 +10,8 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [activeImage, setActiveImage] = useState(0)
+
+    const navigate = useNavigate()
 
     // Variant Selection State
     const [selectedAttributes, setSelectedAttributes] = useState({})
@@ -322,11 +324,13 @@ const ProductDetail = () => {
                                     ? 'border-white/5 text-[#555] bg-transparent cursor-not-allowed'
                                     : 'border-white/20 hover:border-gold text-white hover:text-gold bg-transparent cursor-pointer'
                                 }`}
-                                onClick={() => {
-                                    handleAddItem({
+                                onClick={ async () => {
+                                    await handleAddItem({
                                         productId: product._id,
-                                        variantId: activeVariant._id
+                                        variantId: activeVariant._id,
+                                    
                                     })
+                                    navigate("/cart")
                                 }}
                             >
                                 Add to Cart
