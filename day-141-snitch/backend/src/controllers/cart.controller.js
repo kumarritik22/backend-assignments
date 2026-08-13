@@ -85,5 +85,5 @@ export const getCart = async (req, res) => {
         message: "Cart fetched successfully",
         success: true,
         cart
-    })
-}
+    });
+};
