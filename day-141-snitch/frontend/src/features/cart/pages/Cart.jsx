@@ -171,6 +171,10 @@ const Cart = () => {
                                                         </div>
                                                     </div>
 
+                                                    <div>
+                                                        <p></p>
+                                                    </div>   
+
                                                     {/* Quantity & Delete Row */}
                                                     <div className="flex items-center justify-between mt-4">
                                                         <div className="flex items-center gap-0 border border-white/10 rounded-lg overflow-hidden">
