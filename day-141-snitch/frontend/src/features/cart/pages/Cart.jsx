@@ -126,6 +126,7 @@ const Cart = () => {
                                     const variant = getVariant(item)
                                     const displayImage = getDisplayImage(item)
                                     const itemPrice = item.price || variant?.price || item.product?.price
+                                    const variantPrice = variant?.price 
 
                                     return (
                                         <div key={item._id || index}>
@@ -169,11 +170,18 @@ const Cart = () => {
                                                         <div className="font-inter text-[16px] font-medium text-gold">
                                                             {formatOriginalPrice(itemPrice?.amount, itemPrice?.currency)}
                                                         </div>
-                                                    </div>
 
-                                                    <div>
-                                                        <p></p>
-                                                    </div>   
+                                                        {
+                                                            itemPrice.amount !== variantPrice.amount && (
+                                                                <>
+                                                                    {itemPrice.amount > variantPrice.amount
+                                                                        ? <p className="text-xs mt-2 mb-2 text-green-500 font-medium" >Good news! Price dropped to {formatOriginalPrice(variantPrice.amount, variantPrice.currency)} - you save {formatOriginalPrice(Math.abs(itemPrice.amount - variantPrice.amount), itemPrice.currency)}.</p>
+                                                                        : <p className="text-xs mt-2 mb-2 text-red-500 font-medium">⚠️ Price increased to {formatOriginalPrice(variantPrice.amount, variantPrice.currency)} - you'll pay {formatOriginalPrice(Math.abs(variantPrice.amount - itemPrice.amount), itemPrice.currency)} more. </p>
+                                                                    }
+                                                                </>
+                                                            )
+                                                        }
+                                                    </div>
 
                                                     {/* Quantity & Delete Row */}
                                                     <div className="flex items-center justify-between mt-4">
