@@ -175,8 +175,8 @@ const Cart = () => {
                                                             itemPrice.amount !== variantPrice.amount && (
                                                                 <>
                                                                     {itemPrice.amount > variantPrice.amount
-                                                                        ? <p className="text-xs mt-2 mb-2 text-green-500 font-medium" >Good news! Price dropped to {formatOriginalPrice(variantPrice.amount, variantPrice.currency)} - you save {formatOriginalPrice(Math.abs(itemPrice.amount - variantPrice.amount), itemPrice.currency)}.</p>
-                                                                        : <p className="text-xs mt-2 mb-2 text-red-500 font-medium">⚠️ Price increased to {formatOriginalPrice(variantPrice.amount, variantPrice.currency)} - you'll pay {formatOriginalPrice(Math.abs(variantPrice.amount - itemPrice.amount), itemPrice.currency)} more. </p>
+                                                                        ? <p className="text-xs mt-2 mb-2 text-green-500 font-semibold" >Good news! Price dropped to {formatOriginalPrice(variantPrice.amount, variantPrice.currency)} - you save {formatOriginalPrice(Math.abs(itemPrice.amount - variantPrice.amount), itemPrice.currency)}.</p>
+                                                                        : <p className="text-xs mt-2 mb-2 text-red-500 font-semibold">⚠️ Price increased to {formatOriginalPrice(variantPrice.amount, variantPrice.currency)} - you'll pay {formatOriginalPrice(Math.abs(variantPrice.amount - itemPrice.amount), itemPrice.currency)} more. </p>
                                                                     }
                                                                 </>
                                                             )
