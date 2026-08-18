@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import { useCart } from '../hooks/useCart'
 import { Link } from 'react-router'
 import { useCurrency, convertCurrency } from '../hooks/useCurrency.js'
-import { useRazorpay } from "react-razorpay";
 
 // --- Currency Config ---
 const SUPPORTED_CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'JPY']
@@ -15,7 +14,6 @@ const Cart = () => {
     const cart = useSelector(state => state.cart)
     const { handleGetCart, handleIncreaseCartItemQuantity } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
-    const { error, isLoading, Razorpay } = useRazorpay();
 
     // User's chosen display currency (defaults to most common in cart)
     const [displayCurrency, setDisplayCurrency] = useState('USD')
@@ -35,31 +33,6 @@ const Cart = () => {
         }
     }, [cart.totalsByCurrency])
 
-    const handlePayment = () => {
-    const options = {
-        key: "YOUR_RAZORPAY_KEY",
-        amount: 50000, // Amount in paise
-        currency: "INR",
-        name: "Test Company",
-        description: "Test Transaction",
-        order_id: "order_9A33XWu170gUtm", // Generate order_id on server
-        handler: (response) => {
-            console.log(response);
-            alert("Payment Successful!");
-        },
-        prefill: {
-            name: "John Doe",
-            email: "john.doe@example.com",
-            contact: "9999999999",
-        },
-        theme: {
-            color: "#F37254",
-        },
-        };
-
-        const razorpayInstance = new Razorpay(options);
-        razorpayInstance.open();
-    };
 
     // --- Helpers ---
     const formatDisplayPrice = (amount) => {
@@ -313,8 +286,7 @@ const Cart = () => {
                                 </div>
 
                                 {/* CTA */}
-                                <button 
-                                    onClick={handlePayment}
+                                <button
                                     className="w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mb-4">
                                     Proceed to Checkout
                                 </button>
