@@ -13,7 +13,6 @@ export const useCart = () => {
 
     async function handleGetCart() {
         const data = await getCart()
-        console.log(data);
         dispatch(setCart(data.cart));
     }
 

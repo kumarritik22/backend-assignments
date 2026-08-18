@@ -9,17 +9,6 @@ import { useRazorpay } from "react-razorpay";
 const SUPPORTED_CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'JPY']
 const CURRENCY_SYMBOLS = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥' }
 
-// --- Find most common currency in cart ---
-function getMostCommonCurrency(items) {
-    if (!items || items.length === 0) return 'USD'
-    const counts = {}
-    items.forEach(item => {
-        const c = item.price?.currency || 'USD'
-        counts[c] = (counts[c] || 0) + 1
-    })
-    // Sort descending by count, return the winner
-    return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0]
-}
 
 const Cart = () => {
 
@@ -36,14 +25,15 @@ const Cart = () => {
         handleFetchRates()
     }, [])
 
-
-    // Once cart items load, set the default display currency
-    // to whichever currency appears most in the cart
+    // Once totalsByCurrency loads, default to the currency with the highest total amount
     useEffect(() => {
-        if (cart.length > 0) {
-            setDisplayCurrency(getMostCommonCurrency(cart))
+        if (cart.totalsByCurrency?.length > 0) {
+            const dominant = cart.totalsByCurrency.reduce((prev, curr) =>
+                curr.amount > prev.amount ? curr : prev
+            )
+            setDisplayCurrency(dominant.currency)
         }
-    }, [cart])
+    }, [cart.totalsByCurrency])
 
     const handlePayment = () => {
     const options = {
@@ -75,7 +65,9 @@ const Cart = () => {
     const formatDisplayPrice = (amount) => {
         if (amount == null) return ''
         const symbol = CURRENCY_SYMBOLS[displayCurrency] || displayCurrency
-        return `${symbol}${Number(amount).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
+        const locale = displayCurrency === 'INR' ? 'en-IN' : 'en-US'
+        const decimals = ['INR', 'JPY'].includes(displayCurrency) ? 0 : 2
+        return `${symbol}${Number(amount).toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`
     }
 
     const getDisplayImage = (item) => {
@@ -89,27 +81,27 @@ const Cart = () => {
     const formatOriginalPrice = (amount, currency) => {
         if (amount == null) return ''
         const symbol = CURRENCY_SYMBOLS[currency] || currency
-        return `${symbol}${Number(amount).toLocaleString()}`
+        const locale = currency === 'INR' ? 'en-IN' : 'en-US'
+        const decimals = ['INR', 'JPY'].includes(currency) ? 0 : 2
+        return `${symbol}${Number(amount).toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`
     }
 
-    // --- Compute converted subtotal ---
-    // For each cart item: convert its price to displayCurrency, then sum
+    // Convert backend-computed currency totals to a single display-currency total.
+    // The backend already sums per-currency (e.g. INR: 400, USD: 249).
+    // We just convert each currency bucket and sum — at most 3-4 conversions, not N items.
     const convertedSubtotal = useMemo(() => {
-        if (!rates) return null
-        return cart.items.reduce((sum, item) => {
-            const amount = (item.price?.amount || 0) * (item.quantity || 1)
-            const fromCurrency = item.price?.currency || "USD"
-            return sum + convertCurrency(amount, fromCurrency, displayCurrency, rates)
+        if (!rates || !cart.totalsByCurrency?.length) return null
+        return cart.totalsByCurrency.reduce((sum, { currency, amount }) => {
+            return sum + convertCurrency(amount, currency, displayCurrency, rates)
         }, 0)
-    }, [cart, displayCurrency, rates])
+    }, [cart.totalsByCurrency, displayCurrency, rates])
 
-    // Check if the cart has mixed currencies (to show conversion note)
+    // Mixed currencies = more than one currency bucket from the backend
     const hasMixedCurrencies = useMemo(() => {
-        const currencies = new Set(cart.items.map(i => i.price?.currency || 'USD'))
-        return currencies.size > 1
-    }, [cart])
+        return (cart.totalsByCurrency?.length || 0) > 1
+    }, [cart.totalsByCurrency])
 
-    const isEmpty = cart.length === 0
+    const isEmpty = cart.items.length === 0
 
     return (
         <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
@@ -144,7 +136,7 @@ const Cart = () => {
                         <div className="min-w-0 w-full lg:flex-1 overflow-hidden">
                             <div className="flex items-baseline gap-4 mb-8">
                                 <h1 className="font-bodoni text-[36px] sm:text-[42px] font-bold text-white leading-tight">Your Cart</h1>
-                                <span className="font-inter text-sm text-[#555]">{cart.length} {cart.length === 1 ? 'item' : 'items'}</span>
+                                <span className="font-inter text-sm text-[#555]">{cart.items.length} {cart.items.length === 1 ? 'item' : 'items'}</span>
                             </div>
 
                             <div className="flex flex-col">
@@ -239,7 +231,7 @@ const Cart = () => {
                                                 </div>
                                             </div>
 
-                                            {index < cart.length - 1 && (
+                                            {index < cart.items.length - 1 && (
                                                 <div className="w-full h-px bg-white/5" />
                                             )}
                                         </div>
@@ -285,7 +277,7 @@ const Cart = () => {
                                 {/* Line Items */}
                                 <div className="flex flex-col gap-4 mb-6">
                                     <div className="flex items-center justify-between font-inter text-sm">
-                                        <span className="text-[#888]">Subtotal ({cart.length} {cart.length === 1 ? 'item' : 'items'})</span>
+                                        <span className="text-[#888]">Subtotal ({cart.items.length} {cart.items.length === 1 ? 'item' : 'items'})</span>
                                         <span className="text-white">
                                             {ratesLoading ? (
                                                 <span className="w-16 h-4 bg-white/5 rounded animate-pulse inline-block" />

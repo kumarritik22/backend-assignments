@@ -109,29 +109,79 @@ export const getCart = async (req, res) => {
         },
         {
         $addFields: {
-            itemPrice: {
-            price: {
+            'items.itemTotal': {
+            amount: {
                 $multiply: [
                 '$items.quantity',
                 '$items.product.variants.price.amount'
                 ]
             },
-            currency:
-                '$items.product.variants.price.currency'
+            currency: '$items.product.variants.price.currency'
             }
         }
         },
         {
         $group: {
             _id: '$_id',
-            totalPrice: { $sum: '$itemPrice.price' },
-            currency: {
-            $first: '$itemPrice.currency'
-            },
-            items: { $push: '$items' }
+            items: { $push: '$items' },
+            rawTotals: {
+            $push: {
+                currency: '$items.product.variants.price.currency',
+                amount: {
+                $multiply: [
+                    '$items.quantity',
+                    '$items.product.variants.price.amount'
+                ]
+                }
+            }
+            }
         }
+        },
+        {
+        $addFields: {
+            totalsByCurrency: {
+            $reduce: {
+                input: '$rawTotals',
+                initialValue: [],
+                in: {
+                $let: {
+                    vars: {
+                    idx: { $indexOfArray: ['$$value.currency', '$$this.currency'] }
+                    },
+                    in: {
+                    $cond: {
+                        if: { $eq: ['$$idx', -1] },
+                        then: {
+                        $concatArrays: [
+                            '$$value',
+                            [{ currency: '$$this.currency', amount: '$$this.amount' }]
+                        ]
+                        },
+                        else: {
+                        $map: {
+                            input: '$$value',
+                            as: 'entry',
+                            in: {
+                            $cond: {
+                                if: { $eq: ['$$entry.currency', '$$this.currency'] },
+                                then: {
+                                currency: '$$entry.currency',
+                                amount: { $add: ['$$entry.amount', '$$this.amount'] }
+                                },
+                                else: '$$entry'
+                            }
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+            }
+            }
         }
-    ]))[ 0 ]
+        }},
+        { $project: { rawTotals: 0 } }
+    ]))[0]
 
     if (!cart) {
         cart = await cartModel.create({user: user._id})
