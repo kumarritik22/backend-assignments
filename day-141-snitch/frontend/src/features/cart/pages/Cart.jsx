@@ -12,7 +12,7 @@ const CURRENCY_SYMBOLS = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥
 const Cart = () => {
 
     const cart = useSelector(state => state.cart)
-    const { handleGetCart, handleIncreaseCartItemQuantity } = useCart()
+    const { handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
 
     // User's chosen display currency (defaults to most common in cart)
@@ -33,6 +33,10 @@ const Cart = () => {
         }
     }, [cart.totalsByCurrency])
 
+    const handleCheckout = async () => {
+        const order = await handleCreateCartOrder()
+        console.log(order);
+    }
 
     // --- Helpers ---
     const formatDisplayPrice = (amount) => {
@@ -287,6 +291,7 @@ const Cart = () => {
 
                                 {/* CTA */}
                                 <button
+                                    onClick={handleCheckout}
                                     className="w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mb-4">
                                     Proceed to Checkout
                                 </button>
