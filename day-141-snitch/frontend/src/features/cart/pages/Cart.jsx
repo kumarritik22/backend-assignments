@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useCart } from '../hooks/useCart'
 import { Link } from 'react-router'
 import { useCurrency, convertCurrency } from '../hooks/useCurrency.js'
+import { useRazorpay } from "react-razorpay";
 
 // --- Currency Config ---
 const SUPPORTED_CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'JPY']
@@ -22,9 +23,10 @@ function getMostCommonCurrency(items) {
 
 const Cart = () => {
 
-    const cartItems = useSelector(state => state.cart.items)
+    const cart = useSelector(state => state.cart)
     const { handleGetCart, handleIncreaseCartItemQuantity } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
+    const { error, isLoading, Razorpay } = useRazorpay();
 
     // User's chosen display currency (defaults to most common in cart)
     const [displayCurrency, setDisplayCurrency] = useState('USD')
@@ -34,13 +36,40 @@ const Cart = () => {
         handleFetchRates()
     }, [])
 
+
     // Once cart items load, set the default display currency
     // to whichever currency appears most in the cart
     useEffect(() => {
-        if (cartItems.length > 0) {
-            setDisplayCurrency(getMostCommonCurrency(cartItems))
+        if (cart.length > 0) {
+            setDisplayCurrency(getMostCommonCurrency(cart))
         }
-    }, [cartItems])
+    }, [cart])
+
+    const handlePayment = () => {
+    const options = {
+        key: "YOUR_RAZORPAY_KEY",
+        amount: 50000, // Amount in paise
+        currency: "INR",
+        name: "Test Company",
+        description: "Test Transaction",
+        order_id: "order_9A33XWu170gUtm", // Generate order_id on server
+        handler: (response) => {
+            console.log(response);
+            alert("Payment Successful!");
+        },
+        prefill: {
+            name: "John Doe",
+            email: "john.doe@example.com",
+            contact: "9999999999",
+        },
+        theme: {
+            color: "#F37254",
+        },
+        };
+
+        const razorpayInstance = new Razorpay(options);
+        razorpayInstance.open();
+    };
 
     // --- Helpers ---
     const formatDisplayPrice = (amount) => {
@@ -49,11 +78,8 @@ const Cart = () => {
         return `${symbol}${Number(amount).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
     }
 
-    const getVariant = (item) =>
-        item.product?.variants?.find(v => v._id === item.variant) || null
-
     const getDisplayImage = (item) => {
-        const variant = getVariant(item)
+        const variant = item.product?.variants
         if (variant?.images?.length > 0) return variant.images[0].url
         if (item.product?.images?.length > 0) return item.product.images[0].url
         return null
@@ -70,20 +96,20 @@ const Cart = () => {
     // For each cart item: convert its price to displayCurrency, then sum
     const convertedSubtotal = useMemo(() => {
         if (!rates) return null
-        return cartItems.reduce((sum, item) => {
+        return cart.items.reduce((sum, item) => {
             const amount = (item.price?.amount || 0) * (item.quantity || 1)
             const fromCurrency = item.price?.currency || "USD"
             return sum + convertCurrency(amount, fromCurrency, displayCurrency, rates)
         }, 0)
-    }, [cartItems, displayCurrency, rates])
+    }, [cart, displayCurrency, rates])
 
     // Check if the cart has mixed currencies (to show conversion note)
     const hasMixedCurrencies = useMemo(() => {
-        const currencies = new Set(cartItems.map(i => i.price?.currency || 'USD'))
+        const currencies = new Set(cart.items.map(i => i.price?.currency || 'USD'))
         return currencies.size > 1
-    }, [cartItems])
+    }, [cart])
 
-    const isEmpty = cartItems.length === 0
+    const isEmpty = cart.length === 0
 
     return (
         <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
@@ -118,12 +144,12 @@ const Cart = () => {
                         <div className="min-w-0 w-full lg:flex-1 overflow-hidden">
                             <div className="flex items-baseline gap-4 mb-8">
                                 <h1 className="font-bodoni text-[36px] sm:text-[42px] font-bold text-white leading-tight">Your Cart</h1>
-                                <span className="font-inter text-sm text-[#555]">{cartItems.length} {cartItems.length === 1 ? 'item' : 'items'}</span>
+                                <span className="font-inter text-sm text-[#555]">{cart.length} {cart.length === 1 ? 'item' : 'items'}</span>
                             </div>
 
                             <div className="flex flex-col">
-                                {cartItems.map((item, index) => {
-                                    const variant = getVariant(item)
+                                {cart.items.map((item, index) => {
+                                    const variant = item.product?.variants
                                     const displayImage = getDisplayImage(item)
                                     const itemPrice = item.price || variant?.price || item.product?.price
                                     const variantPrice = variant?.price 
@@ -213,7 +239,7 @@ const Cart = () => {
                                                 </div>
                                             </div>
 
-                                            {index < cartItems.length - 1 && (
+                                            {index < cart.length - 1 && (
                                                 <div className="w-full h-px bg-white/5" />
                                             )}
                                         </div>
@@ -259,7 +285,7 @@ const Cart = () => {
                                 {/* Line Items */}
                                 <div className="flex flex-col gap-4 mb-6">
                                     <div className="flex items-center justify-between font-inter text-sm">
-                                        <span className="text-[#888]">Subtotal ({cartItems.length} {cartItems.length === 1 ? 'item' : 'items'})</span>
+                                        <span className="text-[#888]">Subtotal ({cart.length} {cart.length === 1 ? 'item' : 'items'})</span>
                                         <span className="text-white">
                                             {ratesLoading ? (
                                                 <span className="w-16 h-4 bg-white/5 rounded animate-pulse inline-block" />
@@ -295,7 +321,9 @@ const Cart = () => {
                                 </div>
 
                                 {/* CTA */}
-                                <button className="w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mb-4">
+                                <button 
+                                    onClick={handlePayment}
+                                    className="w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mb-4">
                                     Proceed to Checkout
                                 </button>
 
