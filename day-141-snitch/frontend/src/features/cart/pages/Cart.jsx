@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useCart } from '../hooks/useCart'
 import { Link } from 'react-router'
 import { useCurrency, convertCurrency } from '../hooks/useCurrency.js'
+import { useRazorpay } from "react-razorpay";
 
 // --- Currency Config ---
 const SUPPORTED_CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'JPY']
@@ -14,6 +15,9 @@ const Cart = () => {
     const cart = useSelector(state => state.cart)
     const { handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
+    const { error, isLoading, Razorpay } = useRazorpay();
+
+    const user = useSelector(state => state.user);
 
     // User's chosen display currency (defaults to most common in cart)
     const [displayCurrency, setDisplayCurrency] = useState('USD')
@@ -36,6 +40,29 @@ const Cart = () => {
     const handleCheckout = async () => {
         const order = await handleCreateCartOrder()
         console.log(order);
+
+        const options = {
+            key: "rzp_test_TRAqlH9mR6sGGT",
+            amount: order.amount, // Amount in paise
+            currency: order.currency,
+            name: "Velora",
+            description: "Test Transaction",
+            order_id: order.id, // Generate order_id on server
+            handler: (response) => {
+                console.log(response);
+                alert("Payment Successful!");
+            },
+            prefill: {
+                name: user?.fullname,
+                email: user?.email,
+                contact: user?.contact,
+            },
+            theme: {
+                color: "#F37254", 
+            },
+        };
+            const razorpayInstance = new Razorpay(options);
+            razorpayInstance.open();
     }
 
     // --- Helpers ---
