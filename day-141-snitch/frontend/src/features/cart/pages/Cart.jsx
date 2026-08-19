@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useCart } from '../hooks/useCart'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useCurrency, convertCurrency } from '../hooks/useCurrency.js'
 import { useRazorpay } from "react-razorpay";
 
@@ -13,11 +13,13 @@ const CURRENCY_SYMBOLS = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥
 const Cart = () => {
 
     const cart = useSelector(state => state.cart)
-    const { handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder } = useCart()
+    const { handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
     const { error, isLoading, Razorpay } = useRazorpay();
 
     const user = useSelector(state => state.user);
+
+    const navigate = useNavigate();
 
     // User's chosen display currency (defaults to most common in cart)
     const [displayCurrency, setDisplayCurrency] = useState('USD')
@@ -48,9 +50,12 @@ const Cart = () => {
             name: "Velora",
             description: "Test Transaction",
             order_id: order.id, // Generate order_id on server
-            handler: (response) => {
-                console.log(response);
-                alert("Payment Successful!");
+            handler: async (response) => {
+                await handleVerifyCartOrder(response)
+                
+                if (isValid) {
+                    Navigate(`/order-success?order_id=${response?.razorpay_order_id}`)
+                }
             },
             prefill: {
                 name: user?.fullname,
