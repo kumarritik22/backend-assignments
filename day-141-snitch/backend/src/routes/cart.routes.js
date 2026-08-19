@@ -1,7 +1,7 @@
 import express from "express";
 import { authenticateUser } from "../middlewares/auth.middleware.js";
 import { validateAddToCart, validateIncrementCartItemQuantity } from "../validators/cart.validator.js";
-import { addToCart, createOrderController, getCart, incrementCartItemQuantity, varifyOrderController } from "../controllers/cart.controller.js";
+import { addToCart, getCart, incrementCartItemQuantity, createOrderController, verifyOrderController, failOrderController } from "../controllers/cart.controller.js";
 
 const router = express.Router();
 
@@ -13,6 +13,8 @@ router.patch("/quantity/increment/:productId/:variantId", authenticateUser, vali
 
 router.post("/payment/create/order", authenticateUser, createOrderController);
 
-router.post("/payment/varify/order", authenticateUser, varifyOrderController);
+router.post("/payment/verify/order", authenticateUser, verifyOrderController);
+
+router.post("/payment/fail/order", authenticateUser, failOrderController);
 
 export default router;

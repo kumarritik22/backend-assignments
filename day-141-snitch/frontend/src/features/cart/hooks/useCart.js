@@ -1,4 +1,4 @@
-import { addItem, createCartOrder, getCart, increaseCartItemQuantity, verifyCartOrder } from "../services/cart.api.js";
+import { addItem, createCartOrder, getCart, increaseCartItemQuantity, verifyCartOrder, failCartOrder } from "../services/cart.api.js";
 import { addItem as addItemToCart, incrementCartItem, setCart } from "../state/cart.slice.js";
 import { useDispatch } from "react-redux";
 
@@ -21,8 +21,8 @@ export const useCart = () => {
         dispatch(incrementCartItem({productId, variantId}))
     }
 
-    async function handleCreateCartOrder() {
-        const data = await createCartOrder()
+    async function handleCreateCartOrder({ currency }) {
+        const data = await createCartOrder({ currency })
         return data.order;
     }
 
@@ -36,5 +36,10 @@ export const useCart = () => {
         return data.success;
     }
 
-    return {handleAddItem, handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder}
+    async function handleFailCartOrder({ razorpay_order_id }) {
+        const data = await failCartOrder({ razorpay_order_id })
+        return data;
+    }
+
+    return {handleAddItem, handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder, handleFailCartOrder}
 }

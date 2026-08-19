@@ -13,7 +13,7 @@ const CURRENCY_SYMBOLS = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥
 const Cart = () => {
 
     const cart = useSelector(state => state.cart)
-    const { handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder } = useCart()
+    const { handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder, handleFailCartOrder } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
     const { error, isLoading, Razorpay } = useRazorpay();
 
@@ -40,34 +40,60 @@ const Cart = () => {
     }, [cart.totalsByCurrency])
 
     const handleCheckout = async () => {
-        const order = await handleCreateCartOrder()
-        console.log(order);
+        try {
+            // Step 1: Tell the backend which currency the user wants to pay in.
+            // Backend fetches live exchange rates, converts everything, and creates a Razorpay order.
+            const order = await handleCreateCartOrder({ currency: displayCurrency })
 
-        const options = {
-            key: "rzp_test_TRAqlH9mR6sGGT",
-            amount: order.amount, // Amount in paise
-            currency: order.currency,
-            name: "Velora",
-            description: "Test Transaction",
-            order_id: order.id, // Generate order_id on server
-            handler: async (response) => {
-                await handleVerifyCartOrder(response)
-                
-                if (isValid) {
-                    Navigate(`/order-success?order_id=${response?.razorpay_order_id}`)
-                }
-            },
-            prefill: {
-                name: user?.fullname,
-                email: user?.email,
-                contact: user?.contact,
-            },
-            theme: {
-                color: "#F37254", 
-            },
-        };
+            const options = {
+                key: order.key,                // Public Razorpay key returned from backend
+                amount: order.amount,          // Total in smallest unit (paise/cents) — set by backend
+                currency: order.currency,      // The currency the user selected
+                name: "Velora",
+                description: "Premium Fashion by Velora",
+                order_id: order.id,            // Razorpay order ID created by backend
+                handler: async (response) => {
+                    try {
+                        // Step 2: After payment, verify the signature on backend to confirm it's genuine
+                        const isValid = await handleVerifyCartOrder(response)
+
+                        if (isValid) {
+                            navigate(`/order-success?order_id=${response?.razorpay_order_id}`)
+                        } else {
+                            alert('Payment verification failed. Please contact support.')
+                        }
+                    } catch (err) {
+                        console.error("Verification error:", err)
+                        alert('Payment verification failed. Please contact support.')
+                    }
+                },
+                prefill: {
+                    name: user?.fullname,
+                    email: user?.email,
+                    contact: user?.contact,
+                },
+                theme: {
+                    color: "#C9A96E",   // Velora gold
+                },
+            };
+
             const razorpayInstance = new Razorpay(options);
+            
+            // Listen for payment failures (e.g. user closes modal, bank decline)
+            razorpayInstance.on('payment.failed', async function (response) {
+                try {
+                    await handleFailCartOrder({ razorpay_order_id: response.error.metadata.order_id })
+                } catch (err) {
+                    console.error("Failed to report payment failure to backend:", err)
+                }
+                alert('Payment failed: ' + response.error.description)
+            });
+
             razorpayInstance.open();
+        } catch (err) {
+            console.error("Checkout error:", err)
+            alert('Failed to initiate payment. Please try again.')
+        }
     }
 
     // --- Helpers ---

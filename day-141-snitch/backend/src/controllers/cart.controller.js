@@ -2,10 +2,10 @@ import productModel from "../models/product.model.js";
 import cartModel from "../models/cart.model.js";
 import stockOfVariant from "../dao/product.dao.js";
 import mongoose from "mongoose";
-import { createOrder } from "../services/payment.service.js";
+import { createOrder, convertTotalToCurrency } from "../services/payment.service.js";
 import { getCartDetails } from "../dao/cart.dao.js";
 import paymentModel from "../models/payment.model.js";
-import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
+import crypto from "crypto";
 import { config } from "../config/config.js";
 
 export const addToCart = async (req, res) => {
@@ -144,57 +144,84 @@ export const incrementCartItemQuantity = async (req, res) => {
 }
 
 export const createOrderController = async (req, res) => {
+    try {
+        const { currency } = req.body
 
-    const cart = await getCartDetails(req.user._id)
+        if (!currency) {
+            return res.status(400).json({
+                message: "Currency is required.",
+                success: false
+            })
+        }
 
-    if (!cart) {
-        return res.status(400).json({
-            message: "Cart is empty.",
-            success: false
-        })
-    }
+        const cart = await getCartDetails(req.user._id)
 
-    const order = await createOrder({
-        amount: cart.rawTotals,
-        currency: cart.currency
-    });
+        if (!cart || !cart.items?.length) {
+            return res.status(400).json({
+                message: "Cart is empty.",
+                success: false
+            })
+        }
 
-    const payment = await paymentModel({
-        user: req.user._id,
-        razorpay: {
-            orderId: order.id
-        },
-        price: {
-            amount: cart.totalPrice,
-            currency: cart.currency
-        },
-        orderItems: cart.items.map(item => ({
-            title: item.product.title,
-            productId: item.product._id,
-            variantId: item.variant,
-            quantity: item.quantity,
-            images: item.product.variants.images || item.product.images,
-            description: item.product.description,
+        // Convert all per-currency totals into one total in the user's chosen checkout currency
+        const totalAmount = await convertTotalToCurrency(cart.totalsByCurrency, currency)
+
+        // Create the Razorpay order with the converted total
+        const order = await createOrder({ amount: totalAmount, currency })
+
+        // Save a pending payment record in our database
+        const payment = new paymentModel({
+            user: req.user._id,
+            razorpay: {
+                orderId: order.id
+            },
             price: {
-                amount: item.product.variants.price.amount || item.product.price.amount,
-                currency: item.product.variants.price.currency || item.product.price.currency
-            }
-        }))
-    })
+                amount: totalAmount,
+                currency
+            },
+            orderItems: cart.items.map(item => ({
+                title: item.product.title,
+                productId: item.product._id,
+                variantId: item.variant,
+                quantity: item.quantity,
+                images: item.product.variants.images || item.product.images,
+                description: item.product.description,
+                price: {
+                    amount: item.product.variants.price.amount || item.product.price.amount,
+                    currency: item.product.variants.price.currency || item.product.price.currency
+                }
+            }))
+        })
 
-    return res.status(200).json({
-        message: "Order created successfully.",
-        success: true,
-        order
-    }); 
+        await payment.save()
+
+        return res.status(200).json({
+            message: "Order created successfully.",
+            success: true,
+            order: {
+                id: order.id,
+                amount: order.amount,
+                currency: order.currency,
+                key: config.RAZORPAY_KEY_ID  // frontend needs public key to open the modal
+            }
+        }); 
+    } catch (error) {
+        console.error("Razorpay order creation error:", error);
+        return res.status(error.statusCode || 500).json({
+            message: error.error?.description || "Failed to create order.",
+            success: false,
+            error: error.error || error.message
+        });
+    }
 }
 
-export const varifyOrderController = async () => {
+export const verifyOrderController = async (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body
 
+    // Find the pending payment record using the Razorpay order ID stored in our DB
     const payment = await paymentModel.findOne({
-        "razorpay_order_id": razorpay_order_id,
-        status: pending
+        "razorpay.orderId": razorpay_order_id,
+        status: "pending"
     })
 
     if (!payment) {
@@ -204,11 +231,15 @@ export const varifyOrderController = async () => {
         })
     }
 
-    const isPaymentValid = validatePaymentVerification({
-        order_id: razorpay_order_id,
-        payment_id: razorpay_payment_id,
-        razorpay_signature
-    }, config.RAZORPAY_KEY_SECRET)
+    // Manually verify the Razorpay signature using HMAC-SHA256.
+    // This is exactly what Razorpay's validatePaymentVerification does internally.
+    // Signature = HMAC_SHA256(secret, "order_id|payment_id")
+    const expectedSignature = crypto
+        .createHmac("sha256", config.RAZORPAY_KEY_SECRET)
+        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+        .digest("hex")
+
+    const isPaymentValid = expectedSignature === razorpay_signature
 
     if (!isPaymentValid) {
         payment.status = "failed"
@@ -227,7 +258,31 @@ export const varifyOrderController = async () => {
     await payment.save()
 
     return res.status(200).json({
-        message: "Payment varified successfully.",
+        message: "Payment verified successfully.",
+        success: true
+    })
+}
+
+export const failOrderController = async (req, res) => {
+    const { razorpay_order_id } = req.body
+
+    const payment = await paymentModel.findOne({
+        "razorpay.orderId": razorpay_order_id,
+        status: "pending"
+    })
+
+    if (!payment) {
+        return res.status(404).json({
+            message: "Payment not found or already processed.",
+            success: false
+        })
+    }
+
+    payment.status = "failed"
+    await payment.save()
+
+    return res.status(200).json({
+        message: "Payment marked as failed.",
         success: true
     })
 }

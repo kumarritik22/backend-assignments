@@ -20,8 +20,8 @@ export const increaseCartItemQuantity = async ({productId, variantId}) => {
     return response.data;
 }
 
-export const createCartOrder = async () => {
-    const response = await cartApiInstance.post("/payment/create/order")
+export const createCartOrder = async ({ currency }) => {
+    const response = await cartApiInstance.post("/payment/create/order", { currency })
     return response.data;
 }
 
@@ -32,5 +32,10 @@ export const verifyCartOrder = async ({ razorpay_order_id, razorpay_payment_id, 
         razorpay_signature
     })
 
+    return response.data;
+}
+
+export const failCartOrder = async ({ razorpay_order_id }) => {
+    const response = await cartApiInstance.post("/payment/fail/order", { razorpay_order_id })
     return response.data;
 }
