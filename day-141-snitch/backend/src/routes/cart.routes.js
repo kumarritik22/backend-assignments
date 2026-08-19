@@ -1,7 +1,7 @@
 import express from "express";
 import { authenticateUser } from "../middlewares/auth.middleware.js";
 import { validateAddToCart, validateIncrementCartItemQuantity } from "../validators/cart.validator.js";
-import { addToCart, createOrderController, getCart, incrementCartItemQuantity } from "../controllers/cart.controller.js";
+import { addToCart, createOrderController, getCart, incrementCartItemQuantity, varifyOrderController } from "../controllers/cart.controller.js";
 
 const router = express.Router();
 
@@ -12,5 +12,7 @@ router.get("/", authenticateUser, getCart);
 router.patch("/quantity/increment/:productId/:variantId", authenticateUser, validateIncrementCartItemQuantity, incrementCartItemQuantity);
 
 router.post("/payment/create/order", authenticateUser, createOrderController);
+
+router.post("/payment/varify/order", authenticateUser, varifyOrderController);
 
 export default router;
