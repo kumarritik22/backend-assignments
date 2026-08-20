@@ -13,9 +13,14 @@ export const useAuth = () => {
     }
 
     async function handleLogin({email, password}) {
-        const data = await login({email, password})
-        dispatch(setUser(data.user))
-        return data.user
+        try {
+            dispatch(setError(null))
+            const data = await login({ email, password })
+            dispatch(setUser(data.user))
+            return data.user
+        } catch (error) {
+            dispatch(setError(error.response.data.message))
+        }
     }
 
     async function handleGetMe() {
@@ -35,5 +40,5 @@ export const useAuth = () => {
         dispatch(clearUser());
     }
 
-    return {handleRegister, handleLogin, handleGetMe, handleLogout}
+    return { handleRegister, handleLogin, handleGetMe, handleLogout }
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useAuth } from '../hook/useAuth'
 import { useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle'
+import { useSelector } from 'react-redux'
 
 // InputField defined at module level — prevents React remount bug
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
@@ -46,6 +47,8 @@ const Login = () => {
     const {handleLogin} = useAuth()
 
     const navigate = useNavigate()
+
+    const error = useSelector(state => state.auth.error)
 
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({ 
@@ -127,6 +130,15 @@ const Login = () => {
               </p>
             </div>
 
+            {error && (
+                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-400/40 text-[11px] font-bold">
+                        !
+                    </span>
+                    <p>{error}</p>
+                </div>
+            )}
+            
             {/* Form */}
             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
 
