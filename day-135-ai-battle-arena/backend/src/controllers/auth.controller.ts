@@ -152,6 +152,7 @@ export const me = async (req: Request, res: Response): Promise<void> => {
     } 
   });
 };
+
 export const checkVerificationStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email } = req.query;

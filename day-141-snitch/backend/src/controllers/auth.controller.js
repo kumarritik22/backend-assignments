@@ -61,9 +61,10 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    const {email, password} = req.body;
 
-    const user = await userModel.findOne({email});
+    const { email, password } = req.body;
+
+    const user = await userModel.findOne({ email });
 
     if (!user) {
         return res.status(400).json({
@@ -79,7 +80,16 @@ export const login = async (req, res) => {
         })
     }
 
-    await sendTokenResponse(user, res, "User logged in successfully")
+    await sendTokenResponse(user, res, "User logged in successfully.")
+}
+
+export const logout = async (req, res) => {
+    res.clearCookie("token")
+
+    return res.status(200).json({
+        message: "User logged out successfully.",
+        success: true
+    })
 }
 
 export const googleCallback = async (req, res) => {
