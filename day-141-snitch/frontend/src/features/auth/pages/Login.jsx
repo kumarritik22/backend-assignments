@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useAuth } from '../hook/useAuth'
+import { useAuth } from '../hook/useAuth.js'
 import { useNavigate } from 'react-router'
-import ContinueWithGoogle from '../components/ContinueWithGoogle'
+import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'
 import { useSelector } from 'react-redux'
 
 // InputField defined at module level — prevents React remount bug
