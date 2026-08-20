@@ -20,6 +20,11 @@ export const increaseCartItemQuantity = async ({productId, variantId}) => {
     return response.data;
 }
 
+export const decreaseCartItemQuantity = async ({ productId, variantId }) => {
+    const response = await cartApiInstance.patch(`/quantity/decrement/${productId}/${variantId}`)
+    return response.data;
+}
+
 export const createCartOrder = async ({ currency }) => {
     const response = await cartApiInstance.post("/payment/create/order", { currency })
     return response.data;

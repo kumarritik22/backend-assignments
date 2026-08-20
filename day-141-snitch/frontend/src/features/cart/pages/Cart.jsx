@@ -13,7 +13,7 @@ const CURRENCY_SYMBOLS = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥
 const Cart = () => {
 
     const cart = useSelector(state => state.cart)
-    const { handleGetCart, handleIncreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder, handleFailCartOrder } = useCart()
+    const { handleGetCart, handleIncreaseCartItemQuantity, handledecreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder, handleFailCartOrder } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
     const { error, isLoading, Razorpay } = useRazorpay();
 
@@ -240,6 +240,7 @@ const Cart = () => {
                                                     <div className="flex items-center justify-between mt-4">
                                                         <div className="flex items-center gap-0 border border-white/10 rounded-lg overflow-hidden">
                                                             <button
+                                                             onClick={() => handledecreaseCartItemQuantity({ productId: item.product?._id, variantId: item.variant })}
                                                              className="w-9 h-9 flex items-center justify-center text-[#666] hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                                             </button>
@@ -247,7 +248,7 @@ const Cart = () => {
                                                                 {item.quantity || 1}
                                                             </span>
                                                             <button 
-                                                             onClick={() => handleIncreaseCartItemQuantity({productId: item.product?._id, variantId: item.variant})}
+                                                             onClick={() => handleIncreaseCartItemQuantity({ productId: item.product?._id, variantId: item.variant })}
                                                              className="w-9 h-9 flex items-center justify-center text-[#666] hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                                             </button>
