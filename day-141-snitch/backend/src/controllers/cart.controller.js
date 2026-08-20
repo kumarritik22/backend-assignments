@@ -77,7 +77,7 @@ export const addToCart = async (req, res) => {
         message: "Product added to cart successfully",
         success: true
     }) 
-}
+};
 
 export const getCart = async (req, res) => {
 
@@ -131,18 +131,25 @@ export const incrementCartItemQuantity = async (req, res) => {
         })
     }
 
-    const updatedCart = await cartModel.findOneAndUpdate(
-        { user: req.user._id, "items.product": productId, "items.variant": variantId },
-        { $inc: { "items.$.quantity": 1 }},
-        { new: true }
+    await cartModel.findOneAndUpdate(
+        { 
+            user: req.user._id, 
+            "items.product": productId, 
+            "items.variant": variantId 
+        },
+        { 
+            $inc: { "items.$.quantity": 1 }
+        }
     )
+
+    const updatedCart = await getCartDetails(req.user._id)
 
     return res.status(200).json({
         message: "Cart item quantity increased successfully.",
         success: true,
         cart: updatedCart
     })
-}
+};
 
 export const decrementCartItemQuantity = async (req, res) => {
 
@@ -178,7 +185,7 @@ export const decrementCartItemQuantity = async (req, res) => {
         })
     }
 
-    const updatedCart = await cartModel.findOneAndUpdate(
+    await cartModel.findOneAndUpdate(
         { 
             user: req.user._id, 
             "items.product": productId, 
@@ -186,18 +193,17 @@ export const decrementCartItemQuantity = async (req, res) => {
         },
         { 
             $inc: { "items.$.quantity": -1 }
-        },
-        { 
-            new: true 
         }
     )
+
+    const updatedCart = await getCartDetails(req.user._id)
 
     return res.status(200).json({
         message: "Cart item quantity decreased successfully.",
         success: true,
         cart: updatedCart
     })
-}
+};
 
 export const createOrderController = async (req, res) => {
     try {
@@ -269,7 +275,7 @@ export const createOrderController = async (req, res) => {
             error: error.error || error.message
         });
     }
-}
+};
 
 export const verifyOrderController = async (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body
@@ -317,7 +323,7 @@ export const verifyOrderController = async (req, res) => {
         message: "Payment verified successfully.",
         success: true
     })
-}
+};
 
 export const failOrderController = async (req, res) => {
     const { razorpay_order_id } = req.body
@@ -341,4 +347,4 @@ export const failOrderController = async (req, res) => {
         message: "Payment marked as failed.",
         success: true
     })
-}
+};

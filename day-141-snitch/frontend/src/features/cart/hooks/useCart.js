@@ -1,5 +1,5 @@
 import { addItem, createCartOrder, getCart, increaseCartItemQuantity, verifyCartOrder, failCartOrder, decreaseCartItemQuantity } from "../services/cart.api.js";
-import { addItem as addItemToCart, decrementCartItem, incrementCartItem, setCart } from "../state/cart.slice.js";
+import { addItem as addItemToCart, setCart } from "../state/cart.slice.js";
 import { useDispatch } from "react-redux";
 
 export const useCart = () => {
@@ -18,12 +18,18 @@ export const useCart = () => {
 
     async function handleIncreaseCartItemQuantity({productId, variantId }) {
         const data = await increaseCartItemQuantity({ productId, variantId })
-        dispatch(incrementCartItem({ productId, variantId }))
+        
+        if (data.success) {
+            dispatch(setCart(data.cart))
+        }
     }
 
     async function handledecreaseCartItemQuantity({ productId, variantId }) {
         const data = await decreaseCartItemQuantity({ productId, variantId })
-        dispatch(decrementCartItem({ productId, variantId }))
+        
+        if (data.success) {
+            dispatch(setCart(data.cart))
+        }
     }
 
     async function handleCreateCartOrder({ currency }) {

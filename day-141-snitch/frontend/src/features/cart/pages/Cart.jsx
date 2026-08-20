@@ -224,6 +224,8 @@ const Cart = () => {
                                                             {formatOriginalPrice(itemPrice?.amount, itemPrice?.currency)}
                                                         </div>
 
+                                                        
+
                                                         {
                                                             itemPrice.amount !== variantPrice.amount && (
                                                                 <>
