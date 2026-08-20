@@ -1,7 +1,6 @@
 import productModel from "../models/product.model.js";
 import cartModel from "../models/cart.model.js";
 import stockOfVariant from "../dao/product.dao.js";
-import mongoose from "mongoose";
 import { createOrder, convertTotalToCurrency } from "../services/payment.service.js";
 import { getCartDetails } from "../dao/cart.dao.js";
 import paymentModel from "../models/payment.model.js";
@@ -348,3 +347,62 @@ export const failOrderController = async (req, res) => {
         success: true
     })
 };
+
+export const removeCartItem = async (req, res) => {
+
+    const { productId, variantId } = req.params
+
+    const cart = await cartModel.findOne({user: req.user._id});
+
+    if (!cart) {
+        return res.status(404).json({
+            message: "Cart not found.",
+            success: false
+        })
+    }
+
+    const product = await productModel.findOne({
+        _id: productId,
+        "variants._id": variantId
+    })
+
+    if (!product) {
+        return res.status(404).json({
+            message: "Product or variant not found.",
+            success: false
+        })
+    }
+
+    const cartItem = cart.items.find(
+        item => item.product.toString() === productId &&
+                item.variant?.toString() === variantId
+    )
+
+    if (!cartItem) {
+        return res.status(404).json({
+            message: "Item not found in cart.",
+            success: false
+        })
+    }
+
+    await cartModel.findOneAndUpdate(
+        { user: req.user._id },
+        {
+            $pull: {
+                items: {
+                    product: productId,
+                    variant: variantId
+                }
+            }
+        },
+        { new: true }
+    )
+
+    const updatedCart = await getCartDetails(req.user._id);
+
+    return res.status(200).json({
+        message: "Cart item removed successfully.",
+        success: true,
+        cart: updatedCart
+    })
+}

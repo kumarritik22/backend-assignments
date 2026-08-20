@@ -44,3 +44,8 @@ export const failCartOrder = async ({ razorpay_order_id }) => {
     const response = await cartApiInstance.post("/payment/fail/order", { razorpay_order_id })
     return response.data;
 }
+
+export const deleteCartItem = async ({ productId, variantId }) => {
+    const response = await cartApiInstance.delete(`/${productId}/${variantId}`)
+    return response.data;
+}
