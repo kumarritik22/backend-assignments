@@ -23,8 +23,14 @@ const userSchema = new mongoose.Schema({
     googleId: {
         type: String, 
         required: false
+    },
+    emailVerificationToken: {
+        type: String
+    },
+    emailVerificationTokenExpiresAt: {
+        type: Date,
     }
-});
+}, { timestamps: true } );
 
 userSchema.pre("save", async function () {
     if(!this.isModified("password")) return;
