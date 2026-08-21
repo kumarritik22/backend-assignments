@@ -18,7 +18,9 @@ app.get("/api/data", (req, res) => {
     res.status(200).json(data);
 })
 
-
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ status: "OK", timestamp: new Date() });
+})
 
 
 export default app;
