@@ -2,6 +2,7 @@ import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config.js";
 import { sendEmail } from "../services/email.service.js";
+import crypto from "node:crypto";
 
 async function sendTokenResponse(user, res, message) {
     const token = jwt.sign({
@@ -25,7 +26,6 @@ async function sendTokenResponse(user, res, message) {
     })
 }
 
-
 export const register = async (req, res) => {
     const {email, contact, fullname, password, isSeller} = req.body
 
@@ -43,20 +43,27 @@ export const register = async (req, res) => {
             });
         }
 
+        const token = crypto.randomBytes(32).toString("hex")
+        const expiresAt = new Date(
+            Date.now() + 15 * 60 * 1000
+        );
+
         const user = await userModel.create({
             fullname,
             email,
             contact,
             password,
-            role: isSeller ? "seller" : "buyer"
+            role: isSeller ? "seller" : "buyer",
+            emailVerificationToken: token,
+            emailVerificationTokenExpiresAt: expiresAt
         });
 
         await sendTokenResponse(user, res, "User registered successfully")
 
     } catch (error) {
-        console.log(error)
         return res.status(500).json({
-            message: "error.message"
+            message: error.message,
+            success: false
         });
     }
 }
