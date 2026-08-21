@@ -46,4 +46,4 @@ export const convertTotalToCurrency = async (totalsByCurrency, targetCurrency) =
         return sum + convertAmount(amount, currency, targetCurrency, rates);
     }, 0);
     return Math.round(total * 100) / 100; // round to 2 decimal places
-}
+}

@@ -29,6 +29,18 @@ if (!process.env.RAZORPAY_KEY_SECRET) {
     throw new Error("RAZORPAY_KEY_SECRET is not defined in environment variables");
 }
 
+if (!process.env.BREVO_API_KEY) {
+    throw new Error("BREVO_API_KEY is not defined in environment variables");
+}
+
+if (!process.env.BREVO_SENDER_EMAIL) {
+    throw new Error("BREVO_SENDER_EMAIL is not defined in environment variables");
+}
+
+if (!process.env.BREVO_SENDER_NAME) {
+    throw new Error("BREVO_SENDER_NAME is not defined in environment variables");
+}
+
 export const config = {
     MONGO_URI: process.env.MONGO_URI,
     JWT_SECRET: process.env.JWT_SECRET,
@@ -37,5 +49,8 @@ export const config = {
     NODE_ENV: process.env.NODE_ENV || "development",
     IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
-    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET
+    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
+    BREVO_API_KEY: process.env.BREVO_API_KEY,
+    BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL,
+    BREVO_SENDER_NAME: process.env.BREVO_SENDER_NAME
 }

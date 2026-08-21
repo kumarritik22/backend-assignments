@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config.js";
+import { sendEmail } from "../services/email.service.js";
 
 async function sendTokenResponse(user, res, message) {
     const token = jwt.sign({
@@ -135,4 +136,29 @@ export const getMe = async (req, res) => {
             role: user.role
         }
     })
+}
+
+export const testEmail = async (req, res) => {
+
+    try {
+        await sendEmail({
+            to: "ritikkumarsv3502523@gmail.com",
+            toName: "Ritik Kumar",
+            subject: "Velora email test",
+            htmlContent: "<p>Welcome to Velora!</p>",
+            textContent: "Verify the email"
+        })
+
+        return res.status(200).json({
+            message: "Test email sent successfully.",
+            success: true
+        })
+    } catch (error) {
+        console.log(error.message)
+
+        return res.status(500).json({
+            message: "Failed to send test email",
+            success: false
+        })
+    }
 }
