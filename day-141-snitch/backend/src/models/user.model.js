@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
             return !this.googleId;
         }
     },
+    isEmailVerified: {
+        type: Boolean,
+        default: false
+    },
     contact: {type: Number, required: false},
     role: {
         type: String,

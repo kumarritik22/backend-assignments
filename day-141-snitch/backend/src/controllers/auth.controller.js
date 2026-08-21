@@ -107,8 +107,12 @@ export const googleCallback = async (req, res) => {
         user = await userModel.create({
             email,
             googleId: id,
-            fullname: displayName
-        })
+            fullname: displayName,
+            isEmailVerified: true
+        });
+    } else {
+        user.isEmailVerified = true;
+        await user.save()
     }
 
     const token = jwt.sign({
