@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateRegisterUser, validateLoginUser } from "../validators/auth.validator.js";
-import { register, login, googleCallback, getMe, logout, verifyEmail, resendVerificationEmail } from "../controllers/auth.controller.js";
+import { register, login, googleCallback, getMe, logout, verifyEmail, resendVerificationEmail, forgotPassword } from "../controllers/auth.controller.js";
 import passport from "passport";
 import { config } from "../config/config.js";
 import { authenticateUser } from "../middlewares/auth.middleware.js";
@@ -27,5 +27,7 @@ router.get("/me", authenticateUser, getMe);
 router.get("/verify-email/:token", verifyEmail);
 
 router.post("/resend-verification-email", resendVerificationEmail);
+
+router.post("/forgot-password", forgotPassword);
 
 export default router;

@@ -266,3 +266,58 @@ export const resendVerificationEmail = async (req, res) => {
         })
     }
 }
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body
+
+        const user = await userModel.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "Email doesn't exist",
+                success: false
+            })
+        }
+
+        if (user.googleId) {
+            return res.status(400).json({
+                message: "This account uses Google login. Please continue with Google.",
+                success: false
+            })
+        }
+
+        const token = crypto.randomBytes(32).toString("hex")
+        const expiresAt = new Date(
+            Date.now() + 15 * 60 * 1000
+        );
+
+        const resetUrl = config.FRONTEND_URL + "/reset-password/" + token
+
+        await sendEmail({
+            to: user.email,
+            toName: user.fullname,
+            subject: "Password reset request",
+            htmlContent: `Welcome to Velora, ${user.fullname}! <br />
+                You requested a password reset for your Velora account. Click the button below to set a new password <br /> <a href="${resetUrl}">Reset Password</a>`,
+            textContent: `Welcome to Velora, ${user.fullname}!
+            You requested a password reset for your Velora account. Set a new password by visiting: ${resetUrl}`
+        })
+
+        user.passwordResetToken = token
+        user.passwordResetTokenExpiresAt = expiresAt
+
+        await user.save();
+
+        return res.status(200).json({
+            message: "Password reset email sent successfully.",
+            success: true
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
