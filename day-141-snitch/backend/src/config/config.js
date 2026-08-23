@@ -41,6 +41,10 @@ if (!process.env.BREVO_SENDER_NAME) {
     throw new Error("BREVO_SENDER_NAME is not defined in environment variables");
 }
 
+if (!process.env.FRONTEND_URL) {
+    throw new Error("FRONTEND_URL is not defined in environment variables");
+}
+
 export const config = {
     MONGO_URI: process.env.MONGO_URI,
     JWT_SECRET: process.env.JWT_SECRET,
@@ -52,5 +56,6 @@ export const config = {
     RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
     BREVO_API_KEY: process.env.BREVO_API_KEY,
     BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL,
-    BREVO_SENDER_NAME: process.env.BREVO_SENDER_NAME
+    BREVO_SENDER_NAME: process.env.BREVO_SENDER_NAME,
+    FRONTEND_URL: process.env.FRONTEND_URL
 }

@@ -58,7 +58,19 @@ export const register = async (req, res) => {
             emailVerificationTokenExpiresAt: expiresAt
         });
 
-        await sendTokenResponse(user, res, "User registered successfully")
+        const verificationUrl = config.FRONTEND_URL + "/verify-email/" + user.emailVerificationToken
+
+        await sendEmail({ 
+            to: user.email, 
+            toName: user.fullname,
+            subject: "Verify your Velora email", 
+            htmlContent: `Welcome to Velora, ${user.fullname}! <br />
+                Please verify your email address <br /> <a href="${verificationUrl}">Verify Email</a>`, 
+            textContent: `Welcome to Velora, ${user.fullname}!
+            Please verify your email address by visiting: ${verificationUrl}`
+        })
+
+        await sendTokenResponse(user, res, "Registration successful. Please check your email to verify your account.")
 
     } catch (error) {
         return res.status(500).json({
