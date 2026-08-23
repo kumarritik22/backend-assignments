@@ -321,3 +321,44 @@ export const forgotPassword = async (req, res) => {
         })
     }
 }
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params
+
+        const { newPassword } = req.body
+
+        const user = await userModel.findOne({ passwordResetToken: token })
+
+        if (!user) {
+            return res.status(404).json({
+                message: "Invalid or expired reset token",
+                success: false
+            })
+        }
+
+        if (Date.now() > user.passwordResetTokenExpiresAt.getTime()) {
+            return res.status(404).json({
+                message: "Reset link has expired.",
+                success: false
+            })
+        }
+
+        user.password = newPassword
+
+        user.passwordResetToken = null
+        user.passwordResetTokenExpiresAt = null
+
+        await user.save();
+
+        return res.status(200).json({
+            message: "Password reset successfully.",
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
