@@ -81,26 +81,39 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-    const { email, password } = req.body;
+        const user = await userModel.findOne({ email });
 
-    const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(400).json({
+                message: "Invalid email or password"
+            })
+        }
 
-    if (!user) {
-        return res.status(400).json({
-            message: "Invalid email or password"
+        const isPasswordMatching = await user.comparePassword(password);
+
+        if (!isPasswordMatching) {
+            return res.status(400).json({
+                message: "Wrong password"
+            })
+        }
+
+        if (!user.isEmailVerified) {
+            return res.status(403).json({
+                message: "Please verify your email first.",
+                success: false
+            })
+        }
+
+        await sendTokenResponse(user, res, "User logged in successfully.")
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            success: false
         })
     }
-
-    const isPasswordMatching = await user.comparePassword(password);
-
-    if (!isPasswordMatching) {
-        return res.status(400).json({
-            message: "Wrong password"
-        })
-    }
-
-    await sendTokenResponse(user, res, "User logged in successfully.")
 }
 
 export const logout = async (req, res) => {
@@ -161,31 +174,6 @@ export const getMe = async (req, res) => {
     })
 }
 
-export const testEmail = async (req, res) => {
-
-    try {
-        await sendEmail({
-            to: "ritikkumarsv3502523@gmail.com",
-            toName: "Ritik Kumar",
-            subject: "Velora email test",
-            htmlContent: "<p>Welcome to Velora!</p>",
-            textContent: "Verify the email"
-        })
-
-        return res.status(200).json({
-            message: "Test email sent successfully.",
-            success: true
-        })
-    } catch (error) {
-        console.log(error.message)
-
-        return res.status(500).json({
-            message: "Failed to send test email",
-            success: false
-        })
-    }
-}
-
 export const verifyEmail = async (req, res) => {
     try {
         const { token } = req.params
@@ -215,6 +203,60 @@ export const verifyEmail = async (req, res) => {
 
         return res.status(200).json({
             message: "Email verified successfully",
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
+
+export const resendVerificationEmail = async (req, res) => {
+    try {
+        const { email } = req.body
+
+        const user = await userModel.findOne({ email })
+
+        if (!user) {
+            return res.status(404).json({
+                message: "Email doesn't exist",
+                success: false
+            })
+        }
+
+        if (user.isEmailVerified === true ) {
+            return res.status(200).json({
+                message: "Email is already verified",
+                success: true
+            })
+        }
+
+        const token = crypto.randomBytes(32).toString("hex")
+        const expiresAt = new Date(
+            Date.now() + 15 * 60 * 1000
+        );
+
+        const verificationUrl = config.FRONTEND_URL + "/verify-email/" + token
+
+        await sendEmail({
+            to: user.email,
+            toName: user.fullname,
+            subject: "Verify your Velora email",
+            htmlContent: `Welcome to Velora, ${user.fullname}! <br />
+                Please verify your email address <br /> <a href="${verificationUrl}">Verify Email</a>`, 
+            textContent: `Welcome to Velora, ${user.fullname}!
+            Please verify your email address by visiting: ${verificationUrl}`
+        })
+
+        user.emailVerificationToken = token
+        user.emailVerificationTokenExpiresAt = expiresAt
+
+        await user.save();
+
+        return res.status(200).json({
+            message: "Verification email sent successfully",
             success: true
         })
     } catch (error) {
