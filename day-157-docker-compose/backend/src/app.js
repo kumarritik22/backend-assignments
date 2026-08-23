@@ -14,7 +14,8 @@ app.get("/api/data", (req, res) => {
     const data = {
         id: 1, 
         name: "Ramayan",
-        director: "Nitesh Tiwari"
+        director: "Nitesh Tiwari",
+        producer: "Namit Malhotra"
     };
 
     res.status(200).json(data);
