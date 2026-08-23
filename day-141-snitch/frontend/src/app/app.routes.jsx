@@ -12,6 +12,7 @@ import Cart from "../features/cart/pages/Cart.jsx";
 import AppLayout from "./AppLayout.jsx";
 import About from "../features/products/pages/About.jsx";
 import OrderSuccess from "../features/cart/pages/OrderSuccess.jsx";
+import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
 
 export const routes = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ export const routes = createBrowserRouter([
     {
         path: "/login",
         element: <Login />
+    },
+    {
+        path: "/verify-email/:token",
+        element: <VerifyEmail />
     },
     {
         element: <AppLayout />,

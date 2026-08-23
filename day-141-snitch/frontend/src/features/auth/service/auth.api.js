@@ -36,3 +36,8 @@ export async function logout() {
     const response = await authApiInstance.post("/logout")
     return response.data;
 }
+
+export async function verifyEmail({ token }) {
+    const response = await authApiInstance.get(`/verify-email/${token}`)
+    return response.data;
+}
