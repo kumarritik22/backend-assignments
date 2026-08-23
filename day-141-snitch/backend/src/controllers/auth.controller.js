@@ -185,3 +185,42 @@ export const testEmail = async (req, res) => {
         })
     }
 }
+
+export const verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.params
+
+        const user = await userModel.findOne({ emailVerificationToken:token })
+
+        if (!user) {
+            return res.status(404).json({
+                message: "Verification token is invalid",
+                success: false
+            })
+        }
+
+        if (Date.now() > user.emailVerificationTokenExpiresAt.getTime()) {
+            return res.status(404).json({
+                message: "Verification link is expired.",
+                success: false
+            })
+        }
+
+        user.isEmailVerified = true
+
+        user.emailVerificationToken = null
+        user.emailVerificationTokenExpiresAt = null
+
+        await user.save();
+
+        return res.status(200).json({
+            message: "Email verified successfully",
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            success: false
+        })
+    }
+}
