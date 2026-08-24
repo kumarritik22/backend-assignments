@@ -1,5 +1,5 @@
-import { setUser, setLoading, setError, clearUser } from "../state/auth.slice.js";
-import { register, login, getMe, logout } from "../service/auth.api.js";
+import { setUser, setLoading, setError, clearUser, setVerificationMessage } from "../state/auth.slice.js";
+import { register, login, getMe, logout, verifyEmail } from "../service/auth.api.js";
 import { useDispatch } from "react-redux";
 
 export const useAuth = () => {
@@ -40,5 +40,19 @@ export const useAuth = () => {
         dispatch(clearUser());
     }
 
-    return { handleRegister, handleLogin, handleGetMe, handleLogout }
+    async function handleVerifyEmail(token) {
+        dispatch(setLoading(true))
+        dispatch(setError(null))
+        dispatch(setVerificationMessage(null))
+        try {
+            const data = await verifyEmail({ token })
+                dispatch(setVerificationMessage(data.message))
+                dispatch(setLoading(false))
+        } catch (error) {
+                dispatch(setError(error.response.data.message))
+                dispatch(setLoading(false))
+        } 
+    }
+
+    return { handleRegister, handleLogin, handleGetMe, handleLogout, handleVerifyEmail }
 }
