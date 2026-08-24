@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuth } from '../hook/useAuth'
 import { useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle'
@@ -79,8 +79,6 @@ const Register = () => {
       password: formData.password,
       isSeller: isSeller
     })
-
-    alert('Welcome to Snitch! 🎉')
 
     navigate("/login");
   }
