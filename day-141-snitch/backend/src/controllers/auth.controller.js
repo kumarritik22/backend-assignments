@@ -63,11 +63,43 @@ export const register = async (req, res) => {
         await sendEmail({ 
             to: user.email, 
             toName: user.fullname,
-            subject: "Verify your Velora email", 
-            htmlContent: `Welcome to Velora, ${user.fullname}! <br />
-                Please verify your email address <br /> <a href="${verificationUrl}">Verify Email</a>`, 
-            textContent: `Welcome to Velora, ${user.fullname}!
-            Please verify your email address by visiting: ${verificationUrl}`
+            subject: "Verify your Velora account", 
+            htmlContent: `
+                <div style="background-color: #0a0a0a; color: #ffffff; font-family: 'Inter', Helvetica, Arial, sans-serif; padding: 60px 20px; line-height: 1.6;">
+                    <div style="max-width: 500px; margin: 0 auto; background-color: #111111; border: 1px solid #2a2a2a; border-radius: 8px; padding: 40px 30px; text-align: center;">
+                        
+                        <!-- Logo / Brand Header -->
+                        <h1 style="font-family: 'Bodoni Moda', Georgia, serif; font-size: 28px; letter-spacing: 0.15em; color: #ffffff; text-transform: uppercase; margin-top: 0; margin-bottom: 30px;">
+                            Velora
+                        </h1>
+                        
+                        <!-- Main Content -->
+                        <h2 style="font-family: 'Bodoni Moda', Georgia, serif; font-size: 22px; font-weight: normal; color: #ffffff; margin-bottom: 16px;">
+                            Welcome, ${user.fullname}
+                        </h2>
+                        <p style="color: #888888; font-size: 15px; margin-bottom: 32px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                            Thank you for joining Velora. To secure your account and gain exclusive access to our curated collections, please verify your email address.
+                        </p>
+                        
+                        <!-- Premium Gold CTA Button -->
+                        <a href="${verificationUrl}" style="display: inline-block; background-color: #C9A96E; color: #000000; text-decoration: none; padding: 14px 36px; font-size: 12px; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px;">
+                            Verify Email
+                        </a>
+                        
+                        <!-- Footer / Fallback Link -->
+                        <div style="margin-top: 40px; border-top: 1px solid #2a2a2a; padding-top: 20px;">
+                            <p style="color: #555555; font-size: 12px; margin-bottom: 10px;">
+                                If the button doesn't work, copy and paste this link into your browser:
+                            </p>
+                            <p style="font-size: 12px; word-break: break-all; margin: 0;">
+                                <a href="${verificationUrl}" style="color: #C9A96E; text-decoration: none;">${verificationUrl}</a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                </div>
+            `, 
+            textContent: `Welcome to Velora, ${user.fullname}!\n\nTo secure your account and gain exclusive access to our curated collections, please verify your email address by visiting the link below:\n\n${verificationUrl}\n\nIf you did not request this, you can safely ignore this email.`
         })
 
         await sendTokenResponse(user, res, "Registration successful. Please check your email to verify your account.")
@@ -240,14 +272,46 @@ export const resendVerificationEmail = async (req, res) => {
 
         const verificationUrl = config.FRONTEND_URL + "/verify-email/" + token
 
-        await sendEmail({
-            to: user.email,
+        await sendEmail({ 
+            to: user.email, 
             toName: user.fullname,
-            subject: "Verify your Velora email",
-            htmlContent: `Welcome to Velora, ${user.fullname}! <br />
-                Please verify your email address <br /> <a href="${verificationUrl}">Verify Email</a>`, 
-            textContent: `Welcome to Velora, ${user.fullname}!
-            Please verify your email address by visiting: ${verificationUrl}`
+            subject: "Verify your Velora account", 
+            htmlContent: `
+                <div style="background-color: #0a0a0a; color: #ffffff; font-family: 'Inter', Helvetica, Arial, sans-serif; padding: 60px 20px; line-height: 1.6;">
+                    <div style="max-width: 500px; margin: 0 auto; background-color: #111111; border: 1px solid #2a2a2a; border-radius: 8px; padding: 40px 30px; text-align: center;">
+                        
+                        <!-- Logo / Brand Header -->
+                        <h1 style="font-family: 'Bodoni Moda', Georgia, serif; font-size: 28px; letter-spacing: 0.15em; color: #ffffff; text-transform: uppercase; margin-top: 0; margin-bottom: 30px;">
+                            Velora
+                        </h1>
+                        
+                        <!-- Main Content -->
+                        <h2 style="font-family: 'Bodoni Moda', Georgia, serif; font-size: 22px; font-weight: normal; color: #ffffff; margin-bottom: 16px;">
+                            Welcome, ${user.fullname}
+                        </h2>
+                        <p style="color: #888888; font-size: 15px; margin-bottom: 32px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                            Thank you for joining Velora. To secure your account and gain exclusive access to our curated collections, please verify your email address.
+                        </p>
+                        
+                        <!-- Premium Gold CTA Button -->
+                        <a href="${verificationUrl}" style="display: inline-block; background-color: #C9A96E; color: #000000; text-decoration: none; padding: 14px 36px; font-size: 12px; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px;">
+                            Verify Email
+                        </a>
+                        
+                        <!-- Footer / Fallback Link -->
+                        <div style="margin-top: 40px; border-top: 1px solid #2a2a2a; padding-top: 20px;">
+                            <p style="color: #555555; font-size: 12px; margin-bottom: 10px;">
+                                If the button doesn't work, copy and paste this link into your browser:
+                            </p>
+                            <p style="font-size: 12px; word-break: break-all; margin: 0;">
+                                <a href="${verificationUrl}" style="color: #C9A96E; text-decoration: none;">${verificationUrl}</a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                </div>
+            `, 
+            textContent: `Welcome to Velora, ${user.fullname}!\n\nTo secure your account and gain exclusive access to our curated collections, please verify your email address by visiting the link below:\n\n${verificationUrl}\n\nIf you did not request this, you can safely ignore this email.`
         })
 
         user.emailVerificationToken = token
@@ -297,11 +361,45 @@ export const forgotPassword = async (req, res) => {
         await sendEmail({
             to: user.email,
             toName: user.fullname,
-            subject: "Password reset request",
-            htmlContent: `Welcome to Velora, ${user.fullname}! <br />
-                You requested a password reset for your Velora account. Click the button below to set a new password <br /> <a href="${resetUrl}">Reset Password</a>`,
-            textContent: `Welcome to Velora, ${user.fullname}!
-            You requested a password reset for your Velora account. Set a new password by visiting: ${resetUrl}`
+            subject: "Password Reset Request - Velora",
+            htmlContent: `
+                <div style="background-color: #0a0a0a; color: #ffffff; font-family: 'Inter', Helvetica, Arial, sans-serif; padding: 60px 20px; line-height: 1.6;">
+                    <div style="max-width: 500px; margin: 0 auto; background-color: #111111; border: 1px solid #2a2a2a; border-radius: 8px; padding: 40px 30px; text-align: center;">
+                        
+                        <!-- Logo / Brand Header -->
+                        <h1 style="font-family: 'Bodoni Moda', Georgia, serif; font-size: 28px; letter-spacing: 0.15em; color: #ffffff; text-transform: uppercase; margin-top: 0; margin-bottom: 30px;">
+                            Velora
+                        </h1>
+                        
+                        <!-- Main Content -->
+                        <h2 style="font-family: 'Bodoni Moda', Georgia, serif; font-size: 22px; font-weight: normal; color: #ffffff; margin-bottom: 16px;">
+                            Password Reset
+                        </h2>
+                        <p style="color: #888888; font-size: 15px; margin-bottom: 32px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                            Hello ${user.fullname},<br><br>
+                            We received a request to reset the password for your Velora account. Click the button below to securely set a new password.
+                        </p>
+                        
+                        <!-- Premium Gold CTA Button -->
+                        <a href="${resetUrl}" style="display: inline-block; background-color: #C9A96E; color: #000000; text-decoration: none; padding: 14px 36px; font-size: 12px; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px;">
+                            Reset Password
+                        </a>
+                        
+                        <!-- Footer / Fallback Link -->
+                        <div style="margin-top: 40px; border-top: 1px solid #2a2a2a; padding-top: 20px;">
+                            <p style="color: #555555; font-size: 12px; margin-bottom: 10px;">
+                                If you did not make this request, you can safely ignore this email. Your password will remain unchanged.<br><br>
+                                If the button doesn't work, copy and paste this link into your browser:
+                            </p>
+                            <p style="font-size: 12px; word-break: break-all; margin: 0;">
+                                <a href="${resetUrl}" style="color: #C9A96E; text-decoration: none;">${resetUrl}</a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                </div>
+            `,
+            textContent: `Hello ${user.fullname},\n\nWe received a request to reset the password for your Velora account. To securely set a new password, please visit the link below:\n\n${resetUrl}\n\nIf you did not make this request, you can safely ignore this email. Your password will remain unchanged.`
         })
 
         user.passwordResetToken = token
