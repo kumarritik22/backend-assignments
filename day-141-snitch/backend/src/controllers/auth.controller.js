@@ -2,7 +2,6 @@ import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config.js";
 import { sendEmail } from "../services/email.service.js";
-import crypto from "node:crypto";
 
 async function sendTokenResponse(user, res, message) {
     const token = jwt.sign({
@@ -43,22 +42,21 @@ export const register = async (req, res) => {
             });
         }
 
-        const token = crypto.randomBytes(32).toString("hex")
-        const expiresAt = new Date(
-            Date.now() + 15 * 60 * 1000
-        );
-
         const user = await userModel.create({
             fullname,
             email,
             contact,
             password,
-            role: isSeller ? "seller" : "buyer",
-            emailVerificationToken: token,
-            emailVerificationTokenExpiresAt: expiresAt
+            role: isSeller ? "seller" : "buyer"
         });
 
-        const verificationUrl = config.FRONTEND_URL + "/verify-email/" + user.emailVerificationToken
+        const token = jwt.sign({
+            id: user._id,
+        }, config.JWT_SECRET, {
+            expiresIn: "1d"
+        })
+
+        const verificationUrl = config.FRONTEND_URL + "/verify-email/" + token
 
         await sendEmail({ 
             to: user.email, 
@@ -210,26 +208,27 @@ export const verifyEmail = async (req, res) => {
     try {
         const { token } = req.params
 
-        const user = await userModel.findOne({ emailVerificationToken:token })
+        const decodedToken = jwt.verify(token, config.JWT_SECRET);
+
+        const userId = decodedToken.id;
+        
+        const user = await userModel.findById(userId)
 
         if (!user) {
             return res.status(404).json({
-                message: "Verification token is invalid",
+                message: "User not found.",
                 success: false
             })
         }
 
-        if (Date.now() > user.emailVerificationTokenExpiresAt.getTime()) {
-            return res.status(404).json({
-                message: "Verification link is expired.",
+        if (user.isEmailVerified) {
+            return res.status(400).json({
+                message: "Your email is already verified. You can proceed to login.",
                 success: false
             })
         }
 
         user.isEmailVerified = true
-
-        user.emailVerificationToken = null
-        user.emailVerificationTokenExpiresAt = null
 
         await user.save();
 
@@ -237,7 +236,22 @@ export const verifyEmail = async (req, res) => {
             message: "Email verified successfully",
             success: true
         })
+
     } catch (error) {
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({
+                message: "This verification link has expired.",
+                success: false
+            })
+        }
+
+        if (error.name === "JsonWebTokenError") {
+            return res.status(401).json({
+                message: "Invalid verification link.",
+                success: false
+            })
+        }
+
         return res.status(500).json({
             message: error.message,
             success: false
@@ -265,10 +279,11 @@ export const resendVerificationEmail = async (req, res) => {
             })
         }
 
-        const token = crypto.randomBytes(32).toString("hex")
-        const expiresAt = new Date(
-            Date.now() + 15 * 60 * 1000
-        );
+        const token = jwt.sign({
+            id: user._id,
+        }, config.JWT_SECRET, {
+            expiresIn: "1d"
+        })
 
         const verificationUrl = config.FRONTEND_URL + "/verify-email/" + token
 
@@ -314,9 +329,6 @@ export const resendVerificationEmail = async (req, res) => {
             textContent: `Welcome to Velora, ${user.fullname}!\n\nTo secure your account and gain exclusive access to our curated collections, please verify your email address by visiting the link below:\n\n${verificationUrl}\n\nIf you did not request this, you can safely ignore this email.`
         })
 
-        user.emailVerificationToken = token
-        user.emailVerificationTokenExpiresAt = expiresAt
-
         await user.save();
 
         return res.status(200).json({
@@ -351,10 +363,11 @@ export const forgotPassword = async (req, res) => {
             })
         }
 
-        const token = crypto.randomBytes(32).toString("hex")
-        const expiresAt = new Date(
-            Date.now() + 15 * 60 * 1000
-        );
+        const token = jwt.sign({
+            id: user._id,
+        }, config.JWT_SECRET + user.password, {
+            expiresIn: "15m"
+        })
 
         const resetUrl = config.FRONTEND_URL + "/reset-password/" + token
 
@@ -402,11 +415,6 @@ export const forgotPassword = async (req, res) => {
             textContent: `Hello ${user.fullname},\n\nWe received a request to reset the password for your Velora account. To securely set a new password, please visit the link below:\n\n${resetUrl}\n\nIf you did not make this request, you can safely ignore this email. Your password will remain unchanged.`
         })
 
-        user.passwordResetToken = token
-        user.passwordResetTokenExpiresAt = expiresAt
-
-        await user.save();
-
         return res.status(200).json({
             message: "Password reset email sent successfully.",
             success: true
@@ -426,7 +434,18 @@ export const resetPassword = async (req, res) => {
 
         const { newPassword } = req.body
 
-        const user = await userModel.findOne({ passwordResetToken: token })
+        const decodedToken = jwt.decode(token)
+
+        if (!decodedToken) {
+            return res.status(400).json({
+                message: "Invalid token",
+                success: false
+            })
+        }
+
+        const userId = decodedToken.id
+
+        const user = await userModel.findById(userId);
 
         if (!user) {
             return res.status(404).json({
@@ -435,17 +454,32 @@ export const resetPassword = async (req, res) => {
             })
         }
 
-        if (Date.now() > user.passwordResetTokenExpiresAt.getTime()) {
-            return res.status(404).json({
-                message: "Reset link has expired.",
+        const resetSecret = config.JWT_SECRET + user.password
+
+        try {
+            const verifiedToken = jwt.verify(token, resetSecret) 
+        } catch (error) {
+            if (error.name === "TokenExpiredError") {
+                return res.status(401).json({
+                    message: "This password reset link has expired.",
+                    success: false
+                })
+            }
+
+            if (error.name === "JsonWebTokenError") {
+                return res.status(401).json({
+                    message: "This reset link is invalid or has already been used.",
+                    success: false
+                })
+            }
+
+            return res.status(500).json({
+                message: error.message,
                 success: false
             })
         }
 
         user.password = newPassword
-
-        user.passwordResetToken = null
-        user.passwordResetTokenExpiresAt = null
 
         await user.save();
 
@@ -453,6 +487,7 @@ export const resetPassword = async (req, res) => {
             message: "Password reset successfully.",
             success: true
         })
+
     } catch (error) {
         return res.status(500).json({
             message: error.message,

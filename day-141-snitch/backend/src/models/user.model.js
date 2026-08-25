@@ -23,18 +23,6 @@ const userSchema = new mongoose.Schema({
     googleId: {
         type: String, 
         required: false
-    },
-    emailVerificationToken: {
-        type: String
-    },
-    emailVerificationTokenExpiresAt: {
-        type: Date,
-    },
-    passwordResetToken: {
-        type: String
-    },
-    passwordResetTokenExpiresAt: {
-        type: Date
     }
 }, { timestamps: true } );
 
