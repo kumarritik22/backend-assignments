@@ -61,6 +61,7 @@ export const useAuth = () => {
     async function handleResendVerificationEmail({ email }) {
         dispatch(setLoading(true))
         dispatch(setError(null))
+        await new Promise(resolve => setTimeout(resolve, 10000))
         dispatch(setVerificationMessage(null))
         try {
             const data = await resendVerificationEmail({ email }) 
