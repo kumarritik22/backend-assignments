@@ -329,8 +329,6 @@ export const resendVerificationEmail = async (req, res) => {
             textContent: `Welcome to Velora, ${user.fullname}!\n\nTo secure your account and gain exclusive access to our curated collections, please verify your email address by visiting the link below:\n\n${verificationUrl}\n\nIf you did not request this, you can safely ignore this email.`
         })
 
-        await user.save();
-
         return res.status(200).json({
             message: "Verification email sent successfully",
             success: true

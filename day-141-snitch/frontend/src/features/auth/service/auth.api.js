@@ -41,3 +41,8 @@ export async function verifyEmail({ token }) {
     const response = await authApiInstance.get(`/verify-email/${token}`)
     return response.data;
 }
+
+export async function resendVerificationEmail({ email }) {
+    const response = await authApiInstance.post("/resend-verification-email", { email })
+    return response.data;
+}

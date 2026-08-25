@@ -13,6 +13,8 @@ import AppLayout from "./AppLayout.jsx";
 import About from "../features/products/pages/About.jsx";
 import OrderSuccess from "../features/cart/pages/OrderSuccess.jsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
+import ResendVerificationEmail from "../features/auth/pages/ResendVerificationEmail.jsx";
+
 
 export const routes = createBrowserRouter([
     {
@@ -26,6 +28,10 @@ export const routes = createBrowserRouter([
     {
         path: "/verify-email/:token",
         element: <VerifyEmail />
+    },
+    {
+        path: "/resend-verification-email",
+        element: <ResendVerificationEmail />
     },
     {
         element: <AppLayout />,

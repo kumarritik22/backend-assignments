@@ -74,7 +74,7 @@ const VerifyEmail = () => {
 
             <div className="pt-6 w-full flex justify-center">
               <Link 
-                to="/resendVerificaionLink"
+                to="/resend-verification-email"
                 className="w-full sm:w-auto px-10 py-4 bg-transparent border border-[#333333] text-white font-semibold tracking-widest text-sm hover:border-white hover:bg-white hover:text-black transition-all rounded-sm flex items-center justify-center gap-3 uppercase"
               >
                 RESEND VERIFICATION LINK
