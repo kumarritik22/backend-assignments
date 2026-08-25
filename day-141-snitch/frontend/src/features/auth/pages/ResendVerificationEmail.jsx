@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useAuth } from "../hook/useAuth.js";
-import { ArrowLeft, Loader2, Mail } from "lucide-react";
+import { AlertCircle, ArrowLeft, CheckCircle, Link, Loader2, Mail } from "lucide-react";
 import { useState } from "react";
 
 const ResendVerificationEmail = () => {
@@ -59,6 +59,41 @@ const ResendVerificationEmail = () => {
           <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">Please wait while we prepare your secure verification link.</p>
         </div>
       )}
+
+      {/* Success State */}
+      <div className="loading-state w-full max-w-md bg-[#111111] border border-[#2A2A2A] rounded-lg shadow-2xl flex items-center flex-col justify-center p-12">
+        <h1 className="font-serif text-white text-3xl uppercase tracking-widest mb-6">Velora</h1>
+        <div className="relative">
+          <div className="absolute inset-0 bg-gold blur-xl opacity-20 rounded-full"></div>
+          <CheckCircle className="w-24 h-24 text-gold relative z-10" strokeWidth={1.5} />
+        </div>
+        <h2 className="text-2xl font-medium tracking-tight text-center mb-2">Link Sent Successfully</h2>
+        <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">We've sent a new verification link to your email address. Please check your inbox and spam folder.</p>
+        <Link 
+          to="/login"
+          className="w-full sm:w-auto px-10 py-4 bg-gold text-black font-semibold tracking-widest text-sm hover:bg-[#b5955b] transition-colors rounded-sm flex items-center justify-center gap-3 uppercase"
+        >
+          RETURN TO LOGIN
+        </Link>
+      </div>
+
+      {/* Error State */}
+      <div className="loading-state w-full max-w-md bg-[#111111] border border-[#2A2A2A] rounded-lg shadow-2xl flex items-center flex-col justify-center p-12">
+        <h1 className="font-serif text-white text-3xl uppercase tracking-widest mb-6">Velora</h1>
+        <div className="relative">
+          <div className="absolute inset-0 bg-red-900 blur-xl opacity-20 rounded-full"></div>
+          <AlertCircle className="w-24 h-24 text-red-500 relative z-10" strokeWidth={1.5} />
+        </div>
+        <h2 className="text-2xl font-medium tracking-tight text-center mb-2">Unable to Send Link</h2>
+        <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">We couldn't find an account associated with that email, or the account is already verified.</p>
+        <button className="bg-gold w-full hover:bg-[#b5955a] text-black font-sans text-sm font-bold uppercase tracking-wider rounded-sm py-3 cursor-pointer transition-[transform, colors] duration-200 active:scale-95">TRY AGAIN</button>
+        <Link 
+          to="/login"
+          className="w-full sm:w-auto px-10 py-4 text-gold font-semibold tracking-widest text-sm transition-colors rounded-sm flex items-center justify-center gap-3 uppercase"
+        >
+          RETURN TO LOGIN
+        </Link>
+      </div>
     </div>
   )
 }
