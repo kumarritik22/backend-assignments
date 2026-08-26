@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../hook/useAuth.js";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router";
 import { CheckCircle, AlertCircle, Loader2, ArrowRight } from "lucide-react";
+import { setError, setVerificationMessage, setVerificationType } from "../state/auth.slice.js";
 
 const VerifyEmail = () => {
   const { token } = useParams();
@@ -11,6 +12,8 @@ const VerifyEmail = () => {
   const loading = useSelector(state => state.auth.loading);
   const error = useSelector(state => state.auth.error);
   const verificationMessage = useSelector(state => state.auth.verificationMessage);
+
+  const dispatch = useDispatch()
 
   const [isVerifying, setIsVerifying] = useState(true)
 
@@ -26,10 +29,18 @@ const VerifyEmail = () => {
     verify();
   }, [handleVerifyEmail, token]);
 
+  const clearAuthMessages = () => {
+    dispatch(setError(null))
+    dispatch(setVerificationMessage(null))
+    dispatch(setVerificationType(null))
+  }
+
   const renderVerifyEmailComponent = () => {
     if (isVerifying || loading) {
-      return <div className="flex flex-col items-center  justify-center space-y-6">
-            <Loader2 className="w-16 h-16 text-gold animate-spin" />
+      return <div className="flex flex-col items-center justify-center space-y-6">
+            <div className="bg-gold/10 rounded-full inline-flex items-center justify-center shadow- [0_4px_20px_rgba(201,169,110,0.15)] mb-5">
+              <Loader2 className="w-16 h-16 text-gold animate-spin" />
+            </div>
             <h1 className="text-3xl font-['Bodoni_Moda'] text-white">Verifying...</h1>
             <p className="text-[#888888] font-['Inter']">Please wait while we confirm your exclusive access.</p>
           </div>
@@ -50,7 +61,8 @@ const VerifyEmail = () => {
             <div className="pt-6 w-full flex justify-center">
               <Link 
                 to="/resend-verification-email"
-                className="w-full sm:w-auto px-10 py-4 bg-transparent border border-[#333333] text-white font-semibold tracking-widest text-sm hover:border-white hover:bg-white hover:text-black transition-all rounded-sm flex items-center justify-center gap-3 uppercase cursor-pointer transition-[transform, colors] duration-200 active:scale-95"
+                onClick={clearAuthMessages}
+                className="w-full sm:w-auto px-10 py-4 bg-transparent border border-[#333333] text-white font-semibold tracking-widest text-sm hover:border-black hover:bg-gold hover:text-black transition-all rounded-sm flex items-center justify-center gap-3 uppercase cursor-pointer transition-[transform, colors] duration-200 active:scale-95"
               >
                 RESEND VERIFICATION LINK
               </Link>
@@ -79,8 +91,6 @@ const VerifyEmail = () => {
               </Link>
             </div>
           </div>
-    } else {
-      return <p>Verifying your email...</p>
     }
   }
   

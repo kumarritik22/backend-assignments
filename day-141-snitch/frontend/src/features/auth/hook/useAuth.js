@@ -43,11 +43,9 @@ export const useAuth = () => {
 
     const handleVerifyEmail = useCallback(
         async (token) => {
-            console.log("handleVerifyEmail called")
             dispatch(setLoading(true))
             dispatch(setError(null))
             dispatch(setVerificationMessage(null))
-            await new Promise(resolve => setTimeout(resolve, 2000))
             try {
                 const data = await verifyEmail({ token })
                     dispatch(setVerificationMessage(data.message))

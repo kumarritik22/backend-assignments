@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../hook/useAuth.js";
 import { AlertCircle, ArrowLeft, CheckCircle, Loader2, Mail } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { setError, setVerificationMessage, setVerificationType } from "../state/auth.slice.js";
 
@@ -15,12 +15,15 @@ const ResendVerificationEmail = () => {
   const verificationType = useSelector(state => state.auth.verificationType);
 
   const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const dispatch = useDispatch()
 
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault()
-    handleResendVerificationEmail({ email })
+    setIsSubmitting(true)
+    await handleResendVerificationEmail({ email })
+    setIsSubmitting(false)
   }
 
   const clearAuthMessages = () => {
@@ -29,8 +32,13 @@ const ResendVerificationEmail = () => {
     dispatch(setVerificationType(null))
   }
 
+  useEffect(() => {
+    clearAuthMessages()
+  }, [])
+  
+
   const renderCardComponent = () => {
-    if (loading) {
+    if (isSubmitting) {
       return <div className="loading-state w-full max-w-md bg-[#111111] border border-[#2A2A2A] rounded-lg shadow-2xl flex items-center flex-col justify-center p-12">
         <h1 className="font-serif text-white text-3xl uppercase tracking-widest mb-6">Velora</h1>
         <div className="bg-gold/10 rounded-full inline-flex items-center justify-center shadow-[0_4px_20px_rgba(201,169,110,0.15)] mb-5">

@@ -222,9 +222,10 @@ export const verifyEmail = async (req, res) => {
         }
 
         if (user.isEmailVerified) {
-            return res.status(400).json({
+            return res.status(200).json({
                 message: "Your email is already verified. You can proceed to login.",
-                success: false
+                type: "alreadyVerified",
+                success: true
             })
         }
 
