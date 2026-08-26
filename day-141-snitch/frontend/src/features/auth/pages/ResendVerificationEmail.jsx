@@ -9,7 +9,6 @@ const ResendVerificationEmail = () => {
 
   const { handleResendVerificationEmail } = useAuth()
 
-  const loading = useSelector(state => state.auth.loading);
   const error = useSelector(state => state.auth.error);
   const authMessage = useSelector(state => state.auth.authMessage);
   const verificationType = useSelector(state => state.auth.verificationType);

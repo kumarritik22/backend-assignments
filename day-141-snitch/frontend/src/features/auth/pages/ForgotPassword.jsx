@@ -11,7 +11,6 @@ const ForgotPassword = () => {
 
     const { handleForgotPassword } = useAuth()
 
-    const loading = useSelector(state => state.auth.loading);
     const authMessage = useSelector(state => state.auth.authMessage);
     const error = useSelector(state => state.auth.error);
     const authType = useSelector(state => state.auth.authType);

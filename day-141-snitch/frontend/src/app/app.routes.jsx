@@ -15,6 +15,7 @@ import OrderSuccess from "../features/cart/pages/OrderSuccess.jsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
 import ResendVerificationEmail from "../features/auth/pages/ResendVerificationEmail.jsx";
 import ForgotPassword from "../features/auth/pages/ForgotPassword.jsx";
+import ResetPassword from "../features/auth/pages/ResetPassword.jsx";
 
 
 export const routes = createBrowserRouter([
@@ -37,6 +38,10 @@ export const routes = createBrowserRouter([
     {
         path: "/forgot-password",
         element: <ForgotPassword />
+    },
+    {
+        path: "/reset-password/:token",
+        element: <ResetPassword />
     },
     {
         element: <AppLayout />,
