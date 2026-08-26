@@ -1,5 +1,5 @@
 import { setUser, setLoading, setError, clearUser, setVerificationType, setAuthMessage, setAuthType } from "../state/auth.slice.js";
-import { register, login, getMe, logout, verifyEmail, resendVerificationEmail, forgotPassword } from "../service/auth.api.js";
+import { register, login, getMe, logout, verifyEmail, resendVerificationEmail, forgotPassword, resetPasswordApi } from "../service/auth.api.js";
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 
@@ -48,11 +48,11 @@ export const useAuth = () => {
             dispatch(setAuthMessage(null))
             try {
                 const data = await verifyEmail({ token })
-                    dispatch(setAuthMessage(data.message))
-                    dispatch(setLoading(false))
+                dispatch(setAuthMessage(data.message))
+                dispatch(setLoading(false))
             } catch (error) {
-                    dispatch(setError(error.response.data.message))
-                    dispatch(setLoading(false))
+                dispatch(setError(error.response.data.message))
+                dispatch(setLoading(false))
             } 
         },
         [dispatch, verifyEmail]
@@ -77,7 +77,6 @@ export const useAuth = () => {
         dispatch(setLoading(true))
         dispatch(setError(null))
         dispatch(setAuthMessage(null))
-        await new Promise(resolve => setTimeout(resolve, 2000))
         try {
             const data = await forgotPassword({ email })
             dispatch(setAuthMessage(data.message))
@@ -89,5 +88,19 @@ export const useAuth = () => {
         }
     };
 
-    return { handleRegister, handleLogin, handleGetMe, handleLogout, handleVerifyEmail, handleResendVerificationEmail, handleForgotPassword }
+    async function handleResetPassword({ token, newPassword }) {
+        dispatch(setLoading(true))
+        dispatch(setError(null))
+        dispatch(setAuthMessage(null))
+        try {
+            const data = await resetPasswordApi({ token, newPassword })
+            dispatch(setAuthMessage(data.message))
+            dispatch(setLoading(false))
+        } catch (error) {
+            dispatch(setError(error.response.data.message))
+            dispatch(setLoading(false))
+        }
+    };
+
+    return { handleRegister, handleLogin, handleGetMe, handleLogout, handleVerifyEmail, handleResendVerificationEmail, handleForgotPassword, handleResetPassword }
 }
