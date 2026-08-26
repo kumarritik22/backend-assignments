@@ -33,11 +33,13 @@ const ResendVerificationEmail = () => {
   }
 
   useEffect(() => {
-    clearAuthMessages()
+    return () => {
+      clearAuthMessages()
+    }
   }, [])
   
 
-  const renderCardComponent = () => {
+  const renderResendVerificationCard = () => {
     if (isSubmitting) {
       return <div className="loading-state w-full max-w-md bg-[#111111] border border-[#2A2A2A] rounded-lg shadow-2xl flex items-center flex-col justify-center p-12">
         <h1 className="font-serif text-white text-3xl uppercase tracking-widest mb-6">Velora</h1>
@@ -55,7 +57,7 @@ const ResendVerificationEmail = () => {
           <AlertCircle className="w-24 h-24 text-red-500 relative z-10" strokeWidth={1.5} />
         </div>
         <h2 className="text-2xl font-medium tracking-tight text-center mb-2">Unable to Send Link</h2>
-        <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">{error || "We couldn't find an account associated with that email, or the account is already verified."}</p>
+        <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">{error}, we couldn't find an account associated with that email, or there was a system error. </p>
         <button 
           onClick={clearAuthMessages}
           className="bg-gold w-full hover:bg-[#b5955a] text-black font-sans text-sm font-bold uppercase tracking-wider rounded-sm py-3 cursor-pointer transition-[transform, colors] duration-200 active:scale-95 mb-3"
@@ -125,7 +127,7 @@ const ResendVerificationEmail = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0A0A0A] text-white">
-      {renderCardComponent()}
+      {renderResendVerificationCard()}
     </div>
   )
 }

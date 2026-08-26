@@ -35,7 +35,7 @@ const VerifyEmail = () => {
     dispatch(setVerificationType(null))
   }
 
-  const renderVerifyEmailComponent = () => {
+  const renderVerifyEmailCard = () => {
     if (isVerifying || loading) {
       return <div className="flex flex-col items-center justify-center space-y-6">
             <div className="bg-gold/10 rounded-full inline-flex items-center justify-center shadow- [0_4px_20px_rgba(201,169,110,0.15)] mb-5">
@@ -97,7 +97,7 @@ const VerifyEmail = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0c0c0c] px-4 py-12">
       <div className="max-w-xl w-full text-center space-y-8 animate-fade-in-up">
-        {renderVerifyEmailComponent()}
+        {renderVerifyEmailCard()}
       </div>
     </div>
   );

@@ -358,9 +358,10 @@ export const forgotPassword = async (req, res) => {
         }
 
         if (user.googleId) {
-            return res.status(400).json({
-                message: "This account uses Google login. Please continue with Google.",
-                success: false
+            return res.status(200).json({
+                message: "This account uses Google Login.",
+                type: "googleAccount",
+                success: true
             })
         }
 
@@ -417,7 +418,8 @@ export const forgotPassword = async (req, res) => {
         })
 
         return res.status(200).json({
-            message: "Password reset email sent successfully.",
+            message: "Reset Link Sent",
+            type: "emailSent",
             success: true
         })
 
