@@ -274,7 +274,8 @@ export const resendVerificationEmail = async (req, res) => {
 
         if (user.isEmailVerified === true ) {
             return res.status(200).json({
-                message: "Email is already verified",
+                message: "Email is already verified. You can proceed to login.",
+                type: "alreadyVerified",
                 success: true
             })
         }
@@ -331,6 +332,7 @@ export const resendVerificationEmail = async (req, res) => {
 
         return res.status(200).json({
             message: "Verification email sent successfully",
+            type: "emailSent",
             success: true
         })
     } catch (error) {

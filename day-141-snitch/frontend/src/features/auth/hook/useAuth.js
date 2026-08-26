@@ -1,4 +1,4 @@
-import { setUser, setLoading, setError, clearUser, setVerificationMessage } from "../state/auth.slice.js";
+import { setUser, setLoading, setError, clearUser, setVerificationMessage, setVerificationType } from "../state/auth.slice.js";
 import { register, login, getMe, logout, verifyEmail, resendVerificationEmail } from "../service/auth.api.js";
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
@@ -61,11 +61,11 @@ export const useAuth = () => {
     async function handleResendVerificationEmail({ email }) {
         dispatch(setLoading(true))
         dispatch(setError(null))
-        await new Promise(resolve => setTimeout(resolve, 10000))
         dispatch(setVerificationMessage(null))
         try {
             const data = await resendVerificationEmail({ email }) 
             dispatch(setVerificationMessage(data.message))
+            dispatch(setVerificationType(data.type))
             dispatch(setLoading(false))
         } catch (error) {
             dispatch(setError(error.response.data.message))
