@@ -6,7 +6,7 @@ const authSlice = createSlice({
         user: null,
         loading: true,
         error: null,
-        verificationMessage: null,
+        authMessage: null,
         verificationType: null
     },
     reducers: {
@@ -22,8 +22,8 @@ const authSlice = createSlice({
         clearUser: (state) => {
             state.user = null
         },
-        setVerificationMessage: (state, action) => {
-            state.verificationMessage = action.payload
+        setAuthMessage: (state, action) => {
+            state.authMessage = action.payload
         },
         setVerificationType: (state, action) => {
             state.verificationType = action.payload
@@ -31,5 +31,5 @@ const authSlice = createSlice({
     }
 })
 
-export const {setError, setLoading, setUser, clearUser, setVerificationMessage, setVerificationType } = authSlice.actions
+export const {setError, setLoading, setUser, clearUser, setAuthMessage, setVerificationType } = authSlice.actions
 export default authSlice.reducer

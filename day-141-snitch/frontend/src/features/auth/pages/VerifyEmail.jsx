@@ -3,7 +3,7 @@ import { useAuth } from "../hook/useAuth.js";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router";
 import { CheckCircle, AlertCircle, Loader2, ArrowRight } from "lucide-react";
-import { setError, setVerificationMessage, setVerificationType } from "../state/auth.slice.js";
+import { setError, setAuthMessage, setVerificationType } from "../state/auth.slice.js";
 
 const VerifyEmail = () => {
   const { token } = useParams();
@@ -11,7 +11,7 @@ const VerifyEmail = () => {
   
   const loading = useSelector(state => state.auth.loading);
   const error = useSelector(state => state.auth.error);
-  const verificationMessage = useSelector(state => state.auth.verificationMessage);
+  const authMessage = useSelector(state => state.auth.authMessage);
 
   const dispatch = useDispatch()
 
@@ -31,7 +31,7 @@ const VerifyEmail = () => {
 
   const clearAuthMessages = () => {
     dispatch(setError(null))
-    dispatch(setVerificationMessage(null))
+    dispatch(setAuthMessage(null))
     dispatch(setVerificationType(null))
   }
 
@@ -68,7 +68,7 @@ const VerifyEmail = () => {
               </Link>
             </div>
           </div>
-    } else if (verificationMessage) {
+    } else if (authMessage) {
       return <div className="flex flex-col items-center justify-center space-y-8">
             <div className="relative">
               <div className="absolute inset-0 bg-gold blur-xl opacity-20 rounded-full"></div>
@@ -78,7 +78,7 @@ const VerifyEmail = () => {
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-['Bodoni_Moda'] text-white">Email Verified</h1>
               <p className="text-[#888888] font-['Inter'] text-lg">
-                {verificationMessage || "Welcome to Velora. Your exclusive access is now granted."}
+                {authMessage || "Welcome to Velora. Your exclusive access is now granted."}
               </p>
             </div>
 

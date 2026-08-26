@@ -3,7 +3,7 @@ import { useAuth } from "../hook/useAuth.js";
 import { AlertCircle, ArrowLeft, CheckCircle, Loader2, Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { setError, setVerificationMessage, setVerificationType } from "../state/auth.slice.js";
+import { setError, setAuthMessage, setVerificationType } from "../state/auth.slice.js";
 
 const ResendVerificationEmail = () => {
 
@@ -11,7 +11,7 @@ const ResendVerificationEmail = () => {
 
   const loading = useSelector(state => state.auth.loading);
   const error = useSelector(state => state.auth.error);
-  const verificationMessage = useSelector(state => state.auth.verificationMessage);
+  const authMessage = useSelector(state => state.auth.authMessage);
   const verificationType = useSelector(state => state.auth.verificationType);
 
   const [email, setEmail] = useState("")
@@ -28,7 +28,7 @@ const ResendVerificationEmail = () => {
 
   const clearAuthMessages = () => {
     dispatch(setError(null))
-    dispatch(setVerificationMessage(null))
+    dispatch(setAuthMessage(null))
     dispatch(setVerificationType(null))
   }
 
@@ -70,14 +70,14 @@ const ResendVerificationEmail = () => {
           RETURN TO LOGIN
         </Link>
       </div>
-    } else if (verificationMessage) {
+    } else if (authMessage) {
       return <div className="success-state w-full max-w-md bg-[#111111] border border-[#2A2A2A]     rounded-lg shadow-2xl flex items-center flex-col justify-center p-12">
         <h1 className="font-serif text-white text-3xl uppercase tracking-widest mb-6">Velora</h1>
         <div className="relative mb-2">
           <div className="absolute inset-0 bg-gold blur-xl opacity-20 rounded-full"></div>
           <CheckCircle className="w-24 h-24 text-gold relative z-10" strokeWidth={1.5} />
         </div>
-        <h2 className="text-2xl font-medium tracking-tight text-center mb-4">{verificationMessage}</h2>
+        <h2 className="text-2xl font-medium tracking-tight text-center mb-4">{authMessage}</h2>
         {verificationType === "emailSent" && (
           <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">We've sent a new verification link to your email address. Please check your inbox and spam folder.</p>
         )}

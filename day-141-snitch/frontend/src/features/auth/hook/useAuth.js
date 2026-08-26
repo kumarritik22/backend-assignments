@@ -1,5 +1,5 @@
-import { setUser, setLoading, setError, clearUser, setVerificationMessage, setVerificationType } from "../state/auth.slice.js";
-import { register, login, getMe, logout, verifyEmail, resendVerificationEmail } from "../service/auth.api.js";
+import { setUser, setLoading, setError, clearUser, setVerificationType, setAuthMessage } from "../state/auth.slice.js";
+import { register, login, getMe, logout, verifyEmail, resendVerificationEmail, forgotPassword } from "../service/auth.api.js";
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 
@@ -11,7 +11,7 @@ export const useAuth = () => {
         const data = await register({fullname, email, contact, password, isSeller})
         dispatch(setUser(data.user))
         return data.user
-    }
+    };
 
     async function handleLogin({email, password}) {
         try {
@@ -22,7 +22,7 @@ export const useAuth = () => {
         } catch (error) {
             dispatch(setError(error.response.data.message))
         }
-    }
+    };
 
     async function handleGetMe() {
         try {
@@ -34,21 +34,21 @@ export const useAuth = () => {
         } finally {
             dispatch(setLoading(false))
         } 
-    }
+    };
 
     async function handleLogout() {
         const data = await logout()
         dispatch(clearUser());
-    }
+    };
 
     const handleVerifyEmail = useCallback(
         async (token) => {
             dispatch(setLoading(true))
             dispatch(setError(null))
-            dispatch(setVerificationMessage(null))
+            dispatch(setAuthMessage(null))
             try {
                 const data = await verifyEmail({ token })
-                    dispatch(setVerificationMessage(data.message))
+                    dispatch(setAuthMessage(data.message))
                     dispatch(setLoading(false))
             } catch (error) {
                     dispatch(setError(error.response.data.message))
@@ -61,17 +61,31 @@ export const useAuth = () => {
     async function handleResendVerificationEmail({ email }) {
         dispatch(setLoading(true))
         dispatch(setError(null))
-        dispatch(setVerificationMessage(null))
+        dispatch(setAuthMessage(null))
         try {
             const data = await resendVerificationEmail({ email }) 
-            dispatch(setVerificationMessage(data.message))
+            dispatch(setAuthMessage(data.message))
             dispatch(setVerificationType(data.type))
             dispatch(setLoading(false))
         } catch (error) {
             dispatch(setError(error.response.data.message))
             dispatch(setLoading(false))
         }
-    } 
+    };
 
-    return { handleRegister, handleLogin, handleGetMe, handleLogout, handleVerifyEmail, handleResendVerificationEmail }
+    async function handleForgotPassword({ email }) {
+        dispatch(setLoading(true))
+        dispatch(setError(null))
+        dispatch(setAuthMessage(null))
+        try {
+            const data = await forgotPassword({ email })
+            dispatch(setAuthMessage(data.message))
+            dispatch(setLoading(false))
+        } catch (error) {
+            dispatch(setError(error.response.data.message))
+            dispatch(setLoading(false))
+        }
+    };
+
+    return { handleRegister, handleLogin, handleGetMe, handleLogout, handleVerifyEmail, handleResendVerificationEmail, handleForgotPassword }
 }

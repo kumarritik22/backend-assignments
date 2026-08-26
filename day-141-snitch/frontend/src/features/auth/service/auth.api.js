@@ -46,3 +46,8 @@ export async function resendVerificationEmail({ email }) {
     const response = await authApiInstance.post("/resend-verification-email", { email })
     return response.data;
 }
+
+export async function forgotPassword({ email }) {
+    const response = await authApiInstance.post("/forgot-password", { email })
+    return response.data;
+}

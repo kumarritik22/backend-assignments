@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../hook/useAuth.js'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'
 import { useSelector } from 'react-redux'
 
@@ -173,13 +173,12 @@ const Login = () => {
 
                 {/* Forgot password — right aligned */}
                 <div className="flex justify-end mt-2">
-                  <a
-                    href="#"
-                    id="forgot-password-link"
-                    className="font-inter text-[11px] text-gold hover:text-gold-light underline-offset-2 hover:underline transition-colors"
+                  <Link
+                    to="/forgot-password"
+                    className="font-inter text-[11px] text-gold hover:text-gold-light underline-offset-2 hover:underline transition-colors transition-[transform, colors] duration-200 active:scale-95"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
 

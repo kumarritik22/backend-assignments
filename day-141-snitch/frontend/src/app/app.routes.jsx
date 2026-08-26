@@ -14,6 +14,7 @@ import About from "../features/products/pages/About.jsx";
 import OrderSuccess from "../features/cart/pages/OrderSuccess.jsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
 import ResendVerificationEmail from "../features/auth/pages/ResendVerificationEmail.jsx";
+import ForgotPassword from "../features/auth/pages/ForgotPassword.jsx";
 
 
 export const routes = createBrowserRouter([
@@ -32,6 +33,10 @@ export const routes = createBrowserRouter([
     {
         path: "/resend-verification-email",
         element: <ResendVerificationEmail />
+    },
+    {
+        path: "/forgot-password",
+        element: <ForgotPassword />
     },
     {
         element: <AppLayout />,
