@@ -155,7 +155,7 @@ const Register = () => {
               </p>
               <button
                 onClick={() => navigate('/login')}
-                className="mt-4 px-8 py-3 bg-gold text-black font-inter font-bold text-[11px] tracking-[0.18em] uppercase rounded-sm hover:bg-[#b5955b] transition-colors"
+                className="mt-4 px-8 py-3 bg-gold text-black font-inter font-bold text-[11px] tracking-[0.18em] uppercase rounded-sm hover:bg-[#b5955b] transition-colors cursor-pointer transition-[transform, colors] duration-200 active:scale-95"
               >
                 PROCEED TO LOGIN
               </button>
