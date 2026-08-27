@@ -26,13 +26,16 @@ export const useAuth = () => {
     };
 
     async function handleLogin({email, password}) {
+        dispatch(setLoading(true))
+        dispatch(setError(null))
         try {
-            dispatch(setError(null))
             const data = await login({ email, password })
             dispatch(setUser(data.user))
             return data.user
         } catch (error) {
             dispatch(setError(error.response.data.message))
+        } finally {
+            dispatch(setLoading(false))
         }
     };
 

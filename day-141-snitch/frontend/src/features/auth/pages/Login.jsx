@@ -49,6 +49,7 @@ const Login = () => {
     const navigate = useNavigate()
 
     const error = useSelector(state => state.auth.error)
+    const loading = useSelector(state => state.auth.loading)
 
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({ 
@@ -84,10 +85,12 @@ const Login = () => {
         password: form.password
     })
 
-    if (user.role == "buyer") {
-      navigate("/")
-    } else if (user.role == "seller") {
-      navigate("/seller/dashboard")
+    if (user) {
+      if (user.role === "buyer") {
+        navigate("/")
+      } else if (user.role === "seller") {
+        navigate("/seller/dashboard")
+      }
     }
   }
 
@@ -187,15 +190,17 @@ const Login = () => {
 
               {/* Sign In CTA */}
               <button
-                type="submit" id="sign-in-btn"
+                type="submit" 
+                id="sign-in-btn"
+                disabled={loading}
                 className={[
                   'w-full rounded-lg py-3.5 px-6 font-inter font-bold text-[11px] tracking-[0.16em] uppercase',
                   'bg-linear-to-r from-gold to-gold-dark text-[#0a0a0a]',
-                  'hover:from-gold-light hover:to-gold transition-all duration-220 cursor-pointer active:scale-[0.985]',
-                  'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.26s] [animation-fill-mode:both]',
+                  'hover:from-gold-light hover:to-gold transition-all duration-220',
+                  'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.26s] [animation-fill-mode:both]', loading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
                 ].join(' ')}
               >
-                Sign In
+                {loading ? "Signing in..." : "Sign in"}
               </button>
 
               <div className="flex-1 border-t border-[#1e1e1e]" />

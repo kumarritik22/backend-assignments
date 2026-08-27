@@ -77,41 +77,39 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     const ve = validate()
-    if (Object.keys(ve).length) { setErrors(ve); return }
+
+    if (Object.keys(ve).length) { 
+      setErrors(ve) 
+      return 
+    }
     
-    try {
-      const result = await handleRegister({
-        fullname: formData.fullName,
-        email: formData.email,
-        contact: formData.contactNumber,
-        password: formData.password,
-        isSeller: isSeller
+    const result = await handleRegister({
+      fullname: formData.fullName,
+      email: formData.email,
+      contact: formData.contactNumber,
+      password: formData.password,
+      isSeller: isSeller
+    })
+
+    if (Array.isArray(result)) {
+      const backendErrors = {}
+
+      result.forEach((error) => {
+        if (error.path === "fullname") {
+          backendErrors.fullName = error.msg
+        } else if (error.path === "contact") {
+          backendErrors.contactNumber = error.msg
+        } else {
+          backendErrors[error.path] = error.msg
+        }
       })
 
-      if (Array.isArray(result)) {
-        const backendErrors = {}
-
-        result.forEach((error) => {
-          backendErrors[error.path] = error.msg
-
-          if (error.path === "fullname") {
-            return backendErrors.fullName = error.msg
-          } else if (error.path === "contact") {
-            return backendErrors.contactNumber = error.msg
-          } else if (error.path === "email") {
-            return backendErrors.email = error.msg
-          } else if (error.path === "password") {
-            return backendErrors.password = error.msg
-          }
-        })
-
-        setErrors(backendErrors)
-      } else if (result) {
-        setIsRegistered(true)
-      }
-    } catch (err) {
-      console.error(err)
+      setErrors(backendErrors)
+      
+    } else if (result) {
+      setIsRegistered(true)
     }
   }
 
