@@ -3,7 +3,7 @@ import { useAuth } from "../hook/useAuth.js"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router";
-import { setAuthMessage, setError } from "../state/auth.slice";
+import { setAuthMessage, setError } from "../state/auth.slice.js";
 import { AlertCircle, ArrowLeft, CheckCircle, Loader2, LockKeyhole } from "lucide-react";
 
 const ResetPassword = () => {
@@ -18,20 +18,25 @@ const ResetPassword = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [newPassword, setNewPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [localError, setLocalError] = useState("")
 
     const dispatch = useDispatch()
     
     const handleForm = async (e) => {
         e.preventDefault()
 
-        if (newPassword !== confirmPassword) {
-          dispatch(setError("Passwords do not match."))
-          return
-        }
+        setLocalError("")
 
+        if (!newPassword || !confirmPassword) {
+          return setLocalError("Form cannot be empty.")
+        }
+        if (newPassword !== confirmPassword) {
+          return setLocalError("Passwords do not match.")
+          
+        }
         setIsSubmitting(true)
         await handleResetPassword({ token, newPassword })
-        setIsSubmitting(false)
+        setIsSubmitting(false)  
     }
 
     const clearAuthMessages = () => {
@@ -101,30 +106,42 @@ const ResetPassword = () => {
             <LockKeyhole size={17} className="text-gold" />
             </div>
             <h3 className="font-serif text-white text-2xl font-medium tracking-tight mb-2">Set New Password</h3>
-            <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">Please enter your new password below. Ensure it is at least 8 characters long.</p>
+            <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-5">Please enter your new password below. Ensure it is at least 8 characters long.</p>
+            {localError && (
+                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-400/40 text-[11px] font-bold">
+                        !
+                    </span>
+                    <p>{localError}</p>
+                </div>
+              )}
             <form 
-            className="w-full flex flex-col mb-10"
-            onSubmit={handleForm}
-            >
-            <input 
-                type="password" 
-                name="new password" 
-                id="new password" 
-                placeholder="New Password" 
-                onChange={(e) => setNewPassword(e.target.value)}
-                value={newPassword}
-                className="bg-[#1E1E1E] border border-[#2A2A2A] text-white font-sans text-sm rounded-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors px-4 py-3 mb-5"  
-            />
-            <input 
-                type="password" 
-                name="confirm password" 
-                id="confirm password" 
-                placeholder="Confirm Password" 
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                value={confirmPassword}
-                className="bg-[#1E1E1E] border border-[#2A2A2A] text-white font-sans text-sm rounded-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors px-4 py-3 mb-5"  
-            />
-            <button className="bg-gold w-full hover:bg-[#b5955a] text-black font-sans text-sm font-bold uppercase tracking-wider rounded-sm py-3 cursor-pointer transition-[transform, colors] duration-200 active:scale-95">RESET PASSWORD</button>
+              className="w-full flex flex-col mb-10"
+              onSubmit={handleForm}
+              >
+              <input 
+                  type="password" 
+                  name="new password" 
+                  id="new password" 
+                  placeholder="New Password" 
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  value={newPassword}
+                  className="bg-[#1E1E1E] border border-[#2A2A2A] text-white font-sans text-sm rounded-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors px-4 py-3 mb-5"  
+              />
+              <input 
+                  type="password" 
+                  name="confirm password" 
+                  id="confirm password" 
+                  placeholder="Confirm Password" 
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={confirmPassword}
+                  className="bg-[#1E1E1E] border border-[#2A2A2A] text-white font-sans text-sm rounded-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors px-4 py-3 mb-5"  
+              />
+              <button 
+                disabled={isSubmitting}
+                className="bg-gold w-full hover:bg-[#b5955a] text-black font-sans text-sm font-bold uppercase tracking-wider rounded-sm py-3 cursor-pointer transition-[transform, colors] duration-200 active:scale-95">
+                RESET PASSWORD
+              </button>
             </form>
             <Link
                 to="/login"

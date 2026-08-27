@@ -119,7 +119,11 @@ export const useAuth = () => {
             const data = await resetPasswordApi({ token, newPassword })
             dispatch(setAuthMessage(data.message))
         } catch (error) {
-            dispatch(setError(error.response.data.message))
+            if (error.response.data.errors) {
+                dispatch(setError(error.response.data.errors[0].msg))
+            } else {
+                dispatch(setError(error.response.data.message))
+            }
         } finally {
             dispatch(setLoading(false))
         }
