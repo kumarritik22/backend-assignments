@@ -120,7 +120,7 @@ export const useAuth = () => {
             dispatch(setAuthMessage(data.message))
         } catch (error) {
             if (error.response.data.errors) {
-                dispatch(setError(error.response.data.errors[0].msg))
+                return (error.response.data.errors)
             } else {
                 dispatch(setError(error.response.data.message))
             }

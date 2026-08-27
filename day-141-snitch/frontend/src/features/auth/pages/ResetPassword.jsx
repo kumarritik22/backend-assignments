@@ -32,10 +32,12 @@ const ResetPassword = () => {
         }
         if (newPassword !== confirmPassword) {
           return setLocalError("Passwords do not match.")
-          
         }
         setIsSubmitting(true)
-        await handleResetPassword({ token, newPassword })
+        const result = await handleResetPassword({ token, newPassword })
+        if (result) {
+          setLocalError(result[0].msg)
+        }
         setIsSubmitting(false)  
     }
 
