@@ -3,6 +3,8 @@ import { useAuth } from '../hook/useAuth'
 import { useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle'
 import { CheckCircle } from 'lucide-react'
+import { useSelector } from 'react-redux'
+import { setError } from '../state/auth.slice'
 
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
   <div className="flex flex-col gap-1.5">
@@ -76,17 +78,37 @@ const Register = () => {
     if (Object.keys(ve).length) { setErrors(ve); return }
     
     try {
-      await handleRegister({
+      const result = await handleRegister({
         fullname: formData.fullName,
         email: formData.email,
         contact: formData.contactNumber,
         password: formData.password,
         isSeller: isSeller
       })
-      setIsRegistered(true)
+
+      if (Array.isArray(result)) {
+        const backendErrors = {}
+
+        result.forEach((error) => {
+          backendErrors[error.path] = error.msg
+
+          if (error.path === "fullname") {
+            return backendErrors.fullName = error.msg
+          } else if (error.path === "contact") {
+            return backendErrors.contactNumber = error.msg
+          } else if (error.path === "email") {
+            return backendErrors.email = error.msg
+          } else if (error.path === "password") {
+            return backendErrors.password = error.msg
+          }
+        })
+
+        setErrors(backendErrors)
+      } else if (result) {
+        setIsRegistered(true)
+      }
     } catch (err) {
       console.error(err)
-      // Additional error handling can be done here
     }
   }
 

@@ -435,13 +435,20 @@ export const resetPassword = async (req, res) => {
     try {
         const { token } = req.params
 
-        const { newPassword } = req.body
+        const { newPassword, confirmPassword } = req.body
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({
+                message: "Passwords do not match.",
+                success: false
+            })
+        }
 
         const decodedToken = jwt.decode(token)
 
         if (!decodedToken) {
             return res.status(400).json({
-                message: "Invalid token",
+                message: "Invalid token.",
                 success: false
             })
         }
@@ -452,7 +459,7 @@ export const resetPassword = async (req, res) => {
 
         if (!user) {
             return res.status(404).json({
-                message: "Invalid or expired reset token",
+                message: "Invalid or expired reset token.",
                 success: false
             })
         }
@@ -487,7 +494,7 @@ export const resetPassword = async (req, res) => {
         await user.save();
 
         return res.status(200).json({
-            message: "Password reset successfully.",
+            message: "Password Reset Successfully",
             success: true
         })
 

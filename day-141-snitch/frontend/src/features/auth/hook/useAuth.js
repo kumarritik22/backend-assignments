@@ -8,9 +8,21 @@ export const useAuth = () => {
     const dispatch = useDispatch()
 
     async function handleRegister({fullname, email, contact, password, isSeller = false}) {
-        const data = await register({fullname, email, contact, password, isSeller})
-        dispatch(setUser(data.user))
-        return data.user
+        try {
+            dispatch(setLoading(true))
+            dispatch(setError(null))
+            const data = await register({fullname, email, contact, password, isSeller})
+            dispatch(setUser(data.user))
+            return data.user
+        } catch (error) {
+            if (error.response.data.errors) {
+                return (error.response.data.errors)
+            } else {
+                dispatch(setError(error.response.data.message))
+            }
+        } finally {
+            dispatch(setLoading(false))
+        }
     };
 
     async function handleLogin({email, password}) {
@@ -49,11 +61,11 @@ export const useAuth = () => {
             try {
                 const data = await verifyEmail({ token })
                 dispatch(setAuthMessage(data.message))
-                dispatch(setLoading(false))
             } catch (error) {
                 dispatch(setError(error.response.data.message))
+            } finally {
                 dispatch(setLoading(false))
-            } 
+            }
         },
         [dispatch, verifyEmail]
     );
@@ -66,9 +78,9 @@ export const useAuth = () => {
             const data = await resendVerificationEmail({ email }) 
             dispatch(setAuthMessage(data.message))
             dispatch(setVerificationType(data.type))
-            dispatch(setLoading(false))
         } catch (error) {
             dispatch(setError(error.response.data.message))
+        } finally {
             dispatch(setLoading(false))
         }
     };
@@ -81,9 +93,9 @@ export const useAuth = () => {
             const data = await forgotPassword({ email })
             dispatch(setAuthMessage(data.message))
             dispatch(setAuthType(data.type))
-            dispatch(setLoading(false))
         } catch (error) {
             dispatch(setError(error.response.data.message))
+        } finally {
             dispatch(setLoading(false))
         }
     };
@@ -92,12 +104,13 @@ export const useAuth = () => {
         dispatch(setLoading(true))
         dispatch(setError(null))
         dispatch(setAuthMessage(null))
+        await new Promise(resolve => setTimeout(resolve, 2000))
         try {
             const data = await resetPasswordApi({ token, newPassword })
             dispatch(setAuthMessage(data.message))
-            dispatch(setLoading(false))
         } catch (error) {
             dispatch(setError(error.response.data.message))
+        } finally {
             dispatch(setLoading(false))
         }
     };
