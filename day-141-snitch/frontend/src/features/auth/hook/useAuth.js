@@ -40,20 +40,27 @@ export const useAuth = () => {
     };
 
     async function handleGetMe() {
+        dispatch(setLoading(true))
         try {
-            dispatch(setLoading(true))
             const data = await getMe()
             dispatch(setUser(data.user))
         } catch (error) {
-            console.log(error)
+            console.error(error)
         } finally {
             dispatch(setLoading(false))
         } 
     };
 
     async function handleLogout() {
-        const data = await logout()
-        dispatch(clearUser());
+        dispatch(setLoading(true))
+        try {
+            const data = await logout()
+            dispatch(clearUser());
+        } catch (error) {
+            console.error(error)
+        } finally {
+            dispatch(setLoading(false))
+        }
     };
 
     const handleVerifyEmail = useCallback(

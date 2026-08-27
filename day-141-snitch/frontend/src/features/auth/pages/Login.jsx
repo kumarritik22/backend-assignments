@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuth } from '../hook/useAuth.js'
 import { Link, useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'

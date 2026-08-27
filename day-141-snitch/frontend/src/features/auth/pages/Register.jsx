@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { useAuth } from '../hook/useAuth'
+import { useAuth } from '../hook/useAuth.js'
 import { useNavigate } from 'react-router'
-import ContinueWithGoogle from '../components/ContinueWithGoogle'
+import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'
 import { CheckCircle } from 'lucide-react'
 import { useSelector } from 'react-redux'
-import { setError } from '../state/auth.slice'
 
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
   <div className="flex flex-col gap-1.5">
@@ -107,7 +106,7 @@ const Register = () => {
       })
 
       setErrors(backendErrors)
-      
+
     } else if (result) {
       setIsRegistered(true)
     }
