@@ -41,6 +41,9 @@ const Register = () => {
   const {handleRegister} = useAuth()
   const navigate = useNavigate()
 
+  const error = useSelector(state => state.auth.error);
+  const loading = useSelector(state => state.auth.loading);
+
   const [showPassword, setShowPassword] = useState(false)
   const [isSeller, setIsSeller] = useState(false)
   const [isRegistered, setIsRegistered] = useState(false)
@@ -201,6 +204,15 @@ const Register = () => {
                 </p>
               </div>
 
+              {error && (
+                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-400/40 text-[11px] font-bold">
+                        !
+                    </span>
+                    <p>{error}</p>
+                </div>
+              )}
+
               {/* Form */}
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3.25">
 
@@ -260,15 +272,17 @@ const Register = () => {
                 <hr className="border-t border-white/5 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.35s] [animation-fill-mode:both]" />
 
                 <button
-                  type="submit" id="create-account-btn"
+                  type="submit" 
+                  id="create-account-btn"
+                  disabled={loading}
                   className={[
                     'w-full rounded-lg py-3.25 font-inter font-bold text-[11px] tracking-[0.18em] uppercase text-[#0a0a0a]',
                     'bg-linear-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold',
-                    'transition-all duration-200 active:scale-[0.98]',
-                    'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.39s] [animation-fill-mode:both] cursor-pointer',
+                    'transition-all duration-200',
+                    'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.39s] [animation-fill-mode:both] ', loading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
                   ].join(' ')}
                 >
-                  Create Account
+                  {loading ? "Creating Account..." : "Create Account"}
                 </button>
 
                 <div className="flex-1 border-t border-[#1e1e1e]" />
