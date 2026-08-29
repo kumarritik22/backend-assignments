@@ -109,9 +109,15 @@ const ResendVerificationEmail = () => {
             placeholder="Enter your email" 
             onChange={(e) => setEmail(e.target.value)}
             value={email}
+            required
             className="bg-[#1E1E1E] border border-[#2A2A2A] text-white font-sans text-sm rounded-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors px-4 py-3 mb-5"  
           />
-          <button className="bg-gold w-full hover:bg-[#b5955a] text-black font-sans text-sm font-bold uppercase tracking-wider rounded-sm py-3 cursor-pointer transition-[transform, colors] duration-200 active:scale-95">RESEND LINK</button>
+          <button 
+            disabled={isSubmitting}
+            className="bg-gold w-full hover:bg-[#b5955a] text-black font-sans text-sm font-bold uppercase tracking-wider rounded-sm py-3 cursor-pointer transition-[transform, colors] duration-200 active:scale-95"
+          >
+            RESEND LINK
+          </button>
         </form>
         <Link
           to="/login"

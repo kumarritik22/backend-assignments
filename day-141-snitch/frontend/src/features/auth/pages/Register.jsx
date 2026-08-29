@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../hook/useAuth.js'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'
 import { CheckCircle } from 'lucide-react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setError } from '../state/auth.slice.js'
 
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
   <div className="flex flex-col gap-1.5">
@@ -39,6 +40,7 @@ const Register = () => {
 
   const {handleRegister} = useAuth()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const error = useSelector(state => state.auth.error);
   const loading = useSelector(state => state.auth.loading);
@@ -112,6 +114,12 @@ const Register = () => {
     }
   }
 
+  useEffect(() => {
+    return () => {
+      dispatch(setError(null))  
+    }
+  }, [])
+
   return (
     <main className="flex flex-col lg:flex-row min-h-screen lg:h-screen lg:overflow-hidden bg-[#0a0a0a]">
 
@@ -131,12 +139,12 @@ const Register = () => {
         <div className="absolute inset-0 bg-linear-to-b from-black/25 via-transparent to-black/75" />
 
         {/* Logo — Velora image */}
-        <a href="/" className="absolute top-5 left-5 lg:top-7 lg:left-7 z-10 flex items-center gap-3">
+        <Link to="/" className="absolute top-5 left-5 lg:top-7 lg:left-7 z-10 flex items-center gap-3">
           <img src="/logo.png" alt="Velora Logo" className="h-8 lg:h-12 w-auto object-contain drop-shadow-lg opacity-90" />
           <span className="font-bodoni text-[22px] font-bold tracking-[0.2em] text-white uppercase drop-shadow-md">
             Velora
           </span>
-        </a>
+        </Link>
 
         {/* Bottom brand copy — shown on all screens, adapts size */}
         <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-7 lg:px-9 lg:pb-10">
@@ -195,9 +203,9 @@ const Register = () => {
                 </h1>
                 <p className="font-inter text-[13px] text-[#777] mt-2 leading-relaxed">
                   Already have an account?{' '}
-                  <a href="/login" id="sign-in-link" className="text-gold font-medium no-underline hover:underline underline-offset-2 transition-all">
+                  <Link to="/login" id="sign-in-link" className="text-gold font-medium no-underline hover:underline underline-offset-2 transition-all">
                     Sign in →
-                  </a>
+                  </Link>
                 </p>
               </div>
 

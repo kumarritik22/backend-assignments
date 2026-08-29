@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../hook/useAuth.js'
 import { Link, useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setError } from '../state/auth.slice.js'
 
 // InputField defined at module level — prevents React remount bug
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
@@ -47,6 +48,7 @@ const Login = () => {
     const {handleLogin} = useAuth()
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const error = useSelector(state => state.auth.error)
     const loading = useSelector(state => state.auth.loading)
@@ -94,6 +96,13 @@ const Login = () => {
     }
   }
 
+  useEffect(() => {
+    return () => {
+      dispatch(setError(null))  
+    }
+  }, [])
+  
+
   return (
     <>
       {/*
@@ -123,13 +132,13 @@ const Login = () => {
 
               <p className="font-inter text-[13px] text-[#888] mt-2 leading-relaxed">
                 New here?{' '}
-                <a
-                  href="/register"
+                <Link
+                  to="/register"
                   id="register-link"
                   className="text-gold font-medium no-underline hover:underline underline-offset-2 transition-all"
                 >
                   Create an account →
-                </a>
+                </Link>
               </p>
             </div>
 
@@ -237,12 +246,12 @@ const Login = () => {
           <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/70" />
 
           {/* Logo — Velora image, top right */}
-          <a href="/" className="absolute top-5 right-5 md:top-7 md:right-7 z-10 flex items-center gap-3">
+          <Link to="/" className="absolute top-5 right-5 md:top-7 md:right-7 z-10 flex items-center gap-3">
             <img src="/logo.png" alt="Velora Logo" className="h-8 md:h-12 w-auto object-contain drop-shadow-lg opacity-90" />
             <span className="font-bodoni text-[22px] font-bold tracking-[0.2em] text-white uppercase drop-shadow-md">
               Velora
             </span>
-          </a>
+          </Link>
 
           {/* Bottom brand copy — desktop only */}
           <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-7 md:px-9 md:pb-10">

@@ -114,7 +114,6 @@ export const useAuth = () => {
         dispatch(setLoading(true))
         dispatch(setError(null))
         dispatch(setAuthMessage(null))
-        await new Promise(resolve => setTimeout(resolve, 2000))
         try {
             const data = await resetPasswordApi({ token, newPassword, confirmPassword })
             dispatch(setAuthMessage(data.message))

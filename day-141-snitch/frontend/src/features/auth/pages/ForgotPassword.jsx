@@ -107,20 +107,25 @@ const ForgotPassword = () => {
             <h3 className="font-serif text-white text-2xl font-medium tracking-tight mb-2">Forgot Password</h3>
             <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">Enter your registered email address and we will send you a link to reset your password.</p>
             <form 
-            className="w-full flex flex-col mb-10"
-            onSubmit={handleForm}
+                className="w-full flex flex-col mb-10"
+                onSubmit={handleForm}
             >
-            <label htmlFor="email" className="font-sans text-white text-xs font-medium uppercase tracking-widest opacity-75 mb-2">Email Address</label>
-            <input 
-                type="email" 
-                name="email" 
-                id="email" 
-                placeholder="Enter your email" 
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                className="bg-[#1E1E1E] border border-[#2A2A2A] text-white font-sans text-sm rounded-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors px-4 py-3 mb-5"  
-            />
-            <button className="bg-gold w-full hover:bg-[#b5955a] text-black font-sans text-sm font-bold uppercase tracking-wider rounded-sm py-3 cursor-pointer transition-[transform, colors] duration-200 active:scale-95">SEND RESEND LINK</button>
+                <label htmlFor="email" className="font-sans text-white text-xs font-medium uppercase tracking-widest opacity-75 mb-2">Email Address</label>
+                <input 
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    placeholder="Enter your email" 
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    className="bg-[#1E1E1E] border border-[#2A2A2A] text-white font-sans text-sm rounded-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors px-4 py-3 mb-5"  
+                />
+                <button 
+                    disabled={isSubmitting}
+                    className="bg-gold w-full hover:bg-[#b5955a] text-black font-sans text-sm font-bold uppercase tracking-wider rounded-sm py-3 cursor-pointer transition-[transform, colors] duration-200 active:scale-95"
+                >
+                    SEND RESET LINK
+                </button>
             </form>
             <Link
                 to="/login"
