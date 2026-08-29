@@ -2,6 +2,7 @@ import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config.js";
 import { sendEmail } from "../services/email.service.js";
+import bcrypt from "bcryptjs";
 
 async function sendTokenResponse(user, res, message) {
     const token = jwt.sign({
@@ -462,6 +463,16 @@ export const resetPassword = async (req, res) => {
                 message: "Invalid or expired reset token.",
                 success: false
             })
+        }
+
+        const isSamePassword = await user.comparePassword(newPassword);
+
+        if (isSamePassword) {
+            return res.status(400).json({
+                errors: [{
+                    msg: "New password cannot be the same as your old password"
+                }]
+            }) 
         }
 
         const resetSecret = config.JWT_SECRET + user.password

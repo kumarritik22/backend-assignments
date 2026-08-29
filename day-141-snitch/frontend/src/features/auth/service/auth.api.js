@@ -52,7 +52,7 @@ export async function forgotPassword({ email }) {
     return response.data;
 }
 
-export async function resetPasswordApi({ token, newPassword }) {
-    const response = await authApiInstance.post(`/reset-password/${token}`, { newPassword })
+export async function resetPasswordApi({ token, newPassword, confirmPassword }) {
+    const response = await authApiInstance.post(`/reset-password/${token}`, { newPassword, confirmPassword })
     return response.data;
 }

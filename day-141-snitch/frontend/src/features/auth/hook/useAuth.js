@@ -110,13 +110,13 @@ export const useAuth = () => {
         }
     };
 
-    async function handleResetPassword({ token, newPassword }) {
+    async function handleResetPassword({ token, newPassword, confirmPassword }) {
         dispatch(setLoading(true))
         dispatch(setError(null))
         dispatch(setAuthMessage(null))
         await new Promise(resolve => setTimeout(resolve, 2000))
         try {
-            const data = await resetPasswordApi({ token, newPassword })
+            const data = await resetPasswordApi({ token, newPassword, confirmPassword })
             dispatch(setAuthMessage(data.message))
         } catch (error) {
             if (error.response.data.errors) {
