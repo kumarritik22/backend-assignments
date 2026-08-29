@@ -116,10 +116,11 @@ const ResetPassword = () => {
                     </span>
                     <p>{localError}</p>
                 </div>
-              )}
+            )}
             <form 
               className="w-full flex flex-col mb-10"
               onSubmit={handleForm}
+              noValidate
               >
               <input 
                   type="password" 

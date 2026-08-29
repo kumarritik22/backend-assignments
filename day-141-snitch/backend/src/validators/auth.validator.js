@@ -25,8 +25,10 @@ export const validateRegisterUser = [
         .matches(/[0-9]/).withMessage("Password must contain at least one number.")
         .matches(/[!@#$%^&*]/).withMessage("Password must contain at least one special character."),
     body("fullname")
+        .trim()
         .notEmpty().withMessage("Fullname is required")
-        .isLength({ min: 3 }).withMessage("Fullname must be at least 3 characters long"),
+        .isLength({ min: 2, max: 50 }).withMessage("Fullname must be between 2 and 50 characters.")
+        .matches(/^[\p{L}]+(?:[ '\-][\p{L}]+)*$/u).withMessage("Full name can only contain letters, spaces, hyphens, and apostrophes."),
     body("isSeller")
         .isBoolean().withMessage("isSeller must be a boolean value"),
 

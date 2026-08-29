@@ -17,11 +17,19 @@ const ForgotPassword = () => {
 
     const [email, setEmail] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [localError, setLocalError] = useState("")
 
     const dispatch = useDispatch()
 
     const handleForm = async (e) => {
         e.preventDefault()
+
+        setLocalError("")
+
+        if (!email.trim()) {
+           return setLocalError("Please enter your email address.")
+        }
+
         setIsSubmitting(true)
         await handleForgotPassword({ email })
         setIsSubmitting(false)
@@ -106,9 +114,18 @@ const ForgotPassword = () => {
             </div>
             <h3 className="font-serif text-white text-2xl font-medium tracking-tight mb-2">Forgot Password</h3>
             <p className="font-sans text-[#888888] text-sm leading-relaxed text-center mb-7">Enter your registered email address and we will send you a link to reset your password.</p>
+            {localError && (
+                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-400/40 text-[11px] font-bold">
+                        !
+                    </span>
+                    <p>{localError}</p>
+                </div>
+            )}
             <form 
                 className="w-full flex flex-col mb-10"
                 onSubmit={handleForm}
+                noValidate
             >
                 <label htmlFor="email" className="font-sans text-white text-xs font-medium uppercase tracking-widest opacity-75 mb-2">Email Address</label>
                 <input 
