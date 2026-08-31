@@ -9,6 +9,8 @@ const Footer = () => {
   const { selectedCurrency, handleChangeCurrency} = useCurrency()
 
   const [isOpen, setIsOpen] = useState(false)
+  const [email, setEmail] = useState("")
+  const [issubscribed, setIsSubscribed] = useState(false)
 
   const currencyLabels = {
     INR: "INDIA · INR (₹)",
@@ -20,6 +22,14 @@ const Footer = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (email.trim()) {
+      setIsSubscribed(true)
+      setEmail("")
+    }
+
+    setTimeout(() => {
+      setIsSubscribed(false)
+    }, 5000);
   }
 
   return (
@@ -27,7 +37,13 @@ const Footer = () => {
         <div className="max-w-xl mx-auto text-center flex items-center flex-col mb-20 sm:mb-24">
             <h2 className="font-serif text-lg sm:text-xl tracking-[0.18em] text-white font-normal uppercase mb-3">The Velora Circle</h2>
             <p className="font-sans text-xs sm:text-sm text-[#d0c5b5] leading-relaxed max-w-md mx-auto mb-8">Join our inner circle for early access to limited collections, private edits, and seasonal drops.</p>
-            <form
+            {issubscribed ? (
+              <div className="w-full max-w-md py-4 border-b border-gold/40 flex flex-col items-center justify-center space-y-1.5 text-center transition-all duration-300">
+                <h3 className="font-serif text-xs sm:text-sm text-gold tracking-[0.2em] uppercase font-semibold">WELCOME TO THE CIRCLE</h3>
+                <p className="font-sans text-[11px] sm:text-xs text-[#888888] tracking-wide font-medium">Thank you for subscribing.</p>
+              </div>
+            ) : (
+              <form
               onSubmit={handleSubmit}
               className="w-full max-w-md relative flex items-center border-b border-[#2A2A2A] focus-within:border-gold transition-colors duration-300 pb-2"
             >
@@ -35,6 +51,9 @@ const Footer = () => {
                 type="email" 
                 name="email" 
                 placeholder="ENTER YOUR EMAIL"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="w-full bg-transparent font-sans text-xs sm:text-sm text-white placeholder-[#444444] tracking-wider outline-none py-1 pr-16" 
               />
               <button 
@@ -43,6 +62,7 @@ const Footer = () => {
                 JOIN
               </button>
             </form>
+            )}
         </div>
 
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16 mb-10">
