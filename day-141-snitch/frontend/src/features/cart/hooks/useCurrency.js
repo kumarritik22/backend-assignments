@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { setError, setLoading, setRates } from "../state/currency.slice.js"
+import { setError, setLoading, setRates, setSelectedCurrency } from "../state/currency.slice.js"
 import { fetchExchangeRates } from "../services/currency.api.js"
 
 export const convertCurrency = (amount, fromCurrency, toCurrency, rates) => {
@@ -15,7 +15,7 @@ export const convertCurrency = (amount, fromCurrency, toCurrency, rates) => {
 export const useCurrency = () => {
     
     const dispatch = useDispatch()
-    const { rates, loading, error } = useSelector(state => state.currency)
+    const { rates, loading, error, selectedCurrency } = useSelector(state => state.currency)
 
     const handleFetchRates = async () => {
         if (rates) return 
@@ -33,5 +33,19 @@ export const useCurrency = () => {
         }
     }
 
-    return { rates, ratesLoading: loading, ratesError: error, handleFetchRates, convertCurrency }
+    const handleChangeCurrency = async (newCurrency) => {
+        dispatch(setLoading(true))
+        dispatch(setError(false))
+
+        try {
+            dispatch(setSelectedCurrency(newCurrency))
+            await handleFetchRates()
+        } catch (error) {
+            dispatch(setError(true))
+        } finally {
+            dispatch(setLoading(false))
+        }
+    }
+
+    return { rates, ratesLoading: loading, ratesError: error, handleFetchRates, convertCurrency, selectedCurrency, handleChangeCurrency }
 }

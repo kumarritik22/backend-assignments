@@ -14,15 +14,14 @@ const Cart = () => {
 
     const cart = useSelector(state => state.cart)
     const { handleGetCart, handleIncreaseCartItemQuantity, handleDecreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder, handleFailCartOrder, handleDeleteCartItem } = useCart()
-    const { rates, ratesLoading, ratesError, handleFetchRates } = useCurrency()
+    const { rates, ratesLoading, ratesError, handleFetchRates, selectedCurrency, handleChangeCurrency } = useCurrency()
     const { error, isLoading, Razorpay } = useRazorpay();
 
     const user = useSelector(state => state.user);
 
     const navigate = useNavigate();
 
-    // User's chosen display currency (defaults to most common in cart)
-    const [displayCurrency, setDisplayCurrency] = useState('USD')
+    const displayCurrency = selectedCurrency
 
     useEffect(() => {
         handleGetCart()
@@ -30,14 +29,14 @@ const Cart = () => {
     }, [])
 
     // Once totalsByCurrency loads, default to the currency with the highest total amount
-    useEffect(() => {
-        if (cart.totalsByCurrency?.length > 0) {
-            const dominant = cart.totalsByCurrency.reduce((prev, curr) =>
-                curr.amount > prev.amount ? curr : prev
-            )
-            setDisplayCurrency(dominant.currency)
-        }
-    }, [cart.totalsByCurrency])
+    // useEffect(() => {
+    //     if (cart.totalsByCurrency?.length > 0) {
+    //         const dominant = cart.totalsByCurrency.reduce((prev, curr) =>
+    //             curr.amount > prev.amount ? curr : prev
+    //         )
+    //         displayCurrency(dominant.currency)
+    //     }
+    // }, [cart.totalsByCurrency])
 
     const handleCheckout = async () => {
         try {
@@ -224,8 +223,6 @@ const Cart = () => {
                                                             {formatOriginalPrice(itemPrice?.amount, itemPrice?.currency)}
                                                         </div>
 
-                                                        
-
                                                         {
                                                             itemPrice.amount !== variantPrice.amount && (
                                                                 <>
@@ -307,7 +304,7 @@ const Cart = () => {
                                     <div className="relative">
                                         <select
                                             value={displayCurrency}
-                                            onChange={e => setDisplayCurrency(e.target.value)}
+                                            onChange={e => handleChangeCurrency(e.target.value)}
                                             disabled={ratesLoading || ratesError}
                                             className="appearance-none bg-[#1a1a1a] border border-white/10 rounded-lg pl-3 pr-7 py-1.5 font-inter text-[11px] font-bold text-white focus:border-gold focus:outline-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                                         >

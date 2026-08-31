@@ -5,7 +5,8 @@ const currencySlice = createSlice({
     initialState: {
         rates: null,
         loading: false,
-        error: false
+        error: false,
+        selectedCurrency: "INR"
     },
     reducers: {
         setRates: (state, action) => {
@@ -16,9 +17,12 @@ const currencySlice = createSlice({
         },
         setError: (state, action) => {
             state.error = action.payload
+        },
+        setSelectedCurrency: (state, action) => {
+            state.selectedCurrency = action.payload
         }
     }
 })
 
-export const {setRates, setLoading, setError} = currencySlice.actions;
+export const {setRates, setLoading, setError, setSelectedCurrency} = currencySlice.actions;
 export default currencySlice.reducer;

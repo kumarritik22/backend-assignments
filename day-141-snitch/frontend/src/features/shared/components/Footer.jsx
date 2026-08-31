@@ -1,8 +1,11 @@
 import { Link } from "react-router";
-import { Copyright } from 'lucide-react';
+import { ChevronDown, Copyright } from 'lucide-react';
 import { FaInstagram, FaXTwitter, FaYoutube } from "react-icons/fa6";
+import { useCurrency } from "../../cart/hooks/useCurrency";
 
 const Footer = () => {
+
+  const { selectedCurrency, handleChangeCurrency} = useCurrency()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -84,6 +87,16 @@ const Footer = () => {
             <Link to="#" className="hover:text-[#888888] transition-[transform, colors] cursor-pointer">Terms</Link>
             <Link to="#" className="hover:text-[#888888] transition-[transform, colors] cursor-pointer">Privacy</Link>
             <Link to="#" className="hover:text-[#888888] transition-[transform, colors] cursor-pointer">Cookies</Link>
+            <div className="relative inline-flex items-center">
+              <select value={selectedCurrency} onChange={(e) => handleChangeCurrency(e.target.value)} className="appearance-none bg-transparent text-gold hover:text-[#E4C285] font-sans text-[10px] sm:text-[11px] font-medium tracking-widest uppercase cursor-pointer outline-none border-none pr-4.5 transition-colors">
+                <option className="bg-[#111111] text-white font-sans text-xs py-2">INR</option>
+                <option className="bg-[#111111] text-white font-sans text-xs py-2">USD</option>
+                <option className="bg-[#111111] text-white font-sans text-xs py-2">JPY</option>
+                <option className="bg-[#111111] text-white font-sans text-xs py-2">EUR</option>
+                <option className="bg-[#111111] text-white font-sans text-xs py-2">GBP</option>
+              </select>
+              <ChevronDown size={11} className="absolute right-0 top-1/2 -translate-y-1/2 text-gold   pointer-events-none" />
+            </div>
           </div>
         </div>
     </footer>
