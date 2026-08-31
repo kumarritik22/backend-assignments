@@ -1,11 +1,22 @@
 import { Link } from "react-router";
 import { ChevronDown, Copyright } from 'lucide-react';
 import { FaInstagram, FaXTwitter, FaYoutube } from "react-icons/fa6";
-import { useCurrency } from "../../cart/hooks/useCurrency";
+import { useCurrency } from "../../cart/hooks/useCurrency.js";
+import { useState } from "react";
 
 const Footer = () => {
 
   const { selectedCurrency, handleChangeCurrency} = useCurrency()
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  const currencyLabels = {
+    INR: "INDIA · INR (₹)",
+    USD: "GLOBAL · USD ($)",
+    EUR: "EUROPE · EUR (€)",
+    GBP: "UK · GBP (£)",
+    JPY: "JAPAN · JPY (¥)"
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -88,14 +99,62 @@ const Footer = () => {
             <Link to="#" className="hover:text-[#888888] transition-[transform, colors] cursor-pointer">Privacy</Link>
             <Link to="#" className="hover:text-[#888888] transition-[transform, colors] cursor-pointer">Cookies</Link>
             <div className="relative inline-flex items-center">
-              <select value={selectedCurrency} onChange={(e) => handleChangeCurrency(e.target.value)} className="appearance-none bg-transparent text-gold hover:text-[#E4C285] font-sans text-[10px] sm:text-[11px] font-medium tracking-widest uppercase cursor-pointer outline-none border-none pr-4.5 transition-colors">
-                <option className="bg-[#111111] text-white font-sans text-xs py-2">INR</option>
-                <option className="bg-[#111111] text-white font-sans text-xs py-2">USD</option>
-                <option className="bg-[#111111] text-white font-sans text-xs py-2">JPY</option>
-                <option className="bg-[#111111] text-white font-sans text-xs py-2">EUR</option>
-                <option className="bg-[#111111] text-white font-sans text-xs py-2">GBP</option>
-              </select>
-              <ChevronDown size={11} className="absolute right-0 top-1/2 -translate-y-1/2 text-gold   pointer-events-none" />
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center gap-1.5 text-gold hover:text-[#E4C285] font-sans text-[10px] sm:text-[11px] font-medium tracking-widest uppercase transition-colors cursor-pointer" 
+              >
+                {currencyLabels[selectedCurrency] || selectedCurrency}
+                <ChevronDown size={11} className={`${isOpen ? "rotate-180" : ""} transition-transform duration-200`} />
+              </button>
+              {isOpen && (
+                <div className="absolute bottom-full right-0 mb-2.5 bg-[#111111] border border-[#2A2A2A] rounded-sm shadow-2xl py-1 min-w-40 z-50 flex flex-col">
+                  <button 
+                    onClick={() => {
+                      handleChangeCurrency("INR");
+                      setIsOpen(false);
+                    }}
+                    className="px-3.5 py-2 text-left font-sans text-[11px] tracking-wider text-[#888888] hover:text-gold hover:bg-[#181818] transition-colors cursor-pointer w-full flex items-center justify-between"
+                  >
+                    INDIA · INR (₹)
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleChangeCurrency("USD");
+                      setIsOpen(false);
+                    }}
+                    className="px-3.5 py-2 text-left font-sans text-[11px] tracking-wider text-[#888888] hover:text-gold hover:bg-[#181818] transition-colors cursor-pointer w-full flex items-center justify-between"
+                  >
+                    GLOBAL · USD ($)
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleChangeCurrency("EUR");
+                      setIsOpen(false);
+                    }}
+                    className="px-3.5 py-2 text-left font-sans text-[11px] tracking-wider text-[#888888] hover:text-gold hover:bg-[#181818] transition-colors cursor-pointer w-full flex items-center justify-between"
+                  >
+                    EUROPE · EUR (€)
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleChangeCurrency("GBP");
+                      setIsOpen(false);
+                    }}
+                    className="px-3.5 py-2 text-left font-sans text-[11px] tracking-wider text-[#888888] hover:text-gold hover:bg-[#181818] transition-colors cursor-pointer w-full flex items-center justify-between"
+                  >
+                    UK · GBP (£)
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleChangeCurrency("JPY");
+                      setIsOpen(false);
+                    }}
+                    className="px-3.5 py-2 text-left font-sans text-[11px] tracking-wider text-[#888888] hover:text-gold hover:bg-[#181818] transition-colors cursor-pointer w-full flex items-center justify-between"
+                  >
+                    JAPAN · JPY (¥)
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
