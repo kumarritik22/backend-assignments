@@ -183,26 +183,6 @@ const Home = () => {
           </div>
         )}
       </section>
-
-      {/* ── Footer ── */}
-      <footer className="border-t border-white/5 py-12 bg-[#050505]">
-        <div className="max-w-350 mx-auto px-5 sm:px-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-          <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="Velora" className="h-5 w-auto opacity-50 grayscale" />
-          </div>
-          <p className="font-inter text-[11px] text-[#555] uppercase tracking-widest">
-            © {new Date().getFullYear()} Velora Studios. All rights reserved.
-          </p>
-          <div className="flex gap-6">
-            {['Instagram', 'Twitter', 'Pinterest'].map(link => (
-              <a key={link} href="#" className="font-inter text-[11px] text-[#555] hover:text-gold transition-colors uppercase tracking-widest">
-                {link}
-              </a>
-            ))}
-          </div>
-        </div>
-      </footer>
-
     </div>
   )
 }
