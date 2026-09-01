@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useSelector } from 'react-redux'
-import { useProduct } from '../hooks/useProduct'
+import { useProduct } from '../hooks/useProduct.js'
 
 const Home = () => {
   const { products } = useSelector(state => state.product)
@@ -19,6 +19,22 @@ const Home = () => {
   const filteredProducts = searchQuery ? products.filter((product) => {
     return product.title.toLowerCase().includes(searchQuery.toLowerCase())
   }) : products
+
+  useEffect(() => {
+    if (searchQuery) {
+      const element = document.getElementById("collection")
+      
+      if (element) {
+        const timer = setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" }) 
+        }, 100);
+
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [searchQuery])
+  
+
 
   useEffect(() => {
     fetchProducts()
