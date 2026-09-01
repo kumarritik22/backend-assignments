@@ -99,23 +99,36 @@ const Home = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
             <h2 className="font-bodoni text-[32px] sm:text-[40px] font-bold text-white leading-tight mb-3">
-              {searchQuery ? `Search results for ${searchQuery}` : "Curated Selection"}
+              {searchQuery ? `Search results for "${searchQuery}"` : "Curated Selection"}
             </h2>
-            <p className="font-inter text-sm text-[#777] max-w-md leading-relaxed">
-              Hand-picked pieces designed to elevate your everyday aesthetic.
-            </p>
+            {searchQuery ? (
+              <>
+                <p className="font-inter text-sm text-[#777] max-w-md leading-relaxed">
+                  Showing curated pieces matching your search query.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="font-inter text-sm text-[#777] max-w-md leading-relaxed">
+                  Hand-picked pieces designed to elevate your everyday aesthetic.
+                </p>
+              </>
+            )}
           </div>
           
           <div className="flex gap-4">
             <span className="font-inter text-[11px] tracking-widest text-[#555] uppercase border-b border-gold/30 pb-1 pb">
-              All Products ({filteredProducts.length})
+              {searchQuery
+                ? `${filteredProducts.length} RESULTS FOUND`
+                : `All Products (${filteredProducts.length})`
+              }
             </span>
             {searchQuery && (
               <button 
                 onClick={() => navigate("/")}
-                className="font-inter text-[11px] tracking-widest text-gold hover:text-[#E4C285] uppercase transition-colors cursor-pointer border-b border-gold/30 pb-1"
+                className="font-inter text-[10px] tracking-widest text-gold hover:text-white uppercase transition-all cursor-pointer bg-white/5 border border-gold/40 hover:border-gold hover:bg-gold/10 px-3.5 py-1 rounded-full flex items-center gap-1.5 active:scale-95"
               >
-                Clear Search ✕
+                Clear Search X
               </button>
             )}
           </div>
