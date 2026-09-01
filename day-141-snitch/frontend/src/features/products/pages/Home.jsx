@@ -62,7 +62,7 @@ const Home = () => {
     <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
 
       {/* ── Hero Section ── */}
-      <section className="relative w-full h-[70vh] min-h-125 flex items-center justify-center overflow-hidden border-b border-white/5">
+      <section className="relative w-full min-h-[85vh] sm:min-h-[90vh] pt-28 pb-20 sm:pt-32 sm:pb-24 flex items-center justify-center overflow-hidden border-b border-white/5">
         
         {/* Background Image & Overlays */}
         <div className="absolute inset-0">
