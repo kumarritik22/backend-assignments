@@ -96,17 +96,20 @@ const Navbar = () => {
           
           {/* ── Left: Desktop Navigation ── */}
           <nav className="hidden md:flex items-center gap-8 flex-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="font-inter text-[11px] font-medium tracking-[0.15em] uppercase text-[#888] hover:text-white transition-colors duration-300 relative group"
-              >
-                {link.name}
-                {/* Hover Indicator */}
-                <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-px bg-gold transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100" />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`font-inter text-[11px] font-medium tracking-[0.15em] uppercase hover:text-white transition-colors duration-300 relative group ${isActive ? "text-white" : "text-[#888]"}`} 
+                >
+                  {link.name}
+                  {/* Hover Indicator */}
+                  <span className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-px bg-gold transition-all duration-300 ${isActive ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"}`} />
+                </Link>
+              )
+            })}
           </nav>
 
           {/* ── Center: Logo ── */}
@@ -299,15 +302,18 @@ const Navbar = () => {
         }`}
       >
         <div className="flex flex-col gap-8 text-center mt-20">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className="font-bodoni text-[28px] text-white hover:text-gold transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path
+            return (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`font-bodoni text-[28px] hover:text-gold transition-colors ${isActive ? "text-gold font-bold" : "text-white"}`}
+              >
+                {link.name}
+              </Link>
+            )
+          })}
 
           {!user && (
             <div className="flex flex-col gap-4 mt-8 pt-8 border-t border-white/5">
