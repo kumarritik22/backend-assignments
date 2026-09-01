@@ -9,12 +9,15 @@ const Navbar = () => {
   const cartItems = useSelector(state => state.cart?.items || [])
   const { handleGetCart } = useCart()
   const { handleLogout } = useAuth()
+  const {products} = useSelector(state => state.product)
   
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const location = useLocation()
   const [searchTerm, setSearchTerm] = useState("")
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const location = useLocation()
+  
 
   const navigate = useNavigate()
 
@@ -33,12 +36,19 @@ const Navbar = () => {
       setSearchTerm("")
     }
   }, [location.search])
+
+ const matchingProducts = searchTerm.trim()
+  ? (products || [])
+      .filter((product) => product.title.toLowerCase().includes(searchTerm.toLowerCase()))
+      .slice(0, 5)
+  : []
   
 
   // Close menus on route change
   useEffect(() => {
     setIsProfileOpen(false)
     setIsMobileMenuOpen(false)
+    setIsSearchOpen(false)
   }, [location.pathname])
 
   // Fetch cart items if user is logged in
@@ -64,6 +74,14 @@ const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
   ]
+
+  const CURRENCY_SYMBOLS = {
+    INR: "₹",
+    USD: "$",
+    EUR: "€",
+    GBP: "£",
+    JPY: "¥"
+  }
 
   return (
     <>
@@ -108,12 +126,74 @@ const Navbar = () => {
                 type="text" 
                 placeholder="Search..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value)
+                  setIsSearchOpen(true)
+                }}
+                onFocus={() => setIsSearchOpen(true)}
                 className="bg-white/5 border border-white/10 rounded-full py-1.5 pl-4 pr-10 text-[11px] font-inter text-white placeholder:text-[#555] focus:outline-none focus:border-gold/50 focus:bg-[#111] transition-all duration-300 w-48 focus:w-64"
               />
               <button className="absolute right-3 text-[#555] group-focus-within:text-gold transition-colors">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               </button>
+
+              {isSearchOpen && searchTerm.trim() && (
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setIsSearchOpen(false)} 
+                />
+              )}
+
+              {isSearchOpen && searchTerm.trim() && (
+                <div className="absolute top-full right-0 mt-3 w-80 sm:w-96 bg-[#111] border border-white/10 rounded-2xl p-4 shadow-2xl z-50">
+                  {matchingProducts.length > 0 ? (
+                    <>
+                      {matchingProducts.map((product) => (
+                        <Link
+                          key={product._id}
+                          to={`/product/${product._id}`}
+                          onClick={() => {
+                            setIsSearchOpen(false)
+                            setSearchTerm("")
+                          }}
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors"
+                        >
+                          <img
+                            src={product.images?.[0]?.url}
+                            alt={product.title}
+                            className="w-12 h-12 object-cover rounded-md"
+                          />
+
+                          <div className="flex flex-col">
+                            <span className="font-inter text-sm text-white">
+                              {product.title}
+                            </span>
+
+                            <span className="font-inter text-xs text-[#B8A47A]">
+                              {CURRENCY_SYMBOLS[product.price?.currency] || "₹"}
+                              {Number(product.price?.amount).toLocaleString()}
+                            </span>
+                          </div>
+                        </Link>
+                      ))}
+
+                      <Link
+                        to={`/?search=${encodeURIComponent(searchTerm)}`}
+                        onClick={() => {
+                          setIsSearchOpen(false)
+                        }}
+                        className="block mt-3 pt-3 border-t border-white/10 text-center font-inter text-xs text-[#B8A47A] hover:text-white transition-colors"
+                      >
+                        View all results
+                      </Link>
+                    </>
+                  ) : (
+                    <p className="font-inter text-sm text-[#777] text-center py-4">
+                      No matching pieces found.
+                    </p>
+                  )}
+                </div>
+              )}
             </form>
 
             {user ? (

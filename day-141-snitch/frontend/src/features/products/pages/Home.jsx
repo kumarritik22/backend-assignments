@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router'
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useProduct } from '../hooks/useProduct.js'
 
 const Home = () => {
   const { products } = useSelector(state => state.product)
-  const { user } = useSelector(state => state.auth)
   const { handleGetAllProducts } = useProduct()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
-  const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   const navigate = useNavigate()
 
