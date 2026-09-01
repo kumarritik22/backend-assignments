@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useProduct } from '../hooks/useProduct'
 
@@ -12,6 +12,13 @@ const Home = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   const navigate = useNavigate()
+
+  const [searchParams] = useSearchParams()
+  const searchQuery = searchParams.get("search") || ""
+
+  const filteredProducts = searchQuery ? products.filter((product) => {
+    return product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  }) : products
 
   useEffect(() => {
     fetchProducts()
@@ -92,7 +99,7 @@ const Home = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
             <h2 className="font-bodoni text-[32px] sm:text-[40px] font-bold text-white leading-tight mb-3">
-              Curated Selection
+              {searchQuery ? `Search results for ${searchQuery}` : "Curated Selection"}
             </h2>
             <p className="font-inter text-sm text-[#777] max-w-md leading-relaxed">
               Hand-picked pieces designed to elevate your everyday aesthetic.
@@ -101,8 +108,16 @@ const Home = () => {
           
           <div className="flex gap-4">
             <span className="font-inter text-[11px] tracking-widest text-[#555] uppercase border-b border-gold/30 pb-1 pb">
-              All Products ({products.length})
+              All Products ({filteredProducts.length})
             </span>
+            {searchQuery && (
+              <button 
+                onClick={() => navigate("/")}
+                className="font-inter text-[11px] tracking-widest text-gold hover:text-[#E4C285] uppercase transition-colors cursor-pointer border-b border-gold/30 pb-1"
+              >
+                Clear Search ✕
+              </button>
+            )}
           </div>
         </div>
 
@@ -122,16 +137,43 @@ const Home = () => {
               </div>
             ))}
           </div>
-        ) : products.length === 0 ? (
+        ) : filteredProducts.length === 0 ? (
           /* Empty State */
           <div className="text-center py-32 border border-white/5 rounded-2xl bg-[#0e0e0e]">
-            <h3 className="font-bodoni text-[28px] font-bold text-white mb-2">Coming Soon</h3>
-            <p className="font-inter text-sm text-[#777]">Our curators are currently preparing the new collection.</p>
+            {searchQuery ? (
+              <>
+                <h3 className="font-bodoni text-[28px] font-bold text-white mb-2">
+                  No Pieces Found
+                </h3>
+
+                <p className="font-inter text-sm text-[#777] max-w-md mx-auto mb-6">
+                  We couldn't find any items matching "{searchQuery}". Try searching
+                  for another item or view our full collection.
+                </p>
+
+                <button
+                  onClick={() => navigate("/")}
+                  className="px-6 py-3 bg-gold text-[#0a0a0a] font-inter text-[11px] font-bold tracking-[0.2em] uppercase rounded-full hover:bg-[#b5955a] shadow-[0_0_15px_rgba(201,169,110,0.2)] transition-all cursor-pointer transform hover:-translate-y-0.5 active:scale-95"
+                >
+                  Explore All Pieces
+                </button>
+              </>
+            ) : (
+              <>
+                <h3 className="font-bodoni text-[28px] font-bold text-white mb-2">
+                  Coming Soon
+                </h3>
+
+                <p className="font-inter text-sm text-[#777]">
+                  Our curators are currently preparing the new collection.
+                </p>
+              </>
+            )}
           </div>
         ) : (
           /* Public Product Grid */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
-            {products.map((product) => {
+            {filteredProducts.map((product) => {
               const coverImg = product.images?.[0]?.url
               return (
                 <div key={product._id} className="group relative flex flex-col bg-[#141414] border border-white/5 rounded-xl p-3 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(201,169,110,0.05)] transition-all duration-300">

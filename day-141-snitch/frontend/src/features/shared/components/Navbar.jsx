@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router'
+import { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useCart } from '../../cart/hooks/useCart.js'
 import { useAuth } from '../../auth/hook/useAuth.js'
@@ -14,6 +14,26 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  const [searchTerm, setSearchTerm] = useState("")
+
+  const navigate = useNavigate()
+
+  const handleSearchBar = (e) => {
+    e.preventDefault()
+
+    if (searchTerm.trim()) {
+      navigate('/?search=' + encodeURIComponent(searchTerm))
+    } else {
+      navigate("/")
+    }
+  }
+
+  useEffect(() => {
+    if (location.search === "") {
+      setSearchTerm("")
+    }
+  }, [location.search])
+  
 
   // Close menus on route change
   useEffect(() => {
@@ -81,16 +101,20 @@ const Navbar = () => {
           <div className="flex items-center justify-end gap-5 sm:gap-6 z-50 flex-1">
             
             {/* Search Bar */}
-            <div className="hidden lg:flex items-center relative group">
+            <form 
+              onSubmit={handleSearchBar}
+              className="hidden lg:flex items-center relative group">
               <input 
                 type="text" 
-                placeholder="Search..." 
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="bg-white/5 border border-white/10 rounded-full py-1.5 pl-4 pr-10 text-[11px] font-inter text-white placeholder:text-[#555] focus:outline-none focus:border-gold/50 focus:bg-[#111] transition-all duration-300 w-48 focus:w-64"
               />
               <button className="absolute right-3 text-[#555] group-focus-within:text-gold transition-colors">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               </button>
-            </div>
+            </form>
 
             {user ? (
               <>
