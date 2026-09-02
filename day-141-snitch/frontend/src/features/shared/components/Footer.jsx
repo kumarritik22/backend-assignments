@@ -33,7 +33,7 @@ const Footer = () => {
   }
 
   return (
-    <footer className="bg-[#0A0A0A] text-white border-t border-[#1A1A1A] pt-20 pb-10 px-6 sm:px-12 lg:px-20 w-full overflow-hidden">
+    <footer className="bg-[#0A0A0A] text-white border-t border-[#1A1A1A] pt-20 pb-10 px-6 sm:px-12 lg:px-20 w-full overflow-hidden print:hidden">
         <div className="max-w-xl mx-auto text-center flex items-center flex-col mb-20 sm:mb-24">
             <h2 className="font-serif text-lg sm:text-xl tracking-[0.18em] text-white font-normal uppercase mb-3">The Velora Circle</h2>
             <p className="font-sans text-xs sm:text-sm text-[#d0c5b5] leading-relaxed max-w-md mx-auto mb-8">Join our inner circle for early access to limited collections, private edits, and seasonal drops.</p>

@@ -86,7 +86,7 @@ const Navbar = () => {
   return (
     <>
       <header 
-        className={`${location.pathname === '/' ? 'fixed' : 'sticky'} top-0 inset-x-0 z-50 transition-all duration-300 ${
+        className={`${location.pathname === '/' ? 'fixed' : 'sticky'} top-0 inset-x-0 z-50 transition-all duration-300 print:hidden ${
           scrolled || location.pathname !== '/'
             ? 'bg-[#0c0c0c]/90 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl' 
             : 'bg-transparent py-6'

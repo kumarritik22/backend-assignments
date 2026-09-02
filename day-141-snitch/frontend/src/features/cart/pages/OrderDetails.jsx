@@ -1,4 +1,4 @@
-﻿import { Link, useNavigate, useParams } from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router'
 import { Truck, CheckCircle2, Download, Printer, ArrowLeft, ShieldCheck, Headphones,ExternalLink, ChevronRight,Sparkles} from 'lucide-react'
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -100,25 +100,20 @@ const OrderDetails = () => {
                 Order Details
               </h1>
             </div>
-            
-            {/* Action Buttons (Print, Download, Continue Shopping) */}
-            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
+
+            {/* Action Buttons (Download, Continue Shopping) */}
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0 print:hidden">
               <button 
                 onClick={() => window.print()}
                 className="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold/40 text-white font-inter text-xs font-semibold tracking-wider uppercase whitespace-nowrap transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
               >
                 <Printer className="w-3.5 h-3.5 text-gold" />
-                <span>Print</span>
+                <span>Download Invoice</span>
               </button>
-              <button 
-                className="px-4.5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold/40 text-white font-inter text-xs font-semibold tracking-wider uppercase whitespace-nowrap transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
-              >
-                <Download className="w-3.5 h-3.5 text-gold" />
-                <span>Download PDF</span>
-              </button>
+    
               <button 
                 onClick={() => navigate('/')}
-                className="px-5 py-2.5 rounded-full bg-gold hover:bg-[#E4C285] text-[#0a0a0a] font-inter text-xs font-bold tracking-wider uppercase whitespace-nowrap shadow-[0_0_20px_rgba(201,169,110,0.25)] hover:shadow-[0_0_30px_rgba(201,169,110,0.4)] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center gap-2"
+                className="px-5 py-2.5 rounded-full bg-gold hover:bg-[#E4C285] text-[#0a0a0a] font-inter text-xs font-bold tracking-wider uppercase whitespace-nowrap shadow-[0_0_20px_rgba(201,169,110,0.25)] hover:shadow-[0_0_30px_rgba(201,169,110,0.4)] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center gap-2 print:hidden"
               >
                 <span>Continue Shopping</span>
               </button>
@@ -299,24 +294,39 @@ const OrderDetails = () => {
               </h3>
 
               <div className="space-y-3 font-inter text-xs">
+                {/* Items Subtotal */}
                 <div className="flex justify-between text-[#888]">
                   <span>Items Subtotal</span>
-                  <span className="text-white font-medium">{CURRENCY_SYMBOLS[order?.price?.currency] || '₹'}{Number(order?.price?.amount).toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-[#888]">
-                  <span>White-Glove Shipping</span>
-                  <span className="text-gold uppercase tracking-wider font-semibold">Complimentary</span>
-                </div>
-                <div className="flex justify-between text-[#888]">
-                  <span>Estimated Taxes (GST 18%)</span>
-                  <span className="text-white font-medium">{CURRENCY_SYMBOLS[order?.price?.currency] || '₹'}{Number(order?.price?.amount * 0.18 / 1.18).toFixed(0)}</span>
-                </div>
-
-                <div className="border-t border-white/10 pt-4 mt-2 flex justify-between items-baseline">
-                  <span className="font-inter font-bold text-xs uppercase tracking-widest text-white">Grand Total</span>
-                  <span className="font-bodoni text-2xl font-bold text-gold">
+                  <span className="text-white font-medium">
                     {CURRENCY_SYMBOLS[order?.price?.currency] || '₹'}{Number(order?.price?.amount).toLocaleString()}
                   </span>
+                </div>
+
+                {/* Complimentary Delivery */}
+                <div className="flex justify-between text-[#888]">
+                  <span>Shipping</span>
+                  <span className="text-gold uppercase tracking-wider font-semibold">Complimentary</span>
+                </div>
+
+                {/* Tax */}
+                <div className="flex justify-between text-[#888]">
+                  <span>Taxes (GST 18%)</span>
+                  <span className="text-[#bbb]">
+                    Included ({CURRENCY_SYMBOLS[order?.price?.currency] || '₹'}{Number(order?.price?.amount * 0.18 / 1.18).toFixed(0)})
+                  </span>
+                </div>
+
+                {/* Grand Total Container */}
+                <div className="border-t border-white/10 pt-4 mt-2 space-y-1">
+                  <div className="flex justify-between items-baseline">
+                    <span className="font-inter font-bold text-xs uppercase tracking-widest text-white">Grand Total</span>
+                    <span className="font-bodoni text-2xl font-bold text-gold">
+                      {CURRENCY_SYMBOLS[order?.price?.currency] || '₹'}{Number(order?.price?.amount).toLocaleString()}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-[#666] text-right">
+                    All taxes & luxury duties included
+                  </p>
                 </div>
               </div>
 
@@ -328,7 +338,7 @@ const OrderDetails = () => {
                     <ShieldCheck className="w-3.5 h-3.5" /> Paid
                   </span>
                 </div>
-                <p className="font-inter text-xs text-white font-medium">Razorpay (${order?.price?.currency || 'INR'})</p>
+                <p className="font-inter text-xs text-white font-medium">Razorpay ({order?.price?.currency || 'INR'})</p>
                 <p className="font-mono text-[10px] text-[#555]">TXN: {order?.razorpay?.paymentId || order?.razorpay?.orderId}</p>
               </div>
             </div>
