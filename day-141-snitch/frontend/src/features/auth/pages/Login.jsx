@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../hook/useAuth.js'
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'
 import { useDispatch, useSelector } from 'react-redux'
 import { setError } from '../state/auth.slice.js'
@@ -49,6 +49,7 @@ const Login = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const location = useLocation()
 
     const error = useSelector(state => state.auth.error)
     const loading = useSelector(state => state.auth.loading)
@@ -89,7 +90,7 @@ const Login = () => {
 
     if (user) {
       if (user.role === "buyer") {
-        navigate("/")
+        navigate(location.state?.from || "/", { state: { selectedAttributes: location.state?.selectedAttributes } })
       } else if (user.role === "seller") {
         navigate("/seller/dashboard")
       }

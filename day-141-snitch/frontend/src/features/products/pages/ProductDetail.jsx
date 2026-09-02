@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import { useParams, Link, useNavigate } from 'react-router'
+import { useEffect, useState, useMemo } from 'react'
+import { useParams, Link, useNavigate, useLocation } from 'react-router'
 import { useProduct } from '../hooks/useProduct.js'
 import { useCart } from '../../cart/hooks/useCart.js'
+import { useSelector } from 'react-redux'
 
 const ProductDetail = () => {
 
@@ -12,6 +13,8 @@ const ProductDetail = () => {
     const [activeImage, setActiveImage] = useState(0)
 
     const navigate = useNavigate()
+    const { user } = useSelector(state => state.auth)
+    const location = useLocation()
 
     // Variant Selection State
     const [selectedAttributes, setSelectedAttributes] = useState({})
@@ -26,10 +29,12 @@ const ProductDetail = () => {
             const data = await handleGetProductById(productId)
             setProduct(data);
             
-            // Set initial selected attributes to the first variant if available
-            if (data?.variants?.length > 0) {
+            if (location.state?.selectedAttributes) {
+                setSelectedAttributes(location.state.selectedAttributes)
+            } else if (data?.variants?.length > 0) {
                 setSelectedAttributes(data.variants[0].attributes)
             }
+
         } catch (e) {
             console.error(e)
         } finally {
@@ -292,6 +297,17 @@ const ProductDetail = () => {
                         {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                             <button 
+                                onClick={async () => {
+                                    if (!user) {
+                                        return navigate("/login", { state : { from: location.pathname, selectedAttributes } })
+                                    }
+
+                                    await handleAddItem({ 
+                                        productId: product._id, 
+                                        variantId: activeVariant._id
+                                    })
+                                    navigate("/cart")
+                                }}
                                 disabled={displayStock === 0}
                                 className={`flex-1 rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform ${
                                     displayStock === 0 
@@ -309,10 +325,13 @@ const ProductDetail = () => {
                                     : 'border-white/20 hover:border-gold text-white hover:text-gold bg-transparent cursor-pointer'
                                 }`}
                                 onClick={ async () => {
+                                    if (!user) {
+                                        return navigate("/login", { state: { from: location.pathname, selectedAttributes } })
+                                    }
+
                                     await handleAddItem({
                                         productId: product._id,
                                         variantId: activeVariant._id,
-                                    
                                     })
                                     navigate("/cart")
                                 }}
