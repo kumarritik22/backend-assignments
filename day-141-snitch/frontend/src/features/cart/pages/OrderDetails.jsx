@@ -77,70 +77,63 @@ const OrderDetails = () => {
     return <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-4">
       <div className="bg-[#121212] border border-white/10 rounded-2xl p-8 max-w-md w-full text-center space-y-4 shadow-2xl">
         <h2 className="font-bodoni text-2xl font-bold text-white">Order not found.</h2>
-        <p className="font-inter text-xs text-[#888] leading-relaxed">We could not locate this commission record. It may not exist or you may need to sign in.</p>
+        <p className="font-inter text-xs text-[#888] leading-relaxed">We could not locate this order details. It may not exist or you may need to sign in.</p>
         <Link to="/" className="inline-block mt-4 px-6 py-3 bg-gold text-[#0a0a0a] font-inter text-xs font-bold uppercase tracking-widest rounded-full hover:bg-[#E4C285] transition-colors cursor-pointer">Back to Collection</Link>
       </div>
     </div>
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white pt-28 pb-24 px-4 sm:px-6 lg:px-12 selection:bg-gold/30">
+    <div className="min-h-screen bg-[#0a0a0a] text-white pt-6 sm:pt-8 pb-16 px-4 sm:px-6 lg:px-12 selection:bg-gold/30">
       <div className="max-w-7xl mx-auto space-y-10">
 
-        {/* ─── Breadcrumbs & Back Navigation ─── */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-6">
-          <div className="flex items-center gap-2 font-inter text-xs text-[#666] tracking-wider uppercase">
-            <Link to="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5 text-[#444]" />
-            <span className="text-[#888]">My Orders</span>
-            <ChevronRight className="w-3.5 h-3.5 text-[#444]" />
-            <span className="text-gold font-mono">#{order?.razorpay?.orderId || order?._id}</span>
-          </div>
-
-          <button 
-            onClick={() => navigate('/')}
-            className="inline-flex items-center gap-2 font-inter text-xs tracking-[0.15em] uppercase text-[#888] hover:text-white transition-colors cursor-pointer self-start sm:self-auto"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Continue Shopping</span>
-          </button>
-        </div>
-
         {/* ─── Header & Order Status Hero ─── */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold font-inter text-[10px] font-bold tracking-[0.2em] uppercase mb-4 shadow-[0_0_15px_rgba(201,169,110,0.1)]">
-              <Sparkles className="w-3 h-3 text-gold animate-pulse" />
-              <span>Commission Confirmed</span>
+        <div className="space-y-4">
+          {/* Tier 1: Title & Badge on Left, Action Buttons on Right */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-gold/10 border border-gold/30 text-gold font-inter text-[10px] font-bold tracking-[0.2em] uppercase mb-2 shadow-[0_0_15px_rgba(201,169,110,0.1)]">
+                <Sparkles className="w-3 h-3 text-gold animate-pulse" />
+                <span>Order Confirmed</span>
+              </div>
+              <h1 className="font-bodoni text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
+                Order Details
+              </h1>
             </div>
-
-            <h1 className="font-bodoni text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
-              Order Details
-            </h1>
-
-            <div className="flex flex-wrap items-center gap-3 sm:gap-6 mt-3 font-inter text-xs text-[#888]">
-              <span>Placed on <strong className="text-white font-medium">{new Date(order?.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</strong></span>
-              <span className="hidden sm:inline w-1 h-1 rounded-full bg-[#444]" />
-              <span>Estimated Delivery: <strong className="text-gold font-medium">"4 – 6 Business Days (White-Glove Courier)"</strong></span>
+            
+            {/* Action Buttons (Print, Download, Continue Shopping) */}
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
+              <button 
+                onClick={() => window.print()}
+                className="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold/40 text-white font-inter text-xs font-semibold tracking-wider uppercase whitespace-nowrap transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+              >
+                <Printer className="w-3.5 h-3.5 text-gold" />
+                <span>Print</span>
+              </button>
+              <button 
+                className="px-4.5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold/40 text-white font-inter text-xs font-semibold tracking-wider uppercase whitespace-nowrap transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+              >
+                <Download className="w-3.5 h-3.5 text-gold" />
+                <span>Download PDF</span>
+              </button>
+              <button 
+                onClick={() => navigate('/')}
+                className="px-5 py-2.5 rounded-full bg-gold hover:bg-[#E4C285] text-[#0a0a0a] font-inter text-xs font-bold tracking-wider uppercase whitespace-nowrap shadow-[0_0_20px_rgba(201,169,110,0.25)] hover:shadow-[0_0_30px_rgba(201,169,110,0.4)] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center gap-2"
+              >
+                <span>Continue Shopping</span>
+              </button>
             </div>
           </div>
 
-          {/* Action Buttons (Download Invoice / Print) */}
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => window.print()}
-              className="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold/40 text-white font-inter text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
-            >
-              <Printer className="w-3.5 h-3.5 text-gold" />
-              <span className="hidden sm:inline">Print</span>
-            </button>
-
-            <button 
-              className="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold/40 text-white font-inter text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
-            >
-              <Download className="w-3.5 h-3.5 text-gold" />
-              <span>Download Invoice (PDF)</span>
-            </button>
+          {/* Tier 2: Full-Width Metadata Strip */}
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 font-inter text-xs text-[#888] pt-2 border-t border-white/5">
+            <span className="font-mono text-xs text-gold bg-gold/10 px-2.5 py-0.5 rounded-md border border-gold/25 font-medium">
+              #{order?.razorpay?.orderId || order?._id}
+            </span>
+            <span className="w-1 h-1 rounded-full bg-[#444]" />
+            <span>Placed on <strong className="text-white font-medium">{new Date(order?.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</strong></span>
+            <span className="hidden sm:inline w-1 h-1 rounded-full bg-[#444]" />
+            <span>Estimated Delivery: <strong className="text-gold font-medium">4 – 6 Business Days (White-Glove Courier)</strong></span>
           </div>
         </div>
 
@@ -236,7 +229,7 @@ const OrderDetails = () => {
             <div className="bg-[#121212]/90 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl">
               <div className="flex items-center justify-between border-b border-white/5 pb-5 mb-6">
                 <h3 className="font-inter font-bold text-xs uppercase tracking-[0.2em] text-[#888]">
-                  Commissioned Items ({order?.orderItems?.length || 0})
+                  Ordered Items ({order?.orderItems?.length || 0})
                 </h3>
                 <span className="font-inter text-xs text-gold">Velora Atelier Vault</span>
               </div>
