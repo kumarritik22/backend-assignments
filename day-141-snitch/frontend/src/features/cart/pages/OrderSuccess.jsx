@@ -69,14 +69,15 @@ const OrderSuccess = () => {
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                     <Link 
-                        to="/profile/orders"
-                        className="w-full sm:w-auto px-8 py-4 bg-gold text-black font-semibold tracking-wider text-sm hover:bg-[#b5955b] transition-colors rounded-sm flex items-center justify-center gap-2"
+                        to={`/order/${orderId}`}
+                        className="w-full sm:w-auto px-9 py-4 bg-gold hover:bg-[#E4C285] text-[#0a0a0a] font-inter font-bold text-[11px] sm:text-[12px] tracking-[0.2em] uppercase rounded-full shadow-[0_0_25px_rgba(201,169,110,0.25)] hover:shadow-[0_0_35px_rgba(201,169,110,0.4)] transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center justify-center gap-2.5 group"
                     >
-                        VIEW ORDER DETAILS
+                        <span>VIEW ORDER DETAILS</span>
+                        <span className="transform transition-transform duration-200 group-hover:translate-x-1">→</span>
                     </Link>
                     <Link 
                         to="/"
-                        className="w-full sm:w-auto px-8 py-4 bg-transparent border border-[#333333] text-white font-semibold tracking-wider text-sm hover:border-white hover:bg-white hover:text-black transition-all rounded-sm flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-9 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold/40 text-white hover:text-gold font-inter font-bold text-[11px] sm:text-[12px] tracking-[0.2em] uppercase rounded-full backdrop-blur-md transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
                     >
                         CONTINUE SHOPPING <ArrowRight className="w-4 h-4" />
                     </Link>

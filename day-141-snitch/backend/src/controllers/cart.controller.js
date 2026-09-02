@@ -421,3 +421,38 @@ export const removeCartItem = async (req, res) => {
         cart: updatedCart
     })
 }
+
+export const getOrderByIdController = async (req, res) => {
+    const { orderId } = req.params
+
+    let query
+
+    if (mongoose.Types.ObjectId.isValid(orderId)) {
+        query = {
+            _id: orderId,
+            user: req.user._id
+        }
+    } else {
+        query = {
+            "razorpay.orderId": orderId,
+            user: req.user._id
+        }
+    }
+
+    const order = await paymentModel
+    .findOne(query)
+    .populate("user", "fullname email contact")
+
+    if (!order) {
+        return res.status(404).json({
+            message: "Order not found.",
+            success: false
+        })
+    }
+
+    return res.status(200).json({
+        message: "Order found successfully.",
+        success: true,
+        order
+    })
+};

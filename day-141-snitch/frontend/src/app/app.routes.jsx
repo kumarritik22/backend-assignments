@@ -12,6 +12,7 @@ import Cart from "../features/cart/pages/Cart.jsx";
 import AppLayout from "./AppLayout.jsx";
 import About from "../features/products/pages/About.jsx";
 import OrderSuccess from "../features/cart/pages/OrderSuccess.jsx";
+import OrderDetails from "../features/cart/pages/OrderDetails.jsx";
 import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
 import ResendVerificationEmail from "../features/auth/pages/ResendVerificationEmail.jsx";
 import ForgotPassword from "../features/auth/pages/ForgotPassword.jsx";
@@ -71,6 +72,12 @@ export const routes = createBrowserRouter([
             {
                 path: "/order-success",
                 element: <OrderSuccess />
+            },
+            {
+                path: "/order/:orderId",
+                element: <Protected>
+                    <OrderDetails />
+                </Protected>
             },
             {
                 path: "/seller",

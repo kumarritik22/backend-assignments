@@ -49,3 +49,8 @@ export const deleteCartItem = async ({ productId, variantId }) => {
     const response = await cartApiInstance.delete(`/${productId}/${variantId}`)
     return response.data;
 }
+
+export const getOrderDetailsApi = async ({ orderId }) => {
+    const response = await cartApiInstance.get(`/order/${orderId}`)
+    return response.data;
+}
