@@ -1,4 +1,4 @@
-﻿import { Link, useParams } from 'react-router'
+﻿import { Link, useNavigate, useParams } from 'react-router'
 import { Truck, CheckCircle2, Download, Printer, ArrowLeft, ShieldCheck, Headphones,ExternalLink, ChevronRight,Sparkles} from 'lucide-react'
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -6,24 +6,59 @@ import { useCart } from '../hooks/useCart.js'
 
 const CURRENCY_SYMBOLS = { INR: "₹", USD: "$", EUR: "€", GBP: "£", JPY: "¥" }
 
-const OrderDetails = () => {
-  const { orderId } = useParams()
+const ORDER_TIMELINE = [
+  {
+    title: "Order Placed",
+    date: "Payment Verified",
+    completed: true,
+    active: false
+  },
+  {
+    title: "Atelier Tailoring",
+    date: "In Progress",
+    completed: false,
+    active: true
+  },
+  {
+    title: "Dispatched",
+    date: "White-Glove Courier",
+    completed: false,
+    active: false
+  },
+  {
+    title: "Out for Delivery",
+    date: "Pending Dispatch",
+    completed: false,
+    active: false
+  },
+  {
+    title: "Delivered",
+    date: "Recipient Destination",
+    completed: false,
+    active: false
+  }
+]
 
+const OrderDetails = () => {
+
+  const { orderId } = useParams()
   const { handleGetOrderDetails } = useCart()
 
   const [order, setOrder] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
 
+  const navigate = useNavigate()
+
   const fetchOrder = async () => {
     try {
       const data = await handleGetOrderDetails({ orderId })
       if (data?.success) {
-        return setOrder(data.order)
+        setOrder(data.order)
       }
-      setIsLoading(false)
     } catch (error) {
       setError("Order not found or access denied.")
+    } finally {
       setIsLoading(false)
     }
   }
@@ -31,7 +66,22 @@ const OrderDetails = () => {
   useEffect( () => {
     fetchOrder()
   }, [])
-  
+
+  if (isLoading) {
+    return <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center">
+      <h2 className="font-inter text-xs font-bold tracking-[0.25em] text-gold uppercase animate-pulse">Loading Atelier Order Details...</h2>
+    </div>
+  }
+
+  if (error || !order) {
+    return <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-4">
+      <div className="bg-[#121212] border border-white/10 rounded-2xl p-8 max-w-md w-full text-center space-y-4 shadow-2xl">
+        <h2 className="font-bodoni text-2xl font-bold text-white">Order not found.</h2>
+        <p className="font-inter text-xs text-[#888] leading-relaxed">We could not locate this commission record. It may not exist or you may need to sign in.</p>
+        <Link to="/" className="inline-block mt-4 px-6 py-3 bg-gold text-[#0a0a0a] font-inter text-xs font-bold uppercase tracking-widest rounded-full hover:bg-[#E4C285] transition-colors cursor-pointer">Back to Collection</Link>
+      </div>
+    </div>
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pt-28 pb-24 px-4 sm:px-6 lg:px-12 selection:bg-gold/30">
@@ -71,7 +121,7 @@ const OrderDetails = () => {
             <div className="flex flex-wrap items-center gap-3 sm:gap-6 mt-3 font-inter text-xs text-[#888]">
               <span>Placed on <strong className="text-white font-medium">{new Date(order?.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</strong></span>
               <span className="hidden sm:inline w-1 h-1 rounded-full bg-[#444]" />
-              <span>Estimated Delivery: <strong className="text-gold font-medium">{mockOrder.estimatedDelivery}</strong></span>
+              <span>Estimated Delivery: <strong className="text-gold font-medium">"4 – 6 Business Days (White-Glove Courier)"</strong></span>
             </div>
           </div>
 
@@ -125,7 +175,7 @@ const OrderDetails = () => {
               {/* Active gold progress fill */}
               <div className="absolute top-4 left-6 w-[25%] h-0.5 bg-linear-to-r from-gold to-[#E4C285] z-0" />
 
-              {mockOrder.timeline.map((step, index) => (
+              {ORDER_TIMELINE.map((step, index) => (
                 <div key={index} className="flex flex-col items-center text-center relative z-10">
                   <div 
                     className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
@@ -155,7 +205,7 @@ const OrderDetails = () => {
 
             {/* Mobile Vertical Stepper */}
             <div className="md:hidden space-y-6 relative pl-6 border-l-2 border-white/10 ml-3">
-              {mockOrder.timeline.map((step, index) => (
+              {ORDER_TIMELINE.map((step, index) => (
                 <div key={index} className="relative">
                   <div 
                     className={`absolute -left-7.75 top-0 w-6 h-6 rounded-full flex items-center justify-center ${
@@ -211,9 +261,6 @@ const OrderDetails = () => {
                           <h4 className="font-bodoni text-lg font-bold text-white hover:text-gold transition-colors cursor-pointer">
                             {item.title}
                           </h4>
-                          <div className="inline-block px-2.5 py-0.5 mt-1 rounded bg-white/5 border border-white/10 font-inter text-[10px] uppercase tracking-widest text-[#aaa]">
-                            
-                          </div>
                         </div>
 
                         {/* Price */}
@@ -226,10 +273,6 @@ const OrderDetails = () => {
                           </p>
                         </div>
                       </div>
-
-                      <p className="font-inter text-[11px] text-[#555]">
-                        Tailored by: <span className="text-[#888]"></span>
-                      </p>
 
                       {/* Item Quick Actions */}
                       <div className="flex flex-wrap items-center gap-4 pt-2 font-inter text-[11px] uppercase tracking-wider">
@@ -273,7 +316,7 @@ const OrderDetails = () => {
                 </div>
                 <div className="flex justify-between text-[#888]">
                   <span>Estimated Taxes (GST 18%)</span>
-                  <span className="text-white font-medium">{mockOrder.currencySymbol}{mockOrder.pricing.tax.toLocaleString()}</span>
+                  <span className="text-white font-medium">{CURRENCY_SYMBOLS[order?.price?.currency] || '₹'}{Number(order?.price?.amount * 0.18 / 1.18).toFixed(0)}</span>
                 </div>
 
                 <div className="border-t border-white/10 pt-4 mt-2 flex justify-between items-baseline">
@@ -305,9 +348,6 @@ const OrderDetails = () => {
 
               <div className="font-inter text-xs space-y-1.5 text-[#aaa]">
                 <p className="font-bold text-white text-sm">{order?.user?.fullname || 'Velora Client'}</p>
-                <p>{mockOrder.shippingAddress.addressLine}</p>
-                <p>{mockOrder.shippingAddress.city}, {mockOrder.shippingAddress.state} {mockOrder.shippingAddress.postalCode}</p>
-                <p>{mockOrder.shippingAddress.country}</p>
                 <p className="pt-2 text-[#666]">Phone: <span className="text-[#888]">{order?.user?.contact || 'Not provided'}</span></p>
                 <p className="text-[#666]">Email: <span className="text-[#888]">{order?.user?.email}</span></p>
               </div>

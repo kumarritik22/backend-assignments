@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import productModel from "../models/product.model.js";
 import cartModel from "../models/cart.model.js";
 import stockOfVariant from "../dao/product.dao.js";
@@ -423,36 +424,44 @@ export const removeCartItem = async (req, res) => {
 }
 
 export const getOrderByIdController = async (req, res) => {
-    const { orderId } = req.params
+    try {
+        const { orderId } = req.params
 
-    let query
+        let query
 
-    if (mongoose.Types.ObjectId.isValid(orderId)) {
-        query = {
-            _id: orderId,
-            user: req.user._id
+        if (mongoose.Types.ObjectId.isValid(orderId)) {
+            query = {
+                _id: orderId,
+                user: req.user._id
+            }
+        } else {
+            query = {
+                "razorpay.orderId": orderId,
+                user: req.user._id
+            }
         }
-    } else {
-        query = {
-            "razorpay.orderId": orderId,
-            user: req.user._id
+
+        const order = await paymentModel
+        .findOne(query)
+        .populate("user", "fullname email contact")
+
+        if (!order) {
+            return res.status(404).json({
+                message: "Order not found.",
+                success: false
+            })
         }
-    }
 
-    const order = await paymentModel
-    .findOne(query)
-    .populate("user", "fullname email contact")
-
-    if (!order) {
-        return res.status(404).json({
-            message: "Order not found.",
+        return res.status(200).json({
+            message: "Order found successfully.",
+            success: true,
+            order
+        })
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            message: "Internal server error",
             success: false
         })
     }
-
-    return res.status(200).json({
-        message: "Order found successfully.",
-        success: true,
-        order
-    })
 };
