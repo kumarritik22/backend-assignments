@@ -44,6 +44,10 @@ export const useCart = () => {
             razorpay_signature
         })
 
+        if (data.success) {
+            await handleGetCart()
+        }
+
         return data.success;
     }
 

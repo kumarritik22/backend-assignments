@@ -279,7 +279,6 @@ export const createOrderController = async (req, res) => {
 export const verifyOrderController = async (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body
 
-    // Find the pending payment record using the Razorpay order ID stored in our DB
     const payment = await paymentModel.findOne({
         "razorpay.orderId": razorpay_order_id,
         status: "pending"
@@ -292,9 +291,6 @@ export const verifyOrderController = async (req, res) => {
         })
     }
 
-    // Manually verify the Razorpay signature using HMAC-SHA256.
-    // This is exactly what Razorpay's validatePaymentVerification does internally.
-    // Signature = HMAC_SHA256(secret, "order_id|payment_id")
     const expectedSignature = crypto
         .createHmac("sha256", config.RAZORPAY_KEY_SECRET)
         .update(`${razorpay_order_id}|${razorpay_payment_id}`)
@@ -315,6 +311,25 @@ export const verifyOrderController = async (req, res) => {
     payment.status = "paid"
     payment.razorpay.paymentId = razorpay_payment_id
     payment.razorpay.signature = razorpay_signature
+
+    for(const item of payment.orderItems) {
+        await productModel.findOneAndUpdate(
+            {
+                _id: item.productId,
+                "variants._id": item.variantId
+            },
+            {
+                $inc: {
+                    "variants.$.stock": -item.quantity
+                }
+            }
+        )
+    }
+
+    await cartModel.findOneAndUpdate(
+        { user: payment.user },
+        { $set: { items: [] }}
+    )
 
     await payment.save()
 
