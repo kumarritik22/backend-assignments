@@ -82,7 +82,9 @@ export const routes = createBrowserRouter([
             },
             {
                 path: "/profile/orders",
-                element: <MyOrders />
+                element: <Protected>
+                    <MyOrders />
+                </Protected>
             },
             {
                 path: "/seller",

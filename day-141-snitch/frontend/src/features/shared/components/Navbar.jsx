@@ -257,7 +257,13 @@ const Navbar = () => {
                           )}
                         </div>
 
-                        <Link to="/profile/orders">My Orders</Link>
+                        <Link 
+                          to="/profile/orders"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="w-full text-left font-inter text-[11px] font-semibold uppercase tracking-widest text-[#ccc] hover:text-gold flex items-center justify-between py-2 border-b border-white/5 mb-3 transition-colors cursor-pointer"
+                        >
+                          <span>My Orders</span> <span>→</span>
+                        </Link>
 
                         <button 
                           onClick={handleLogout}

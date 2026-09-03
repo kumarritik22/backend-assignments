@@ -467,12 +467,19 @@ export const getOrderByIdController = async (req, res) => {
 };
 
 export const getUserOrdersController = async (req, res) => {
-    const allOrders = await paymentModel.find({ user: req.user._id }).sort({ createdAt: -1 })
+    try {
+        const orders = await paymentModel.find({ user: req.user._id }).sort({ createdAt: -1 })
 
-    return res.status(200).json({
-        message: "All orders fetched successfully.",
-        success: true,
-        count: orders.length,
-        allOrders
-    })
+        return res.status(200).json({
+            message: "All orders fetched successfully.",
+            success: true,
+            count: orders.length,
+            orders
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            success: false
+        })
+    }
 };
