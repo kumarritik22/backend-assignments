@@ -257,20 +257,36 @@ const Navbar = () => {
                           )}
                         </div>
 
-                        <Link 
-                          to="/profile/orders"
-                          onClick={() => setIsProfileOpen(false)}
-                          className="w-full text-left font-inter text-[11px] font-semibold uppercase tracking-widest text-[#ccc] hover:text-gold flex items-center justify-between py-2 border-b border-white/5 mb-3 transition-colors cursor-pointer"
-                        >
-                          <span>My Orders</span> <span>→</span>
-                        </Link>
+                        {/* Navigation & Actions */}
+                        <div className="flex flex-col gap-1 pt-1">
+                          <Link 
+                            to="/profile/orders"
+                            onClick={() => setIsProfileOpen(false)}
+                            className="w-full font-inter text-[11px] font-semibold uppercase tracking-wider text-[#ccc] hover:text-gold hover:bg-white/5 px-3 py-2.5 rounded-xl flex items-center justify-between transition-all duration-200 cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <svg className="w-3.5 h-3.5 text-gold/80 group-hover:text-gold transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                <line x1="3" y1="6" x2="21" y2="6" />
+                                <path d="M16 10a4 4 0 0 1-8 0" />
+                              </svg>
+                              <span>My Orders</span>
+                            </div>
+                            <span className="text-xs text-[#666] group-hover:text-gold group-hover:translate-x-0.5 transition-all">→</span>
+                          </Link>
 
-                        <button 
-                          onClick={handleLogout}
-                          className="w-full text-left font-inter text-[11px] font-semibold uppercase tracking-widest text-red-400 hover:text-red-300 flex items-center gap-2 cursor-pointer transition-[color, transform] duration-200 active:scale-[0.95]">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                          Sign Out
-                        </button>
+                          <button 
+                            onClick={handleLogout}
+                            className="w-full font-inter text-[11px] font-semibold uppercase tracking-wider text-red-400 hover:text-red-300 hover:bg-red-500/10 px-3 py-2.5 rounded-xl flex items-center gap-2.5 cursor-pointer transition-all duration-200 active:scale-[0.98]"
+                          >
+                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                              <polyline points="16 17 21 12 16 7"></polyline>
+                              <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            <span>Sign Out</span>
+                          </button>
+                        </div>
                       </div>
                     </>
                   )}
