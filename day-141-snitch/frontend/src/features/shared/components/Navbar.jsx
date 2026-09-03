@@ -340,6 +340,16 @@ const Navbar = () => {
             )
           })}
 
+          {user && user.role !== 'seller' && (
+            <Link
+              to="/profile/orders"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`font-bodoni text-[28px] hover:text-gold transition-colors ${location.pathname === '/profile/orders' ? "text-gold font-bold" : "text-white"}`}
+            >
+              My Orders
+            </Link>
+          )}
+
           {!user && (
             <div className="flex flex-col gap-4 mt-8 pt-8 border-t border-white/5">
               <Link to="/login" className="font-inter text-[14px] font-medium tracking-widest uppercase text-[#888] hover:text-white">

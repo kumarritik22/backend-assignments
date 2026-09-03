@@ -126,7 +126,13 @@ const OrderDetails = () => {
               #{order?.razorpay?.orderId || order?._id}
             </span>
             <span className="w-1 h-1 rounded-full bg-[#444]" />
-            <span>Placed on <strong className="text-white font-medium">{new Date(order?.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</strong></span>
+            <span>Placed on <strong className="text-white font-medium">
+              {order?.createdAt 
+                ? new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+                : order?._id 
+                  ? new Date(parseInt(order._id.substring(0, 8), 16) * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+                  : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </strong></span>
             <span className="hidden sm:inline w-1 h-1 rounded-full bg-[#444]" />
             <span>Estimated Delivery: <strong className="text-gold font-medium">4 – 6 Business Days (White-Glove Courier)</strong></span>
           </div>

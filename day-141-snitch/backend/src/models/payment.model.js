@@ -32,7 +32,7 @@ const paymentSchema = new mongoose.Schema({
             price: priceSchema
         }
     ]
-});
+}, { timestamps: true });
 
 const paymentModel = mongoose.model("payment", paymentSchema);
 
