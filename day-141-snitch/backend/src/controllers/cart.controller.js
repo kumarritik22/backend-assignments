@@ -248,6 +248,7 @@ export const createOrderController = async (req, res) => {
                 quantity: item.quantity,
                 images: item.product.variants.images || item.product.images,
                 description: item.product.description,
+                attributes: item.product.variants?.attributes || {},
                 price: {
                     amount: item.product.variants.price.amount || item.product.price.amount,
                     currency: item.product.variants.price.currency || item.product.price.currency

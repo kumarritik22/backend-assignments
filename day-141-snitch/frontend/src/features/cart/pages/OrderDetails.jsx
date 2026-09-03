@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from 'react-router'
-import { Truck, CheckCircle2, Download, Printer, ArrowLeft, ShieldCheck, Headphones,ExternalLink, ChevronRight,Sparkles} from 'lucide-react'
+import { Truck, CheckCircle2, Printer, ShieldCheck, Headphones, ExternalLink, ChevronRight, Sparkles, ShoppingBag } from 'lucide-react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useCart } from '../hooks/useCart.js'
@@ -42,11 +42,12 @@ const ORDER_TIMELINE = [
 const OrderDetails = () => {
 
   const { orderId } = useParams()
-  const { handleGetOrderDetails } = useCart()
+  const { handleGetOrderDetails, handleAddItem } = useCart()
 
   const [order, setOrder] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
+  const [toastMessage, setToastMessage] = useState("");
 
   const navigate = useNavigate()
 
@@ -255,7 +256,19 @@ const OrderDetails = () => {
                           <h4 className="font-bodoni text-lg font-bold text-white hover:text-gold transition-colors cursor-pointer">
                             {item.title}
                           </h4>
+                          {item.attributes && Object.keys(item.attributes).length > 0 && (
+                            <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                              {Object.entries(item.attributes).map(([key, val]) => (
+                                <span key={key} className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[10px] font-inter text-[#aaa] capitalize">
+                                  <span className="text-[#666]">{key}: </span>
+                                  <span className="text-white font-medium">{val}</span>
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
+
+                        
 
                         {/* Price */}
                         <div className="text-left sm:text-right">
@@ -269,19 +282,44 @@ const OrderDetails = () => {
                       </div>
 
                       {/* Item Quick Actions */}
-                      <div className="flex flex-wrap items-center gap-4 pt-2 font-inter text-[11px] uppercase tracking-wider">
-                        <button className="text-gold hover:text-white transition-colors cursor-pointer flex items-center gap-1">
+                      <div className="flex flex-wrap items-center gap-2 pt-2">
+                        {/* View Product */}
+                        <Link 
+                          to={`/product/${item.productId}?variant=${item.variantId}`}
+                          state={{ variantId: item.variantId }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-gold/10 border border-white/10 hover:border-gold/30 text-[#ccc] hover:text-gold font-inter text-[10px] font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer"
+                        >
+                          <ExternalLink className="w-3 h-3 text-gold/80" />
                           <span>View Product</span>
-                          <ExternalLink className="w-3 h-3" />
+                        </Link>
+
+                        {/* Buy Again (Reorder) */}
+                        <button 
+                          onClick={async () => {
+                            try {
+                              const res = await handleAddItem({ productId: item.productId, variantId: item.variantId });
+                              if (res?.success) {
+                                navigate('/cart');
+                              }
+                            } catch (err) {
+                              setToastMessage(err.response?.data?.message || "This piece is currently out of stock in the atelier.");
+                              setTimeout(() => setToastMessage(""), 4000);
+                            }
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-gold/10 border border-white/10 hover:border-gold/30 text-[#ccc] hover:text-gold font-inter text-[10px] font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer active:scale-95"
+                        >
+                          <ShoppingBag className="w-3 h-3 text-gold/80" />
+                          <span>Buy Again</span>
                         </button>
-                        <span className="text-[#333]">·</span>
-                        <button className="text-[#888] hover:text-white transition-colors cursor-pointer">
-                          Write a Review
-                        </button>
-                        <span className="text-[#333]">·</span>
-                        <button className="text-[#888] hover:text-white transition-colors cursor-pointer">
-                          Return / Exchange
-                        </button>
+
+                        {/* Concierge Support */}
+                        <a 
+                          href={`mailto:concierge@velorafashion.com?subject=Inquiry for Order #${order?.razorpay?.orderId || order?._id}&body=Hello Velora Concierge, I need assistance with my item: ${item.title}`}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-[#888] hover:text-white font-inter text-[10px] font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer"
+                        >
+                          <Headphones className="w-3 h-3 text-[#888]" />
+                          <span>Concierge</span>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -393,6 +431,16 @@ const OrderDetails = () => {
         </div>
 
       </div>
+                
+      {/* ─── Floating Toast Notification for Out-of-Stock ─── */}
+      {toastMessage && (
+        <div className="fixed bottom-8 right-8 z-50 bg-[#161616] border border-red-500/40 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 animate-fade-in">
+          <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
+          <span className="font-inter text-xs font-semibold tracking-wide text-red-200">
+            {toastMessage}
+          </span>
+        </div>
+      )}
     </div>
   )
 }

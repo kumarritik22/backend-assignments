@@ -23,17 +23,30 @@ const ProductDetail = () => {
 
     const {handleAddItem} = useCart();
 
+    const searchParams = new URLSearchParams(location.search);
+    const targetVariantId = location.state?.variantId || searchParams.get("variant");
+
     async function fetchProductDetails() {
         setIsLoading(true)
         try {
             const data = await handleGetProductById(productId)
             setProduct(data);
             
-            if (location.state?.selectedAttributes) {
-                setSelectedAttributes(location.state.selectedAttributes)
+            if (targetVariantId && data?.variants?.length > 0) {
+                const matchedVariant = data.variants.find(
+                    (v) => (v._id?.toString() || v.id?.toString()) === targetVariantId.toString()
+                );
+                if (matchedVariant) {
+                    setSelectedAttributes(matchedVariant.attributes);
+                } else {
+                    setSelectedAttributes(data.variants[0].attributes);
+                }
+            } else if (location.state?.selectedAttributes) {
+                setSelectedAttributes(location.state.selectedAttributes);
             } else if (data?.variants?.length > 0) {
-                setSelectedAttributes(data.variants[0].attributes)
+                setSelectedAttributes(data.variants[0].attributes);
             }
+            
 
         } catch (e) {
             console.error(e)

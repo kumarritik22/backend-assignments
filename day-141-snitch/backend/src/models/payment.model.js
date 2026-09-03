@@ -29,6 +29,7 @@ const paymentSchema = new mongoose.Schema({
             quantity: Number,
             images: [{ url: String }],
             description: String,
+            attributes: { type: mongoose.Schema.Types.Mixed },
             price: priceSchema
         }
     ]
