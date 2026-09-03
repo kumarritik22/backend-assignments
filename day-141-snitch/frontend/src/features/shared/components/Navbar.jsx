@@ -256,6 +256,9 @@ const Navbar = () => {
                             </div>
                           )}
                         </div>
+
+                        <Link to="/profile/orders">My Orders</Link>
+
                         <button 
                           onClick={handleLogout}
                           className="w-full text-left font-inter text-[11px] font-semibold uppercase tracking-widest text-red-400 hover:text-red-300 flex items-center gap-2 cursor-pointer transition-[color, transform] duration-200 active:scale-[0.95]">

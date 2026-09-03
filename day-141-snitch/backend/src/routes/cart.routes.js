@@ -1,7 +1,7 @@
 import express from "express";
 import { authenticateUser } from "../middlewares/auth.middleware.js";
 import { validateAddToCart, validateDecrementCartItemQuantity, validateIncrementCartItemQuantity } from "../validators/cart.validator.js";
-import { addToCart, getCart, incrementCartItemQuantity, createOrderController, verifyOrderController, failOrderController, decrementCartItemQuantity, removeCartItem, getOrderByIdController } from "../controllers/cart.controller.js";
+import { addToCart, getCart, incrementCartItemQuantity, createOrderController, verifyOrderController, failOrderController, decrementCartItemQuantity, removeCartItem, getOrderByIdController, getUserOrdersController } from "../controllers/cart.controller.js";
 
 const router = express.Router();
 
@@ -22,5 +22,10 @@ router.post("/payment/fail/order", authenticateUser, failOrderController);
 router.delete("/:productId/:variantId", authenticateUser, removeCartItem);
 
 router.get("/order/:orderId", authenticateUser, getOrderByIdController);
+
+// @route /api/cart/orders
+// @description To fetch user's all orders.
+// @access Private
+router.get("/orders", authenticateUser, getUserOrdersController);
 
 export default router;

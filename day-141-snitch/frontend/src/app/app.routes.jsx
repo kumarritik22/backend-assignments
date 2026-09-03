@@ -17,6 +17,7 @@ import VerifyEmail from "../features/auth/pages/VerifyEmail.jsx";
 import ResendVerificationEmail from "../features/auth/pages/ResendVerificationEmail.jsx";
 import ForgotPassword from "../features/auth/pages/ForgotPassword.jsx";
 import ResetPassword from "../features/auth/pages/ResetPassword.jsx";
+import MyOrders from "../features/cart/pages/MyOrders.jsx";
 
 
 export const routes = createBrowserRouter([
@@ -78,6 +79,10 @@ export const routes = createBrowserRouter([
                 element: <Protected>
                     <OrderDetails />
                 </Protected>
+            },
+            {
+                path: "/profile/orders",
+                element: <MyOrders />
             },
             {
                 path: "/seller",
