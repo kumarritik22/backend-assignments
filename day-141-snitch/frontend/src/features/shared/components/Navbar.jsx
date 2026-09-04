@@ -72,7 +72,8 @@ const Navbar = () => {
     { name: 'About', path: '/about' },
   ] : [
     { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Contact Us', path: '/contact' }
   ]
 
   const CURRENCY_SYMBOLS = {

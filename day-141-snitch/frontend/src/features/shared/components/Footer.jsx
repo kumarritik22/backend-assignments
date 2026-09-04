@@ -68,18 +68,18 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16 mb-10">
           <div className="flex flex-col space-y-3">
             <h3 className="font-serif text-xs sm:text-sm tracking-[0.2em] text-white font-medium uppercase mb-5">The Atelier</h3>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">New Arrivals</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Men's Edit</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Women's Atelier</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Limited Editions</Link>
+            <Link to="/" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">New Arrivals</Link>
+            <Link to="/" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Men's Edit</Link>
+            <Link to="/" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Women's Atelier</Link>
+            <Link to="/" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Limited Editions</Link>
           </div>
 
           <div className="flex flex-col space-y-3">
             <h3 className="font-serif text-xs sm:text-sm tracking-[0.2em] text-white font-medium uppercase mb-5">The House</h3>
             <Link to="/about" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Our Story</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Craftsmanship</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Sustainability</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Press & Media</Link>
+            <Link to="/about" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Craftsmanship</Link>
+            <Link to="/about" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Sustainability</Link>
+            <Link to="/about" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Press & Media</Link>
           </div>
 
           <div className="flex flex-col space-y-3">
@@ -92,8 +92,8 @@ const Footer = () => {
 
           <div className="flex flex-col space-y-3">
             <h3 className="font-serif text-xs sm:text-sm tracking-[0.2em] text-white font-medium uppercase mb-5">Contact us</h3>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Concierge Support</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Boutique Appointments</Link>
+            <Link to="/contact" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Concierge Support</Link>
+            <Link to="/contact" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Boutique Appointments</Link>
             <a href="mailto:contact@velora.com" className="font-sans text-xs sm:text-[13px] text-gold hover:underline underline-offset-4 tracking-wide font-normal transition-all">contact@velora.com</a>
           </div>
         </div>

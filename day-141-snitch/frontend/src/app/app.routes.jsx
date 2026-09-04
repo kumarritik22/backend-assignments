@@ -18,6 +18,7 @@ import ResendVerificationEmail from "../features/auth/pages/ResendVerificationEm
 import ForgotPassword from "../features/auth/pages/ForgotPassword.jsx";
 import ResetPassword from "../features/auth/pages/ResetPassword.jsx";
 import MyOrders from "../features/cart/pages/MyOrders.jsx";
+import Contact from "../features/products/pages/Contact.jsx";
 
 
 export const routes = createBrowserRouter([
@@ -57,6 +58,10 @@ export const routes = createBrowserRouter([
             {
                 path: "/about",
                 element: <About />
+            },
+            {
+                path: "/contact",
+                element: <Contact />
             },
             {
                 path: "/product/:productId",
