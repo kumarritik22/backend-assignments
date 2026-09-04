@@ -411,26 +411,31 @@ const Cart = () => {
                                     </div>
                                     <div className="flex items-center justify-between font-inter text-sm">
                                         <span className="text-[#888]">Taxes</span>
-                                        <span className="text-[#888]">Calculated at checkout</span>
+                                        <span className="text-[#888]">Included (GST 18%)</span>
                                     </div>
                                 </div>
 
                                 <div className="w-full h-px bg-white/8 mb-6" />
 
                                 {/* Total */}
-                                <div className="flex items-center justify-between mb-8">
-                                    <span className="font-inter text-base font-semibold text-white">Total</span>
-                                    <div className="text-right">
-                                        {ratesLoading ? (
-                                            <span className="w-24 h-7 bg-white/5 rounded animate-pulse inline-block" />
-                                        ) : ratesError ? (
-                                            <span className="font-inter text-sm text-[#555]">Rate fetch failed</span>
-                                        ) : (
-                                            <span className="font-bodoni text-[24px] font-bold text-gold">
-                                                {formatDisplayPrice(convertedSubtotal)}
-                                            </span>
-                                        )}
+                                <div className="mb-6">
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-inter text-base font-semibold text-white">Total</span>
+                                        <div className="text-right">
+                                            {ratesLoading ? (
+                                                <span className="w-24 h-7 bg-white/5 rounded animate-pulse inline-block" />
+                                            ) : ratesError ? (
+                                                <span className="font-inter text-sm text-[#555]">Rate fetch failed</span>
+                                            ) : (
+                                                <span className="font-bodoni text-[24px] font-bold text-gold">
+                                                    {formatDisplayPrice(convertedSubtotal)}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
+                                    <p className="text-[11px] font-inter text-[#666] text-right mt-1.5">
+                                        All taxes & luxury duties included
+                                    </p>
                                 </div>
 
                                 {/* CTA */}
