@@ -35,8 +35,8 @@ export const useCart = () => {
         }
     }
 
-    async function handleCreateCartOrder({ currency }) {
-        const data = await createCartOrder({ currency })
+    async function handleCreateCartOrder({ currency, shippingAddress }) {
+        const data = await createCartOrder({ currency, shippingAddress })
         return data.order;
     }
 

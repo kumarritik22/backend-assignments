@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useCart } from '../hooks/useCart'
 import { Link, useNavigate } from 'react-router'
 import { useCurrency, convertCurrency } from '../hooks/useCurrency.js'
 import { useRazorpay } from "react-razorpay";
+import { MapPin, ShieldCheck, Truck, Sparkles, AlertCircle } from "lucide-react";
 
 // --- Currency Config ---
 const SUPPORTED_CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'JPY']
@@ -16,33 +17,84 @@ const Cart = () => {
     const { handleGetCart, handleIncreaseCartItemQuantity, handleDecreaseCartItemQuantity, handleCreateCartOrder, handleVerifyCartOrder, handleFailCartOrder, handleDeleteCartItem } = useCart()
     const { rates, ratesLoading, ratesError, handleFetchRates, selectedCurrency, handleChangeCurrency } = useCurrency()
     const { error, isLoading, Razorpay } = useRazorpay();
-
-    const user = useSelector(state => state.user);
-
+    const { user } = useSelector(state => state.auth);
     const navigate = useNavigate();
-
     const displayCurrency = selectedCurrency
+
+    const [shippingAddress, setShippingAddress] = useState({
+        fullname: "",
+        addressLine1: "",
+        addressLine2: "",
+        city: "",
+        state: "",
+        pinCode: "",
+        country: "India",
+        contact: ""
+    })
+    const [addressError, setAddressError] = useState("")
+    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false)
 
     useEffect(() => {
         handleGetCart()
         handleFetchRates()
     }, [])
 
-    // Once totalsByCurrency loads, default to the currency with the highest total amount
-    // useEffect(() => {
-    //     if (cart.totalsByCurrency?.length > 0) {
-    //         const dominant = cart.totalsByCurrency.reduce((prev, curr) =>
-    //             curr.amount > prev.amount ? curr : prev
-    //         )
-    //         displayCurrency(dominant.currency)
-    //     }
-    // }, [cart.totalsByCurrency])
+    useEffect(() => {
+        if (user) {
+            setShippingAddress(prev => ({
+                ...prev,
+                fullname: prev.fullname || user.fullname || "",
+                contact: prev.contact || user.contact || ""
+            }))
+        }
+    }, [user])
+
+    const handleAddressChange = (e) => {
+        const { name, value } = e.target;
+        setShippingAddress(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        if (addressError) setAddressError("");
+    };
 
     const handleCheckout = async () => {
+        // --- Delivery Address Validation ---
+        if (!shippingAddress.fullname?.trim()) {
+            setAddressError("Recipient full name is required.");
+            return;
+        }
+        if (!shippingAddress.addressLine1?.trim()) {
+            setAddressError("Street address is required.");
+            return;
+        }
+        if (!shippingAddress.city?.trim()) {
+            setAddressError("City is required.");
+            return;
+        }
+        if (!shippingAddress.state?.trim()) {
+            setAddressError("State is required.");
+            return;
+        }
+        if (!shippingAddress.pinCode?.trim()) {
+            setAddressError("Postal PIN code is required.");
+            return;
+        }
+        if (!shippingAddress.contact?.trim()) {
+            setAddressError("Contact number is required.");
+            return;
+        }
+
         try {
-            // Step 1: Tell the backend which currency the user wants to pay in.
-            // Backend fetches live exchange rates, converts everything, and creates a Razorpay order.
-            const order = await handleCreateCartOrder({ currency: displayCurrency })
+            setAddressError("");
+            // Step 1: Tell the backend currency & shipping address to create Razorpay order
+            const order = await handleCreateCartOrder({ 
+                currency: displayCurrency,
+                shippingAddress: {
+                    ...shippingAddress,
+                    country: shippingAddress.country || "India"
+                }
+            })
 
             const options = {
                 key: order.key,                // Public Razorpay key returned from backend
@@ -67,12 +119,12 @@ const Cart = () => {
                     }
                 },
                 prefill: {
-                    name: user?.fullname,
+                    name: shippingAddress.fullname || user?.fullname,
                     email: user?.email,
-                    contact: user?.contact,
+                    contact: shippingAddress.contact || user?.contact,
                 },
                 theme: {
-                    color: "#C9A96E",   // Velora gold
+                    color: "#C9A96E",
                 },
             };
 
@@ -91,7 +143,8 @@ const Cart = () => {
             razorpayInstance.open();
         } catch (err) {
             console.error("Checkout error:", err)
-            alert('Failed to initiate payment. Please try again.')
+            const errorMsg = err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Failed to initiate payment. Please try again.';
+            setAddressError(errorMsg);
         }
     }
 
@@ -290,6 +343,124 @@ const Cart = () => {
                                     )
                                 })}
                             </div>
+
+                            {/* ── Delivery Destination Form Card ── */}
+                            <div className="mt-8 bg-[#111] border border-white/8 rounded-2xl p-6 sm:p-8 space-y-6">
+                                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold">
+                                            <MapPin className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bodoni text-lg font-bold text-white">Delivery Destination</h3>
+                                            <p className="font-inter text-xs text-[#888]">White-glove courier shipping location</p>
+                                        </div>
+                                    </div>
+                                    <span className="font-inter text-[10px] font-bold text-gold uppercase tracking-widest bg-gold/10 px-2.5 py-1 rounded-md border border-gold/20">
+                                        Shipping
+                                    </span>
+                                </div>
+
+                                {addressError && (
+                                    <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 font-inter text-xs animate-fade-in">
+                                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                                        <span>{addressError}</span>
+                                    </div>
+                                )}
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-inter">
+                                    {/* Full Name */}
+                                    <div className="sm:col-span-2 space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Recipient Full Name *</label>
+                                        <input 
+                                            type="text"
+                                            name="fullname"
+                                            value={shippingAddress.fullname}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Ritik Kumar"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* Address Line 1 */}
+                                    <div className="sm:col-span-2 space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Street Address / House No. *</label>
+                                        <input 
+                                            type="text"
+                                            name="addressLine1"
+                                            value={shippingAddress.addressLine1}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. 142 Royal Atelier Boulevard, Suite 4B"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* Address Line 2 (Optional) */}
+                                    <div className="sm:col-span-2 space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666]">Landmark / Building (Optional)</label>
+                                        <input 
+                                            type="text"
+                                            name="addressLine2"
+                                            value={shippingAddress.addressLine2}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Near Grand Palais"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* City */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">City *</label>
+                                        <input 
+                                            type="text"
+                                            name="city"
+                                            value={shippingAddress.city}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Mumbai"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* State */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">State *</label>
+                                        <input 
+                                            type="text"
+                                            name="state"
+                                            value={shippingAddress.state}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Maharashtra"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* PIN Code */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">PIN Code *</label>
+                                        <input 
+                                            type="text"
+                                            name="pinCode"
+                                            value={shippingAddress.pinCode}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. 400001"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* Contact Number */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Contact Number *</label>
+                                        <input 
+                                            type="text"
+                                            name="contact"
+                                            value={shippingAddress.contact}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. 9876543210"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {/* ── Right: Order Summary ── */}
@@ -366,7 +537,7 @@ const Cart = () => {
 
                                 {/* CTA */}
                                 <button
-                                    onClick={handleCheckout}
+                                    onClick={() => setIsCheckoutOpen(true)}
                                     className="w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mb-4">
                                     Proceed to Checkout
                                 </button>

@@ -14,7 +14,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    contact: {type: Number, required: false},
+    contact: {
+        type: String, 
+        required: false
+    },
     role: {
         type: String,
         enum: ["buyer", "seller"],

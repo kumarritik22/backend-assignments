@@ -398,9 +398,32 @@ const OrderDetails = () => {
               </h3>
 
               <div className="font-inter text-xs space-y-1.5 text-[#aaa]">
-                <p className="font-bold text-white text-sm">{order?.user?.fullname || 'Velora Client'}</p>
-                <p className="pt-2 text-[#666]">Phone: <span className="text-[#888]">{order?.user?.contact || 'Not provided'}</span></p>
-                <p className="text-[#666]">Email: <span className="text-[#888]">{order?.user?.email}</span></p>
+                <p className="font-bold text-white text-sm">
+                  {order?.shippingAddress?.fullname || order?.user?.fullname || 'Velora Client'}
+                </p>
+
+                {order?.shippingAddress?.addressLine1 ? (
+                  <>
+                    <p className="text-[#ccc] pt-1 leading-relaxed">
+                      {order.shippingAddress.addressLine1}
+                      {order.shippingAddress.addressLine2 ? `, ${order.shippingAddress.addressLine2}` : ''}
+                    </p>
+                    <p className="text-[#888]">
+                      {order.shippingAddress.city}, {order.shippingAddress.state} - <span className="text-gold font-mono">{order.shippingAddress.pinCode}</span>
+                    </p>
+                    <p className="text-[#666] uppercase text-[10px] font-medium tracking-wider">{order.shippingAddress.country || 'India'}</p>
+                    
+                    <div className="pt-2.5 mt-2.5 border-t border-white/5 space-y-1">
+                      <p className="text-[#666]">Contact: <span className="text-white font-mono">{order.shippingAddress.contact || order?.user?.contact}</span></p>
+                      <p className="text-[#666]">Email: <span className="text-[#888]">{order?.user?.email}</span></p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="pt-2 text-[#666]">Phone: <span className="text-[#888]">{order?.user?.contact || 'Not provided'}</span></p>
+                    <p className="text-[#666]">Email: <span className="text-[#888]">{order?.user?.email}</span></p>
+                  </>
+                )}
               </div>
             </div>
 
