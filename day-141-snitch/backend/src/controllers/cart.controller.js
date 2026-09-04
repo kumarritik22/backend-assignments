@@ -207,11 +207,18 @@ export const decrementCartItemQuantity = async (req, res) => {
 
 export const createOrderController = async (req, res) => {
     try {
-        const { currency } = req.body
+        const { currency, shippingAddress } = req.body
 
         if (!currency) {
             return res.status(400).json({
                 message: "Currency is required.",
+                success: false
+            })
+        }
+
+        if (!shippingAddress) {
+            return res.status(400).json({
+                message: "Shipping address is required.",
                 success: false
             })
         }
@@ -225,13 +232,10 @@ export const createOrderController = async (req, res) => {
             })
         }
 
-        // Convert all per-currency totals into one total in the user's chosen checkout currency
         const totalAmount = await convertTotalToCurrency(cart.totalsByCurrency, currency)
 
-        // Create the Razorpay order with the converted total
         const order = await createOrder({ amount: totalAmount, currency })
 
-        // Save a pending payment record in our database
         const payment = new paymentModel({
             user: req.user._id,
             razorpay: {
@@ -253,7 +257,8 @@ export const createOrderController = async (req, res) => {
                     amount: item.product.variants.price.amount || item.product.price.amount,
                     currency: item.product.variants.price.currency || item.product.price.currency
                 }
-            }))
+            })),
+            shippingAddress: shippingAddress
         })
 
         await payment.save()
@@ -265,7 +270,7 @@ export const createOrderController = async (req, res) => {
                 id: order.id,
                 amount: order.amount,
                 currency: order.currency,
-                key: config.RAZORPAY_KEY_ID  // frontend needs public key to open the modal
+                key: config.RAZORPAY_KEY_ID
             }
         }); 
     } catch (error) {

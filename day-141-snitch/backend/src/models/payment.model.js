@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import priceSchema from "./price.schema.js";
+import addressSchema from "./address.schema.js";
 
 const paymentSchema = new mongoose.Schema({
     status: {
@@ -32,7 +33,11 @@ const paymentSchema = new mongoose.Schema({
             attributes: { type: mongoose.Schema.Types.Mixed },
             price: priceSchema
         }
-    ]
+    ],
+    shippingAddress: {
+        type: addressSchema,
+        required: true
+    }
 }, { timestamps: true });
 
 const paymentModel = mongoose.model("payment", paymentSchema);
