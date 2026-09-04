@@ -49,6 +49,18 @@ const Cart = () => {
         }
     }, [user])
 
+    useEffect(() => {
+        if (isCheckoutOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, [isCheckoutOpen])
+    
+
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
         setShippingAddress(prev => ({
@@ -82,6 +94,10 @@ const Cart = () => {
         }
         if (!shippingAddress.contact?.trim()) {
             setAddressError("Contact number is required.");
+            return;
+        }
+        if (!shippingAddress.country?.trim()) {
+            setAddressError("Country is required.");
             return;
         }
 
@@ -343,124 +359,6 @@ const Cart = () => {
                                     )
                                 })}
                             </div>
-
-                            {/* ── Delivery Destination Form Card ── */}
-                            <div className="mt-8 bg-[#111] border border-white/8 rounded-2xl p-6 sm:p-8 space-y-6">
-                                <div className="flex items-center justify-between border-b border-white/5 pb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold">
-                                            <MapPin className="w-4 h-4" />
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bodoni text-lg font-bold text-white">Delivery Destination</h3>
-                                            <p className="font-inter text-xs text-[#888]">White-glove courier shipping location</p>
-                                        </div>
-                                    </div>
-                                    <span className="font-inter text-[10px] font-bold text-gold uppercase tracking-widest bg-gold/10 px-2.5 py-1 rounded-md border border-gold/20">
-                                        Shipping
-                                    </span>
-                                </div>
-
-                                {addressError && (
-                                    <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 font-inter text-xs animate-fade-in">
-                                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
-                                        <span>{addressError}</span>
-                                    </div>
-                                )}
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-inter">
-                                    {/* Full Name */}
-                                    <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Recipient Full Name *</label>
-                                        <input 
-                                            type="text"
-                                            name="fullname"
-                                            value={shippingAddress.fullname}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Ritik Kumar"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* Address Line 1 */}
-                                    <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Street Address / House No. *</label>
-                                        <input 
-                                            type="text"
-                                            name="addressLine1"
-                                            value={shippingAddress.addressLine1}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. 142 Royal Atelier Boulevard, Suite 4B"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* Address Line 2 (Optional) */}
-                                    <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666]">Landmark / Building (Optional)</label>
-                                        <input 
-                                            type="text"
-                                            name="addressLine2"
-                                            value={shippingAddress.addressLine2}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Near Grand Palais"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* City */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">City *</label>
-                                        <input 
-                                            type="text"
-                                            name="city"
-                                            value={shippingAddress.city}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Mumbai"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* State */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">State *</label>
-                                        <input 
-                                            type="text"
-                                            name="state"
-                                            value={shippingAddress.state}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Maharashtra"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* PIN Code */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">PIN Code *</label>
-                                        <input 
-                                            type="text"
-                                            name="pinCode"
-                                            value={shippingAddress.pinCode}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. 400001"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* Contact Number */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Contact Number *</label>
-                                        <input 
-                                            type="text"
-                                            name="contact"
-                                            value={shippingAddress.contact}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. 9876543210"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         {/* ── Right: Order Summary ── */}
@@ -567,6 +465,158 @@ const Cart = () => {
                             </div>
                         </div>
 
+                    </div>
+                )}
+
+                {isCheckoutOpen && (
+                    <div 
+                        onClick={() => setIsCheckoutOpen(false)}
+                        className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+                    >
+                        <div 
+                            onClick={(e) => e.stopPropagation()}
+                            className="fixed right-0 top-0 h-screen z-50 w-full max-w-lg bg-[#111] p-6 sm:p-8 pb-16 sm:pb-20 overflow-y-auto overscroll-contain border-l border-white/10 shadow-2xl animate-in slide-in-from-right duration-300"
+                        >
+                            {/* ── Delivery Destination Form Card ── */}
+                            <div className="space-y-6">
+                                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold">
+                                            <MapPin className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bodoni text-lg font-bold text-white">Delivery Destination</h3>
+                                            <p className="font-inter text-xs text-[#888]">White-glove courier shipping location</p>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        onClick={() => setIsCheckoutOpen(false)}
+                                        className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-[#888] hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+
+                                {addressError && (
+                                    <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 font-inter text-xs animate-fade-in">
+                                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                                        <span>{addressError}</span>
+                                    </div>
+                                )}
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-inter">
+                                    {/* Full Name */}
+                                    <div className="sm:col-span-2 space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Recipient Full Name *</label>
+                                        <input 
+                                            type="text"
+                                            name="fullname"
+                                            value={shippingAddress.fullname}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Ritik Kumar"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* Address Line 1 */}
+                                    <div className="sm:col-span-2 space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Street Address / House No. *</label>
+                                        <input 
+                                            type="text"
+                                            name="addressLine1"
+                                            value={shippingAddress.addressLine1}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. 142 Royal Atelier Boulevard, Suite 4B"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* Address Line 2 (Optional) */}
+                                    <div className="sm:col-span-2 space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666]">Landmark / Building (Optional)</label>
+                                        <input 
+                                            type="text"
+                                            name="addressLine2"
+                                            value={shippingAddress.addressLine2}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Near Grand Palais"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* City */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">City *</label>
+                                        <input 
+                                            type="text"
+                                            name="city"
+                                            value={shippingAddress.city}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Mumbai"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* State */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">State *</label>
+                                        <input 
+                                            type="text"
+                                            name="state"
+                                            value={shippingAddress.state}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Maharashtra"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* PIN Code */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">PIN Code *</label>
+                                        <input 
+                                            type="text"
+                                            name="pinCode"
+                                            value={shippingAddress.pinCode}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. 400001"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* Contact Number */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Contact Number *</label>
+                                        <input 
+                                            type="text"
+                                            name="contact"
+                                            value={shippingAddress.contact}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. 9876543210"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* Country */}
+                                    <div className="sm:col-span-2 space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Country *</label>
+                                        <input 
+                                            type="text"
+                                            name="country"
+                                            value={shippingAddress.country}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. India"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+                                    <button  
+                                        onClick={handleCheckout}
+                                        className="sm:col-span-2 w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mt-2 mb-8"
+                                    >
+                                        CONFIRM & PAY
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </main>
