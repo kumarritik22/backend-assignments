@@ -84,10 +84,10 @@ const Footer = () => {
 
           <div className="flex flex-col space-y-3">
             <h3 className="font-serif text-xs sm:text-sm tracking-[0.2em] text-white font-medium uppercase mb-5">Client Services</h3>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Track Order</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Shipping & Delivery</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Returns & Exchanges</Link>
-            <Link to="#" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Size Guide</Link>
+            <Link to="/profile/orders" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Track Order</Link>
+            <Link to="/profile/orders" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Shipping & Delivery</Link>
+            <Link to="/contact" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Returns & Exchanges</Link>
+            <Link to="/contact" className="font-sans text-xs sm:text-[13px] text-[#777777] hover:text-gold transition-colors duration-200 tracking-wide w-fit">Size Guide</Link>
           </div>
 
           <div className="flex flex-col space-y-3">

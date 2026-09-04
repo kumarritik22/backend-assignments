@@ -445,7 +445,7 @@ const OrderDetails = () => {
               </p>
 
               <Link 
-                to="/about"
+                to="/contact"
                 className="inline-flex items-center gap-2 font-inter text-xs font-bold uppercase tracking-widest text-white hover:text-gold transition-colors cursor-pointer"
               >
                 <span>Connect with Concierge</span>

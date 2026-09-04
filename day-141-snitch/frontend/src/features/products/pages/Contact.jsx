@@ -4,10 +4,6 @@ import { Phone, Mail, MapPin, Clock, Sparkles, ShieldCheck, ChevronDown, ArrowRi
 import { FaWhatsapp } from 'react-icons/fa6'
 
 const Contact = () => {
-  // Scroll to top on mount
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
 
   const [formData, setFormData] = useState({
     name: '',
