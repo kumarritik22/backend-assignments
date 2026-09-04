@@ -47,7 +47,7 @@ const OrderDetails = () => {
   const [order, setOrder] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastNotification, setToastNotification] = useState(null);
 
   const navigate = useNavigate()
 
@@ -302,8 +302,12 @@ const OrderDetails = () => {
                                 navigate('/cart');
                               }
                             } catch (err) {
-                              setToastMessage(err.response?.data?.message || "This piece is currently out of stock in the atelier.");
-                              setTimeout(() => setToastMessage(""), 4000);
+                              setToastNotification({
+                                title: "Selected Variant Out of Stock",
+                                message: "This specific size or color is currently sold out in the atelier. You can explore other available variants.",
+                                productId: item.productId
+                              });
+                              setTimeout(() => setToastNotification(null), 6000);
                             }
                           }}
                           className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-gold/10 border border-white/10 hover:border-gold/30 text-[#ccc] hover:text-gold font-inter text-[10px] font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer active:scale-95"
@@ -432,13 +436,38 @@ const OrderDetails = () => {
 
       </div>
                 
-      {/* ─── Floating Toast Notification for Out-of-Stock ─── */}
-      {toastMessage && (
-        <div className="fixed bottom-8 right-8 z-50 bg-[#161616] border border-red-500/40 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 animate-fade-in">
-          <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-          <span className="font-inter text-xs font-semibold tracking-wide text-red-200">
-            {toastMessage}
-          </span>
+      {/* ─── Eye-Level Actionable Notification Banner ─── */}
+      {toastNotification && (
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-xl bg-[#141414]/95 border border-gold/40 text-white p-4 sm:p-5 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.9)] backdrop-blur-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-[fadeIn_0.3s_ease_both]">
+          <div className="flex items-start gap-3">
+            <div className="p-2 rounded-xl bg-gold/10 border border-gold/30 text-gold shrink-0 mt-0.5 sm:mt-0">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="font-inter text-xs font-bold uppercase tracking-wider text-gold">
+                {toastNotification.title}
+              </h4>
+              <p className="font-inter text-xs text-[#ccc] mt-0.5 leading-relaxed">
+                {toastNotification.message}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
+            <Link
+              to={`/product/${toastNotification.productId}`}
+              className="px-4 py-2 rounded-full bg-gold hover:bg-[#E4C285] text-[#0a0a0a] font-inter text-[11px] font-bold tracking-wider uppercase transition-all whitespace-nowrap shadow-[0_0_15px_rgba(201,169,110,0.2)] hover:shadow-[0_0_25px_rgba(201,169,110,0.35)]"
+            >
+              <span>View Variants</span>
+              <span className="ml-1">→</span>
+            </Link>
+            <button 
+              onClick={() => setToastNotification(null)}
+              className="text-[#666] hover:text-white transition-colors text-base p-1 cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
         </div>
       )}
     </div>

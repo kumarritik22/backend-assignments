@@ -172,6 +172,17 @@ const MyOrders = () => {
                           <h4 className="font-bodoni text-base font-bold text-white group-hover:text-gold transition-colors">
                             {item.title}
                           </h4>
+                          {item.attributes && Object.keys(item.attributes).length > 0 && (
+                            <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                              {Object.entries(item.attributes).map(([key, val]) => (
+                                <span key={key} className="text-[10px] font-inter text-[#aaa] capitalize">
+                                  <span className="text-[#666]">{key}: </span>
+                                  <span className="text-white font-medium">{val}</span>
+                                  <span className="text-[#444] ml-1.5 last:hidden">·</span>
+                                </span>
+                              ))}
+                            </div>
+                          )}
                           <p className="font-inter text-[11px] text-[#666] mt-0.5">
                             Qty: {item.quantity}
                           </p>
