@@ -10,6 +10,29 @@ import { MapPin, ShieldCheck, Truck, Sparkles, AlertCircle } from "lucide-react"
 const SUPPORTED_CURRENCIES = ['USD', 'INR', 'EUR', 'GBP', 'JPY']
 const CURRENCY_SYMBOLS = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥' }
 
+const COUNTRY_STATES_MAP = {
+    "India": [
+        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+        "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", 
+        "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", 
+        "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", 
+        "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+        "Delhi", "Jammu and Kashmir", "Ladakh", "Puducherry", "Chandigarh"
+    ],
+    "United States": [
+        "California", "Florida", "Illinois", "New York", "Texas", "Washington"
+    ],
+    "United Kingdom": [
+        "England", "Scotland", "Wales", "Northern Ireland"
+    ],
+    "Japan": [
+        "Tokyo", "Osaka", "Kyoto", "Hokkaido", "Fukuoka"
+    ],
+    "Germany": [
+        "Bavaria", "Berlin", "Hamburg", "Hesse", "Saxony"
+    ]
+};
+
 
 const Cart = () => {
 
@@ -65,7 +88,8 @@ const Cart = () => {
         const { name, value } = e.target;
         setShippingAddress(prev => ({
             ...prev,
-            [name]: value
+            [name]: value,
+            ...(name === "country" ? { state: "" } : {})
         }));
         if (addressError) setAddressError("");
     };
@@ -531,7 +555,7 @@ const Cart = () => {
                                             name="addressLine1"
                                             value={shippingAddress.addressLine1}
                                             onChange={handleAddressChange}
-                                            placeholder="e.g. 142 Royal Atelier Boulevard, Suite 4B"
+                                            placeholder="e.g. W-42 Sector-12"
                                             className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
@@ -544,46 +568,7 @@ const Cart = () => {
                                             name="addressLine2"
                                             value={shippingAddress.addressLine2}
                                             onChange={handleAddressChange}
-                                            placeholder="e.g. Near Grand Palais"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* City */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">City *</label>
-                                        <input 
-                                            type="text"
-                                            name="city"
-                                            value={shippingAddress.city}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Mumbai"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* State */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">State *</label>
-                                        <input 
-                                            type="text"
-                                            name="state"
-                                            value={shippingAddress.state}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Maharashtra"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* PIN Code */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">PIN Code *</label>
-                                        <input 
-                                            type="text"
-                                            name="pinCode"
-                                            value={shippingAddress.pinCode}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. 400001"
+                                            placeholder="e.g. Near Noida Stadium Gate no-7"
                                             className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
@@ -601,18 +586,74 @@ const Cart = () => {
                                         />
                                     </div>
 
-                                    {/* Country */}
-                                    <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Country *</label>
+                                    {/* PIN Code */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">PIN Code *</label>
                                         <input 
                                             type="text"
-                                            name="country"
-                                            value={shippingAddress.country}
+                                            name="pinCode"
+                                            value={shippingAddress.pinCode}
                                             onChange={handleAddressChange}
-                                            placeholder="e.g. India"
+                                            placeholder="e.g. 400001"
                                             className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
+
+                                    {/* Country */}
+                                    <div className="sm:col-span-2 space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Country *</label>
+                                        <div className="relative">
+                                            <select 
+                                                name="country"
+                                                value={shippingAddress.country}
+                                                onChange={handleAddressChange}
+                                                className="w-full appearance-none bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-white transition-all outline-none cursor-pointer"
+                                            >
+                                                {Object.keys(COUNTRY_STATES_MAP).map(countryName => (
+                                                    <option key={countryName} value={countryName} className="bg-[#141414] text-white py-1">
+                                                        {countryName}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#666] text-xs">▼</span>
+                                        </div>
+                                    </div>
+
+                                    {/* City */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">City *</label>
+                                        <input 
+                                            type="text"
+                                            name="city"
+                                            value={shippingAddress.city}
+                                            onChange={handleAddressChange}
+                                            placeholder="e.g. Mumbai"
+                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                        />
+                                    </div>
+
+                                    {/* State */}
+                                    <div className="space-y-1.5 relative">
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">State *</label>
+                                        <div className="relative">
+                                            <select 
+                                                name="state"
+                                                value={shippingAddress.state}
+                                                onChange={handleAddressChange}
+                                                className="w-full appearance-none bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-white transition-all outline-none cursor-pointer"
+                                            >
+                                                <option value="" disabled className="bg-[#141414] text-[#666]">Select State / Province</option>
+                                                {(COUNTRY_STATES_MAP[shippingAddress.country] || []).map(stateName => (
+                                                    <option key={stateName} value={stateName} className="bg-[#141414] text-white">
+                                                        {stateName}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#666] text-xs">▼</span>
+                                        </div>
+                                    </div>
+
+                                    {/* CTA */}
                                     <button  
                                         onClick={handleCheckout}
                                         className="sm:col-span-2 w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mt-2 mb-8"
