@@ -151,5 +151,56 @@ export async function deleteProduct(req, res) {
         message: "Product deleted successfully.",
         success: true
     })
-}
+};
 
+export async function updateProduct(req, res) {
+    const { productId } = req.params
+
+    const product = await productModel.findOne({
+        _id: productId,
+        seller: req.user._id
+    })
+
+    if (!product) {
+        return res.status(404).json({
+            message: "Product not found or unauthorized access.",
+            success: false
+        })
+    }
+
+    if (req.body.title) {
+        product.title = req.body.title
+    }
+
+    if (req.body.description) {
+        product.description = req.body.description
+    }
+
+    if (req.body.priceAmount) {
+        product.price.amount = Number(req.body.priceAmount)
+    }
+
+    if (req.body.priceCurrency) {
+        product.price.currency = req.body.priceCurrency
+    }
+
+    if (req.files && req.files.length > 0) {
+        const uploadedImages = await Promise.all(
+            req.files.map(async (file) => {
+                return await uploadFile({
+                    buffer: file.buffer,
+                    fileName: file.originalname
+                });
+            })
+        );
+        product.images.push(...uploadedImages)
+    }
+
+    await product.save()
+
+    return res.status(200).json({
+        message: "Product updated successfully.",
+        success: true,
+        product
+    })
+}
