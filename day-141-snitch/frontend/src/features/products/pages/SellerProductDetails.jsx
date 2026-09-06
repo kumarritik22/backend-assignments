@@ -1,18 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router';
-import { useProduct } from '../hooks/useProduct';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import { useProduct } from '../hooks/useProduct.js';
+import { Pencil, Trash2 } from "lucide-react";
 
 const SellerProductDetails = () => {
 
     const { productId } = useParams();
+    const {handleGetProductById, handleAddProductVariant, handleDeleteProduct} = useProduct()
+    const navigate = useNavigate()
 
     const [product, setProduct] = useState(null)
-
-    const {handleGetProductById, handleAddProductVariant} = useProduct()
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
 
     async function fetchProductDetails() {
         const data = await handleGetProductById(productId)
         setProduct(data)
+    }
+
+    const onConfirmDelete = async () => {
+        setIsDeleting(true)
+        const res = await handleDeleteProduct(productId)
+        if (res?.success) {
+            return navigate("/seller/dashboard")
+        }
+        setIsDeleting(false)
     }
 
     useEffect(() => {
@@ -217,16 +229,56 @@ const SellerProductDetails = () => {
                                     {product?.description}
                                 </p>
                             </div>
-                            
-                            {/* Disabled Buttons for Preview */}
-                            <div className="flex flex-col sm:flex-row gap-4 mt-auto opacity-50 pointer-events-none">
-                                <button className="flex-1 bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300">
-                                    Buy Now
+
+                            {/* Edit & Delete Buttons to edit & delete product */}
+                            <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+                                <button 
+                                    className="flex-1 flex items-center justify-center gap-2.5 bg-white hover:bg-gold text-[#0a0a0a] font-inter font-bold text-[11px] tracking-[0.2em] uppercase rounded-xl py-4 px-6 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(201,169,110,0.3)] cursor-pointer active:scale-[0.98]"
+                                >
+                                    <Pencil className="w-3.5 h-3.5" />
+                                    <span>Edit Product</span>
                                 </button>
-                                <button className="flex-1 bg-transparent border border-white/20 hover:border-gold text-white hover:text-gold rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300">
-                                    Add to Cart
+                                <button 
+                                    onClick={() => setShowDeleteModal(true)}
+                                    className="flex-1 flex items-center justify-center gap-2.5 bg-transparent border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500 font-inter font-bold text-[11px] tracking-[0.2em] uppercase rounded-xl py-4 px-6 transition-all duration-300 cursor-pointer active:scale-[0.98]"
+                                >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                    <span>Delete Product</span>
                                 </button>
                             </div>
+
+                            {showDeleteModal && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                                    <div className="relative w-full max-w-md bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-[fadeInUp_0.3s_ease_both] text-center">
+
+                                        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                                            <Trash2 className="w-6 h-6" />
+                                        </div>
+
+                                        <h3 className="font-bodoni text-2xl font-bold text-white mb-2 tracking-tight">Delete Product?</h3>
+                                        <p className="font-inter text-xs sm:text-sm text-[#888] leading-relaxed mb-8">Are you sure you want to permanently delete this product and all its variants? This action cannot be undone.</p>
+                                        
+                                        <div className="flex flex-col sm:flex-row gap-3 w-full">
+                                            <button 
+                                                type="button"
+                                                onClick={() => setShowDeleteModal(false)}
+                                                className="flex-1 py-3.5 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                                            >
+                                                Cancel
+                                            </button>
+
+                                            <button 
+                                                type="button"
+                                                onClick={onConfirmDelete}
+                                                disabled={isDeleting}
+                                                className="flex-1 py-3.5 px-5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-inter text-[11px] font-bold uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_25px_rgba(220,38,38,0.5)] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                                            >
+                                                { isDeleting ? "Deleting..." : "Delete Product" }
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
