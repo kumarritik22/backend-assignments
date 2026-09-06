@@ -49,3 +49,8 @@ export async function deleteProductApi(productId) {
     const response = await productApiInstance.delete(`/${productId}`)
     return response.data;
 }
+
+export async function updateProductApi(productId, formData) {
+    const response = await productApiInstance.put(`/${productId}`, formData)
+    return response.data;
+}

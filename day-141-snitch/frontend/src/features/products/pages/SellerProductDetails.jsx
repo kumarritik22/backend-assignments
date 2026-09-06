@@ -6,12 +6,22 @@ import { Pencil, Trash2 } from "lucide-react";
 const SellerProductDetails = () => {
 
     const { productId } = useParams();
-    const {handleGetProductById, handleAddProductVariant, handleDeleteProduct} = useProduct()
+    const { handleGetProductById, handleAddProductVariant, handleDeleteProduct, handleUpdateProduct } = useProduct()
     const navigate = useNavigate()
 
     const [product, setProduct] = useState(null)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+    const [isUpdating, setIsUpdating] = useState(false)
+    const [editNewImages, setEditNewImages] = useState([])
+    const [editFormData, setEditFormData] = useState({
+        title: "",
+        description: "",
+        priceAmount: "",
+        priceCurrency: ""
+    });
+
 
     async function fetchProductDetails() {
         const data = await handleGetProductById(productId)
@@ -32,6 +42,31 @@ const SellerProductDetails = () => {
     }, [productId])
 
     console.log(product);
+
+    const handleStartEditing = () => {
+        setEditFormData({
+            title: product?.title,
+            description: product?.description,
+            priceAmount: product?.price?.amount,
+            priceCurrency: product?.price?.currency
+        })
+        setEditNewImages([])
+        setIsEditing(true)
+    }
+
+    const handleEditInputChange = (e) => {
+        const { name, value } = e.target;
+
+        setEditFormData((prev) => ({
+            ...prev, [name]: value
+        }))
+    }
+
+    const handleEditImageUpload = () => {
+        const [files] = e.target.files
+
+        
+    }
     
     // --- State for Product Overview (Buyer View Mockup) ---
     const [activeImage, setActiveImage] = useState(0);
@@ -233,6 +268,7 @@ const SellerProductDetails = () => {
                             {/* Edit & Delete Buttons to edit & delete product */}
                             <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                                 <button 
+                                    onClick={handleStartEditing}
                                     className="flex-1 flex items-center justify-center gap-2.5 bg-white hover:bg-gold text-[#0a0a0a] font-inter font-bold text-[11px] tracking-[0.2em] uppercase rounded-xl py-4 px-6 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(201,169,110,0.3)] cursor-pointer active:scale-[0.98]"
                                 >
                                     <Pencil className="w-3.5 h-3.5" />
