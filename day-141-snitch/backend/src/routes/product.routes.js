@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateSeller } from "../middlewares/auth.middleware.js";
-import { addProductVariant, createProduct, getAllProducts, getProductDetails, getSellerProducts } from "../controllers/product.controller.js";
+import { addProductVariant, createProduct, deleteProduct, getAllProducts, getProductDetails, getSellerProducts } from "../controllers/product.controller.js";
 import multer from "multer";
 import { createProductValidator } from "../validators/product.validator.js";
 
@@ -39,6 +39,13 @@ router.get("/detail/:id", getProductDetails)
 //@description To create variants
 //@access private (seller only)
 router.post("/:productId/variants", authenticateSeller, upload.array("images", 7), addProductVariant);
+
+// @route DELETE /api/products/:productId
+// @description To delete the product
+// @acces Private (Only product owner can delete the product)
+router.delete("/:productId", authenticateSeller, deleteProduct);
+
+
 
 
 export default router;

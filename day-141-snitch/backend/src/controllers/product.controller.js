@@ -132,3 +132,24 @@ export async function addProductVariant(req, res) {
     });
 }
 
+export async function deleteProduct(req, res) {
+    const { productId } = req.params
+
+    const product = await productModel.findOneAndDelete({ 
+        _id: productId,
+        seller: req.user._id 
+    })
+
+    if (!product) {
+        return res.status(404).json({
+            message: "Product not found or unauthorized access.",
+            success: false
+        })
+    }
+
+    return res.status(200).json({
+        message: "Product deleted successfully.",
+        success: true
+    })
+}
+
