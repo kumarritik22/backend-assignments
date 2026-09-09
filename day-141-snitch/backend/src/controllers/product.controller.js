@@ -248,3 +248,86 @@ export async function deleteProductVariant(req, res) {
         product
     })
 };
+
+export async function updateProductVariant(req, res) {
+    const { productId, variantId } = req.params
+
+    const product = await productModel.findOne({
+        _id: productId,
+        seller: req.user._id
+    })
+
+    if (!product) {
+        return res.status(404).json({
+            message: "Product not found or unauthorized access.",
+            success: false
+        })
+    }
+
+    const variant = product.variants.id(variantId)
+
+    if (!variant) {
+        return res.status(404).json({
+            message: "Variant not found.",
+            success: false
+        })
+    }
+
+    if (req.body.stock) {
+        variant.stock = req.body.stock
+    };
+
+    if (req.body.attributes) {
+        try {
+            variant.attributes = JSON.parse(req.body.attributes);
+        } catch (err) {
+            console.error(err.message)
+        }
+    }
+
+    if (req.body.priceAmount) {
+        variant.price = {
+            amount: Number(req.body.priceAmount),
+            currency: req.body.priceCurrency || variant.price?.currency || product.price.currency
+        }
+    }
+
+    // 1. Retrieve and parse existing images that the seller kept
+    let existing = [];
+
+    if (req.body.existingImages) {
+        try {
+            existing = JSON.parse(req.body.existingImages);
+        } catch (err) {
+            existing = variant.images || [];
+        }
+    } else {
+        existing = variant.images || [];
+    }
+
+    // 2. Upload freshly added image files (if any)
+    let uploadedImages = [];
+
+    if (req.files && req.files.length > 0) {
+        uploadedImages = await Promise.all(
+            req.files.map(async (file) => {
+                return await uploadFile({
+                    buffer: file.buffer,
+                    fileName: file.originalname
+                });
+            })
+        );
+    }
+
+    // 3. Combine in chronological order and keep only the latest 7 (FIFO)
+    const combinedTimeline = [...existing, ...uploadedImages];
+    variant.images = combinedTimeline.slice(-7);
+
+    await product.save();
+
+    return res.status(200).json({
+        message: "Variant updated successfully.",
+        success: true,
+        product
+    })
+};
