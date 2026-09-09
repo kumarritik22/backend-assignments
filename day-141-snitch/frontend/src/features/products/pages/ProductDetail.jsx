@@ -161,20 +161,20 @@ const ProductDetail = () => {
         <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
             
             {/* ── Main Content ── */}
-            <main className="max-w-350 mx-auto px-5 sm:px-8 py-10 sm:py-16 animate-[fadeInUp_0.5s_ease_both]">
+            <main className="max-w-350 mx-auto px-5 sm:px-8 py-6 sm:py-8 animate-[fadeInUp_0.5s_ease_both]">
                 <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
                     
                     {/* Left: Image Gallery */}
-                    <div className="w-full lg:w-[45%] xl:w-1/2 flex flex-col sm:flex-row gap-4 h-fit">
+                    <div className="w-full lg:w-[45%] xl:w-[42%] flex flex-col sm:flex-row gap-3 sm:gap-4 h-[440px] sm:h-[480px] lg:h-[500px]">
                         
-                        {/* Thumbnails Strip (Desktop Only) */}
+                        {/* Thumbnails Strip (Desktop Only - Auto-fills exact height with 0 scrolling) */}
                         {displayImages && displayImages.length > 1 && (
-                            <div className="hidden sm:flex flex-col gap-3 w-16 xl:w-20 shrink-0">
+                            <div className="hidden sm:flex flex-col gap-2 w-16 xl:w-20 shrink-0 h-full">
                                 {displayImages.map((img, idx) => (
                                     <button 
                                         key={idx}
                                         onClick={() => setActiveImage(idx)}
-                                        className={`w-full aspect-4/5 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+                                        className={`w-full flex-1 min-h-0 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
                                             activeImage === idx 
                                             ? 'border-gold opacity-100 shadow-[0_0_10px_rgba(201,169,110,0.2)]' 
                                             : 'border-transparent opacity-50 hover:opacity-100 hover:border-white/20'
@@ -187,7 +187,7 @@ const ProductDetail = () => {
                         )}
 
                         {/* Main Image Viewer */}
-                        <div className="w-full flex-1 aspect-4/5 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
+                        <div className="w-full flex-1 h-full bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
                             {displayImages && displayImages.length > 0 ? (
                                 <>
                                     <img 

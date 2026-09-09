@@ -67,19 +67,26 @@ const SellerProductDetails = () => {
     const handleEditImageUpload = (e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
+
         if (files.length > 7) {
             return alert('You can select a maximum of 7 images at once.');
         }
 
-        // Combine any already chosen new images with the freshly selected files (capped at 7)
-        const updatedNewImages = [...editNewImages, ...files].slice(0, 7);
+        // 1. Build the complete unified timeline: [old existing -> previously selected new -> freshly selected new]
+        const allImagesTimeline = [...editExistingImages, ...editNewImages, ...files];
 
-        // Calculate how many existing images can stay so the combined total is at most 7
-        const maxExistingAllowed = Math.max(0, 7 - updatedNewImages.length);
+        // 2. Keep ONLY the last 7 images (Oldest at the beginning are dropped first!)
+        const final7 = allImagesTimeline.slice(-7);
 
-        // Automatically trim existing images if the new ones exceed the limit
-        setEditExistingImages((prev) => prev.slice(0, maxExistingAllowed));
-        setEditNewImages(updatedNewImages);
+        // 3. Separate the final 7 back into existing saved images vs new File objects
+        const keptExisting = final7.filter((item) => !(item instanceof File) && item.url);
+        const keptNew = final7.filter((item) => item instanceof File || !item.url);
+
+        setEditExistingImages(keptExisting);
+        setEditNewImages(keptNew);
+        
+        // Reset input so selecting the same files again still triggers onChange
+        e.target.value = '';
     };
 
     const handleRemoveEditNewImage = (index) => {
@@ -325,209 +332,6 @@ const SellerProductDetails = () => {
                                     <span>Delete Product</span>
                                 </button>
                             </div>
-
-                            {/* Delete Confirmation Modal */}
-                            {showDeleteModal && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
-                                    <div className="relative w-full max-w-md bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-[fadeInUp_0.3s_ease_both] text-center">
-
-                                        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
-                                            <Trash2 className="w-6 h-6" />
-                                        </div>
-
-                                        <h3 className="font-bodoni text-2xl font-bold text-white mb-2 tracking-tight">Delete Product?</h3>
-                                        <p className="font-inter text-xs sm:text-sm text-[#888] leading-relaxed mb-8">Are you sure you want to permanently delete this product and all its variants? This action cannot be undone.</p>
-                                        
-                                        <div className="flex flex-col sm:flex-row gap-3 w-full">
-                                            <button 
-                                                type="button"
-                                                onClick={() => setShowDeleteModal(false)}
-                                                className="flex-1 py-3.5 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
-                                            >
-                                                Cancel
-                                            </button>
-
-                                            <button 
-                                                type="button"
-                                                onClick={onConfirmDelete}
-                                                disabled={isDeleting}
-                                                className="flex-1 py-3.5 px-5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-inter text-[11px] font-bold uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_25px_rgba(220,38,38,0.5)] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
-                                            >
-                                                { isDeleting ? "Deleting..." : "Delete Product" }
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Edit Product Modal */}
-                            {isEditing && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
-                                    <div className="relative w-full max-w-2xl bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.8)]">
-                                        <form onSubmit={handleSaveProductEdit} className="flex flex-col gap-6">
-                                            
-                                            {/* Header */}
-                                            <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                                                <h2 className="font-bodoni text-2xl font-bold text-white">Edit Product</h2>
-                                                <button 
-                                                    type="button" 
-                                                    onClick={() => {
-                                                        setIsEditing(false);
-                                                        setEditNewImages([]);
-                                                    }}
-                                                    className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                                                >
-                                                    <X className="w-5 h-5" />
-                                                </button>
-                                            </div>
-
-                                            {/* Title */}
-                                            <div>
-                                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Title</label>
-                                                <input 
-                                                    type="text" 
-                                                    name="title" 
-                                                    value={editFormData.title} 
-                                                    onChange={handleEditInputChange} 
-                                                    required
-                                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors" 
-                                                />
-                                            </div>
-
-                                            {/* Description */}
-                                            <div>
-                                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Description</label>
-                                                <textarea 
-                                                    rows={4} 
-                                                    name="description" 
-                                                    value={editFormData.description} 
-                                                    onChange={handleEditInputChange} 
-                                                    required
-                                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none resize-none transition-colors"
-                                                />
-                                            </div>
-
-                                            {/* Price & Currency */}
-                                            <div>
-                                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Base Price</label>
-                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                                    <input 
-                                                        type="number" 
-                                                        min="0" 
-                                                        name="priceAmount" 
-                                                        value={editFormData.priceAmount} 
-                                                        onChange={handleEditInputChange} 
-                                                        required
-                                                        className="sm:col-span-2 w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none"
-                                                    />
-
-                                                    <select 
-                                                        name="priceCurrency" 
-                                                        value={editFormData.priceCurrency} 
-                                                        onChange={handleEditInputChange}
-                                                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
-                                                    >
-                                                        <option value="USD">USD</option>
-                                                        <option value="INR">INR</option>
-                                                        <option value="EUR">EUR</option>
-                                                        <option value="GBP">GBP</option>
-                                                        <option value="JPY">JPY</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            {/* Images Section */}
-                                            <div>
-                                                <div className="flex justify-between items-center mb-3">
-                                                    <label className="font-inter text-[11px] font-bold uppercase tracking-widest text-[#888]">
-                                                        Product Images (Max 7 Total)
-                                                    </label>
-                                                    <span className="font-inter text-[10px] text-gold">
-                                                        {editExistingImages.length + editNewImages.length} / 7
-                                                    </span>
-                                                </div>
-
-                                                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-                                                    {/* Existing Saved Images */}
-                                                    {editExistingImages.map((img, idx) => (
-                                                        <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden group">
-                                                            <img 
-                                                                src={img.url} 
-                                                                alt="existing" 
-                                                                className="w-full h-full object-cover" 
-                                                            />
-                                                            <button 
-                                                                type='button' 
-                                                                onClick={() => handleRemoveExistingImage(idx)}
-                                                                className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
-                                                            >
-                                                                <X className="w-5 h-5" />
-                                                            </button>
-                                                            <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-[#aaa] uppercase">
-                                                                Saved
-                                                            </span>
-                                                        </div>
-                                                    ))}
-
-                                                {/* Newly Selected Images (Can be removed with X) */}
-                                                {editNewImages.map((file, idx) => (
-                                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
-                                                        <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
-                                                        <button 
-                                                            type="button" 
-                                                            onClick={() => handleRemoveEditNewImage(idx)}
-                                                            className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
-                                                        >
-                                                            <X className="w-5 h-5" />
-                                                        </button>
-                                                        <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase">
-                                                            New
-                                                        </span>
-                                                    </div>
-                                                ))}
-                                                
-                                                {/* Add Photo Button (Always visible whenever new images < 7) */}
-                                                {editNewImages.length < 7 && (
-                                                    <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
-                                                        <Plus className="w-5 h-5" />
-                                                        <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
-                                                        <input 
-                                                            type="file" 
-                                                            multiple 
-                                                            accept="image/*" 
-                                                            onChange={handleEditImageUpload} 
-                                                            className="hidden" 
-                                                        />
-                                                    </label>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                            {/* Action Buttons */}
-                                            <div className="flex items-center justify-end gap-3 pt-6 border-t border-white/10">
-                                                <button 
-                                                    type="button" 
-                                                    onClick={() => {
-                                                        setIsEditing(false);
-                                                        setEditNewImages([]);
-                                                    }}
-                                                    className="py-3 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
-                                                >
-                                                    Cancel
-                                                </button>
-
-                                                <button 
-                                                    type="submit" 
-                                                    disabled={isUpdating} 
-                                                    className="py-3 px-6 rounded-xl bg-gold hover:bg-gold-light text-[#0a0a0a] font-inter font-bold text-[11px] tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(201,169,110,0.2)] hover:shadow-[0_0_20px_rgba(201,169,110,0.4)] cursor-pointer disabled:opacity-50"
-                                                >
-                                                    {isUpdating ? "Saving..." : "Save Changes"}
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -722,8 +526,212 @@ const SellerProductDetails = () => {
                         )}
                     </div>
                 </div>
-
             </main>
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                    <div className="relative w-full max-w-md bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-[fadeInUp_0.3s_ease_both] text-center">
+
+                        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                            <Trash2 className="w-6 h-6" />
+                        </div>
+
+                        <h3 className="font-bodoni text-2xl font-bold text-white mb-2 tracking-tight">Delete Product?</h3>
+                        <p className="font-inter text-xs sm:text-sm text-[#888] leading-relaxed mb-8">Are you sure you want to permanently delete this product and all its variants? This action cannot be undone.</p>
+                        
+                        <div className="flex flex-col sm:flex-row gap-3 w-full">
+                            <button 
+                                type="button"
+                                onClick={() => setShowDeleteModal(false)}
+                                className="flex-1 py-3.5 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                            >
+                                Cancel
+                            </button>
+
+                            <button 
+                                type="button"
+                                onClick={onConfirmDelete}
+                                disabled={isDeleting}
+                                className="flex-1 py-3.5 px-5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-inter text-[11px] font-bold uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_25px_rgba(220,38,38,0.5)] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                            >
+                                { isDeleting ? "Deleting..." : "Delete Product" }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Product Modal */}
+            {isEditing && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                    <div className="relative w-full max-w-2xl bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+                        <form onSubmit={handleSaveProductEdit} className="flex flex-col gap-6">
+                            
+                            {/* Header */}
+                            <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                                <h2 className="font-bodoni text-2xl font-bold text-white">Edit Product</h2>
+                                <button 
+                                    type="button" 
+                                    onClick={() => {
+                                        setIsEditing(false);
+                                        setEditNewImages([]);
+                                    }}
+                                    className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* Title */}
+                            <div>
+                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Title</label>
+                                <input 
+                                    type="text" 
+                                    name="title" 
+                                    value={editFormData.title} 
+                                    onChange={handleEditInputChange} 
+                                    required
+                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors" 
+                                />
+                            </div>
+
+                            {/* Description */}
+                            <div>
+                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Description</label>
+                                <textarea 
+                                    rows={4} 
+                                    name="description" 
+                                    value={editFormData.description} 
+                                    onChange={handleEditInputChange} 
+                                    required
+                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none resize-none transition-colors"
+                                />
+                            </div>
+
+                            {/* Price & Currency */}
+                            <div>
+                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Base Price</label>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <input 
+                                        type="number" 
+                                        min="0" 
+                                        name="priceAmount" 
+                                        value={editFormData.priceAmount} 
+                                        onChange={handleEditInputChange} 
+                                        required
+                                        className="sm:col-span-2 w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none"
+                                    />
+
+                                    <select 
+                                        name="priceCurrency" 
+                                        value={editFormData.priceCurrency} 
+                                        onChange={handleEditInputChange}
+                                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
+                                    >
+                                        <option value="USD">USD</option>
+                                        <option value="INR">INR</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="GBP">GBP</option>
+                                        <option value="JPY">JPY</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Images Section */}
+                            <div>
+                                <div className="flex justify-between items-center mb-3">
+                                    <label className="font-inter text-[11px] font-bold uppercase tracking-widest text-[#888]">
+                                        Product Images (Max 7 Total)
+                                    </label>
+                                    <span className="font-inter text-[10px] text-gold">
+                                        {editExistingImages.length + editNewImages.length} / 7
+                                    </span>
+                                </div>
+
+                                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                                {/* Existing Saved Images */}
+                                {editExistingImages.map((img, idx) => (
+                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden group">
+                                        <img 
+                                            src={img.url} 
+                                            alt="existing" 
+                                            className="w-full h-full object-cover" 
+                                        />
+                                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-[#aaa] uppercase group-hover:opacity-0 transition-opacity">
+                                            Saved
+                                        </span>
+                                        <button 
+                                            type='button' 
+                                            onClick={() => handleRemoveExistingImage(idx)}
+                                            className="absolute inset-0 z-10 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                        >
+                                            <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
+                                                <X className="w-4 h-4" />
+                                            </div>
+                                        </button>
+                                    </div>
+                                ))}
+
+                                {/* Newly Selected Images */}
+                                {editNewImages.map((file, idx) => (
+                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
+                                        <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
+                                        <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase group-hover:opacity-0 transition-opacity">
+                                            New
+                                        </span>
+                                        <button 
+                                            type="button" 
+                                            onClick={() => handleRemoveEditNewImage(idx)}
+                                            className="absolute inset-0 z-10 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                        >
+                                            <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
+                                                <X className="w-4 h-4" />
+                                            </div>
+                                        </button>
+                                    </div>
+                                ))}
+                                
+                                {/* Add Photo Button (ALWAYS visible so you can upload to replace anytime!) */}
+                                <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
+                                    <Plus className="w-5 h-5" />
+                                    <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
+                                    <input 
+                                        type="file" 
+                                        multiple 
+                                        accept="image/*" 
+                                        onChange={handleEditImageUpload} 
+                                        className="hidden" 
+                                    />
+                                </label>
+                            </div>
+                        </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex items-center justify-end gap-3 pt-6 border-t border-white/10">
+                                <button 
+                                    type="button" 
+                                    onClick={() => {
+                                        setIsEditing(false);
+                                        setEditNewImages([]);
+                                    }}
+                                    className="py-3 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button 
+                                    type="submit" 
+                                    disabled={isUpdating} 
+                                    className="py-3 px-6 rounded-xl bg-gold hover:bg-gold-light text-[#0a0a0a] font-inter font-bold text-[11px] tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(201,169,110,0.2)] hover:shadow-[0_0_20px_rgba(201,169,110,0.4)] cursor-pointer disabled:opacity-50"
+                                >
+                                    {isUpdating ? "Saving..." : "Save Changes"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

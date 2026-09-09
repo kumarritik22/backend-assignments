@@ -184,23 +184,23 @@ export async function updateProduct(req, res) {
         product.price.currency = req.body.priceCurrency
     }
 
-    // ── Images Update ──
-    let finalImages = [];
-    
-    // 1. Keep the existing images sent from frontend
+    // ── Images Update (Strict FIFO: Keep the last 7 in order of addition) ──
+    let existing = [];
+
     if (req.body.existingImages) {
         try {
-            finalImages = JSON.parse(req.body.existingImages);
+            existing = JSON.parse(req.body.existingImages);
         } catch (err) {
-            finalImages = product.images || [];
+            existing = product.images || [];
         }
     } else {
-        finalImages = product.images || [];
+        existing = product.images || [];
     }
 
-    // 2. Upload and append any new image files
+    let uploadedImages = [];
+    
     if (req.files && req.files.length > 0) {
-        const uploadedImages = await Promise.all(
+        uploadedImages = await Promise.all(
             req.files.map(async (file) => {
                 return await uploadFile({
                     buffer: file.buffer,
@@ -208,11 +208,11 @@ export async function updateProduct(req, res) {
                 });
             })
         );
-        finalImages.push(...uploadedImages);
     }
 
-    // 3. Enforce maximum 7 images and save
-    product.images = finalImages.slice(0, 7);
+    // Combine in chronological order and keep the last 7 (oldest dropped first)
+    const combinedTimeline = [...existing, ...uploadedImages];
+    product.images = combinedTimeline.slice(-7);
 
     await product.save()
 
