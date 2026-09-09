@@ -198,7 +198,7 @@ export async function updateProduct(req, res) {
     }
 
     let uploadedImages = [];
-    
+
     if (req.files && req.files.length > 0) {
         uploadedImages = await Promise.all(
             req.files.map(async (file) => {
@@ -218,6 +218,32 @@ export async function updateProduct(req, res) {
 
     return res.status(200).json({
         message: "Product updated successfully.",
+        success: true,
+        product
+    })
+};
+
+export async function deleteProductVariant(req, res) {
+    const { productId, variantId } = req.params
+
+    const product = await productModel.findOne({
+        _id: productId,
+        seller: req.user._id
+    })
+
+    if (!product) {
+        return res.status(404).json({
+            message: "Product not found or unauthorized access.",
+            success: false
+        })
+    }
+
+    product.variants.pull({ _id: variantId })
+
+    await product.save()
+
+    return res.status(200).json({
+        message: "Product variant deleted successfully.",
         success: true,
         product
     })

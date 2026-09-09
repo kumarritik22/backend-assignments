@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateSeller } from "../middlewares/auth.middleware.js";
-import { addProductVariant, createProduct, deleteProduct, getAllProducts, getProductDetails, getSellerProducts, updateProduct } from "../controllers/product.controller.js";
+import { addProductVariant, createProduct, deleteProduct, deleteProductVariant, getAllProducts, getProductDetails, getSellerProducts, updateProduct } from "../controllers/product.controller.js";
 import multer from "multer";
 import { createProductValidator } from "../validators/product.validator.js";
 
@@ -49,6 +49,11 @@ router.delete("/:productId", authenticateSeller, deleteProduct);
 // @description To edit the product
 // @access Private (Only product owner can edit the product)
 router.put("/:productId", authenticateSeller, upload.array("images", 7), updateProduct);
+
+// @route DELETE /api/products/:productId/variants/:variantId
+// @description To delete product variant
+// @access Private (Only product owner can delete the product variant)
+router.delete("/:productId/variants/:variantId", authenticateSeller, deleteProductVariant);
 
 
 
