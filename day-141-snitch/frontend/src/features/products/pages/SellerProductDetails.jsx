@@ -43,6 +43,12 @@ const SellerProductDetails = () => {
         fetchProductDetails();
     }, [productId]);
 
+    const formatPrice = (amount, currency) => {
+        if (amount == null) return "";
+        const symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥' };
+        return `${symbols[currency] || ''}${Number(amount).toLocaleString()}`;
+    }
+
     // --- Edit Product Handlers ---
     const handleStartEditing = () => {
         setEditFormData({
@@ -84,7 +90,7 @@ const SellerProductDetails = () => {
 
         setEditExistingImages(keptExisting);
         setEditNewImages(keptNew);
-        
+
         // Reset input so selecting the same files again still triggers onChange
         e.target.value = '';
     };
@@ -303,7 +309,7 @@ const SellerProductDetails = () => {
                             </h1>
                             
                             <div className="font-inter text-[24px] sm:text-[28px] text-gold font-light mb-8">
-                                {product?.price?.amount} {product?.price?.currency}
+                                {formatPrice(product?.price?.amount, product?.price?.currency)}
                             </div>
                             
                             <div className="w-full h-px bg-white/10 mb-8" />
@@ -509,7 +515,7 @@ const SellerProductDetails = () => {
                                                 <div className="flex flex-col">
                                                     <span className="text-[10px] uppercase tracking-widest text-[#666]">Price</span>
                                                     <span className="text-gold font-medium">
-                                                        {v.price ? `${v.price.amount} ${v.price.currency}` : 'Base Price'}
+                                                        {v.price ? formatPrice(v.price.amount, v.price.currency) : 'Base Price'}
                                                     </span>
                                                 </div>
                                             </div>
