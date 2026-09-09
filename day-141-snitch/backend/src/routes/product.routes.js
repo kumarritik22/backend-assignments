@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateSeller } from "../middlewares/auth.middleware.js";
-import { addProductVariant, createProduct, deleteProduct, editProduct, getAllProducts, getProductDetails, getSellerProducts, updateProduct } from "../controllers/product.controller.js";
+import { addProductVariant, createProduct, deleteProduct, getAllProducts, getProductDetails, getSellerProducts, updateProduct } from "../controllers/product.controller.js";
 import multer from "multer";
 import { createProductValidator } from "../validators/product.validator.js";
 

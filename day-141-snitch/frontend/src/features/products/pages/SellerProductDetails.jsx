@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useProduct } from '../hooks/useProduct.js';
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, X, Plus } from "lucide-react";
 
 const SellerProductDetails = () => {
 
     const { productId } = useParams();
-    const { handleGetProductById, handleAddProductVariant, handleDeleteProduct, handleUpdateProduct } = useProduct()
-    const navigate = useNavigate()
+    const { handleGetProductById, handleAddProductVariant, handleDeleteProduct, handleUpdateProduct } = useProduct();
+    const navigate = useNavigate();
 
-    const [product, setProduct] = useState(null)
-    const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
-    const [isEditing, setIsEditing] = useState(false)
-    const [isUpdating, setIsUpdating] = useState(false)
-    const [editNewImages, setEditNewImages] = useState([])
+    const [product, setProduct] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    
+    // --- Edit Product States ---
+    const [isEditing, setIsEditing] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [editNewImages, setEditNewImages] = useState([]);
     const [editFormData, setEditFormData] = useState({
         title: "",
         description: "",
@@ -22,84 +24,109 @@ const SellerProductDetails = () => {
         priceCurrency: ""
     });
 
-
     async function fetchProductDetails() {
-        const data = await handleGetProductById(productId)
-        setProduct(data)
+        const data = await handleGetProductById(productId);
+        setProduct(data);
     }
 
     const onConfirmDelete = async () => {
-        setIsDeleting(true)
-        const res = await handleDeleteProduct(productId)
+        setIsDeleting(true);
+        const res = await handleDeleteProduct(productId);
         if (res?.success) {
-            return navigate("/seller/dashboard")
+            return navigate("/seller/dashboard");
         }
-        setIsDeleting(false)
-    }
+        setIsDeleting(false);
+    };
 
     useEffect(() => {
-      fetchProductDetails()
-    }, [productId])
+        fetchProductDetails();
+    }, [productId]);
 
-    console.log(product);
-
+    // --- Edit Product Handlers ---
     const handleStartEditing = () => {
         setEditFormData({
-            title: product?.title,
-            description: product?.description,
-            priceAmount: product?.price?.amount,
-            priceCurrency: product?.price?.currency
-        })
-        setEditNewImages([])
-        setIsEditing(true)
-    }
+            title: product?.title || "",
+            description: product?.description || "",
+            priceAmount: product?.price?.amount || "",
+            priceCurrency: product?.price?.currency || "USD"
+        });
+        setEditNewImages([]);
+        setIsEditing(true);
+    };
 
     const handleEditInputChange = (e) => {
         const { name, value } = e.target;
-
         setEditFormData((prev) => ({
-            ...prev, [name]: value
-        }))
-    }
+            ...prev,
+            [name]: value
+        }));
+    };
 
-    const handleEditImageUpload = () => {
-        const [files] = e.target.files
+    const handleEditImageUpload = (e) => {
+        const files = Array.from(e.target.files);
+        if (editNewImages.length + files.length > 7) {
+            return alert('You can only upload a maximum of 7 images.');
+        }
+        setEditNewImages((prev) => [...prev, ...files]);
+    };
 
-        
-    }
-    
+    const handleRemoveEditNewImage = (index) => {
+        setEditNewImages((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const handleSaveProductEdit = async (e) => {
+        e.preventDefault();
+        setIsUpdating(true);
+
+        const formData = new FormData();
+        formData.append("title", editFormData.title);
+        formData.append("description", editFormData.description);
+        formData.append("priceAmount", editFormData.priceAmount);
+        formData.append("priceCurrency", editFormData.priceCurrency);
+
+        editNewImages.forEach((imageFile) => {
+            formData.append("images", imageFile);
+        });
+
+        const updatedProduct = await handleUpdateProduct(productId, formData);
+
+        if (updatedProduct) {
+            setProduct(updatedProduct);
+            setIsEditing(false);
+            setEditNewImages([]);
+        }
+
+        setIsUpdating(false);
+    };
+
     // --- State for Product Overview (Buyer View Mockup) ---
     const [activeImage, setActiveImage] = useState(0);
 
     const nextImage = () => {
         if (product?.images?.length > 1) {
-            setActiveImage((prev) => (prev + 1) % product.images.length)
+            setActiveImage((prev) => (prev + 1) % product.images.length);
         }
-    }
+    };
 
     const prevImage = () => {
         if (product?.images?.length > 1) {
-            setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))
+            setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1));
         }
-    }
+    };
 
     // --- State for Add Variant Form ---
     const [isAddingVariant, setIsAddingVariant] = useState(false);
-    
-    // Attributes built as an array of {key, value} for easy input mapping, converted to object later
     const [newAttributes, setNewAttributes] = useState([{ key: '', value: '' }]);
     const [newStock, setNewStock] = useState(0);
     const [newPriceAmount, setNewPriceAmount] = useState('');
-    const [newImages, setNewImages] = useState([]); // Array of File objects for preview
+    const [newImages, setNewImages] = useState([]);
     const [newPriceCurrency, setNewPriceCurrency] = useState("");
 
     const handleStartAddingVariant = () => {
-        setNewPriceCurrency(product?.price?.currency || "")
-        setIsAddingVariant(true)
-    }
-    
+        setNewPriceCurrency(product?.price?.currency || "");
+        setIsAddingVariant(true);
+    };
 
-    // --- Handlers for dynamic attributes ---
     const handleAddAttributeField = () => {
         setNewAttributes([...newAttributes, { key: '', value: '' }]);
     };
@@ -115,7 +142,6 @@ const SellerProductDetails = () => {
         setNewAttributes(updated);
     };
 
-    // --- Handlers for Image Upload ---
     const handleImageUpload = (e) => {
         const files = Array.from(e.target.files);
         if (newImages.length + files.length > 7) {
@@ -130,7 +156,6 @@ const SellerProductDetails = () => {
         setNewImages(updated);
     };
 
-    // Form submit mockup
     const handleSaveVariant = async (e) => {
         e.preventDefault();
         const attributesObj = {};
@@ -151,10 +176,10 @@ const SellerProductDetails = () => {
             attributes: attributesObj,
             stock: Number(newStock),
             price: newPriceAmount ? { amount: Number(newPriceAmount), currency: newPriceCurrency } : undefined,
-            images: newImages.map(file => ({file}))
+            images: newImages.map(file => ({ file }))
         };
 
-        const updatedProduct = await handleAddProductVariant(productId, variantData)
+        const updatedProduct = await handleAddProductVariant(productId, variantData);
         setProduct(updatedProduct);
         
         setNewAttributes([{ key: '', value: '' }]);
@@ -177,12 +202,12 @@ const SellerProductDetails = () => {
                             
                             {/* Thumbnails Strip (Desktop Only) */}
                             {product?.images && product.images.length > 1 && (
-                                <div className="hidden sm:flex flex-col gap-3 w-16 xl:w-20 shrink-0">
+                                <div className="hidden sm:flex flex-col gap-3 w-16 xl:w-20 shrink-0 max-h-150 overflow-y-auto scrollbar-hide pr-1">
                                     {product.images.map((img, idx) => (
                                         <button 
                                             key={idx}
                                             onClick={() => setActiveImage(idx)}
-                                            className={`w-full aspect-4/5 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+                                            className={`w-full aspect-4/5 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer shrink-0 ${
                                                 activeImage === idx 
                                                 ? 'border-gold opacity-100 shadow-[0_0_10px_rgba(201,169,110,0.2)]' 
                                                 : 'border-transparent opacity-50 hover:opacity-100 hover:border-white/20'
@@ -265,7 +290,7 @@ const SellerProductDetails = () => {
                                 </p>
                             </div>
 
-                            {/* Edit & Delete Buttons to edit & delete product */}
+                            {/* Edit & Delete Buttons */}
                             <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                                 <button 
                                     onClick={handleStartEditing}
@@ -283,6 +308,7 @@ const SellerProductDetails = () => {
                                 </button>
                             </div>
 
+                            {/* Delete Confirmation Modal */}
                             {showDeleteModal && (
                                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
                                     <div className="relative w-full max-w-md bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-[fadeInUp_0.3s_ease_both] text-center">
@@ -312,6 +338,141 @@ const SellerProductDetails = () => {
                                                 { isDeleting ? "Deleting..." : "Delete Product" }
                                             </button>
                                         </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Edit Product Modal */}
+                            {isEditing && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                                    <div className="relative w-full max-w-2xl bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+                                        <form onSubmit={handleSaveProductEdit} className="flex flex-col gap-6">
+                                            
+                                            {/* Header */}
+                                            <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                                                <h2 className="font-bodoni text-2xl font-bold text-white">Edit Product</h2>
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => {
+                                                        setIsEditing(false);
+                                                        setEditNewImages([]);
+                                                    }}
+                                                    className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                                                >
+                                                    <X className="w-5 h-5" />
+                                                </button>
+                                            </div>
+
+                                            {/* Title */}
+                                            <div>
+                                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Title</label>
+                                                <input 
+                                                    type="text" 
+                                                    name="title" 
+                                                    value={editFormData.title} 
+                                                    onChange={handleEditInputChange} 
+                                                    required
+                                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors" 
+                                                />
+                                            </div>
+
+                                            {/* Description */}
+                                            <div>
+                                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Description</label>
+                                                <textarea 
+                                                    rows={4} 
+                                                    name="description" 
+                                                    value={editFormData.description} 
+                                                    onChange={handleEditInputChange} 
+                                                    required
+                                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none resize-none transition-colors"
+                                                />
+                                            </div>
+
+                                            {/* Price & Currency */}
+                                            <div>
+                                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Base Price</label>
+                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                                    <input 
+                                                        type="number" 
+                                                        min="0" 
+                                                        name="priceAmount" 
+                                                        value={editFormData.priceAmount} 
+                                                        onChange={handleEditInputChange} 
+                                                        required
+                                                        className="sm:col-span-2 w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none"
+                                                    />
+
+                                                    <select 
+                                                        name="priceCurrency" 
+                                                        value={editFormData.priceCurrency} 
+                                                        onChange={handleEditInputChange}
+                                                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
+                                                    >
+                                                        <option value="USD">USD</option>
+                                                        <option value="INR">INR</option>
+                                                        <option value="EUR">EUR</option>
+                                                        <option value="GBP">GBP</option>
+                                                        <option value="JPY">JPY</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            {/* Add New Images */}
+                                            <div>
+                                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#888] mb-3">Add New Images (Optional)</label>
+                                                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                                                    {editNewImages.map((file, idx) => (
+                                                        <div key={idx} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden group">
+                                                            <img src={URL.createObjectURL(file)} alt="preview" className="w-full h-full object-cover" />
+                                                            <button 
+                                                                type="button" 
+                                                                onClick={() => handleRemoveEditNewImage(idx)}
+                                                                className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                                            >
+                                                                <X className="w-5 h-5" />
+                                                            </button>
+                                                        </div>
+                                                    ))}
+                                                    
+                                                    {editNewImages.length < 7 && (
+                                                        <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
+                                                            <Plus className="w-5 h-5" />
+                                                            <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
+                                                            <input 
+                                                                type="file" 
+                                                                multiple 
+                                                                accept="image/*" 
+                                                                onChange={handleEditImageUpload} 
+                                                                className="hidden" 
+                                                            />
+                                                        </label>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Action Buttons */}
+                                            <div className="flex items-center justify-end gap-3 pt-6 border-t border-white/10">
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => {
+                                                        setIsEditing(false);
+                                                        setEditNewImages([]);
+                                                    }}
+                                                    className="py-3 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                                                >
+                                                    Cancel
+                                                </button>
+
+                                                <button 
+                                                    type="submit" 
+                                                    disabled={isUpdating} 
+                                                    className="py-3 px-6 rounded-xl bg-gold hover:bg-gold-light text-[#0a0a0a] font-inter font-bold text-[11px] tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(201,169,110,0.2)] hover:shadow-[0_0_20px_rgba(201,169,110,0.4)] cursor-pointer disabled:opacity-50"
+                                                >
+                                                    {isUpdating ? "Saving..." : "Save Changes"}
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             )}
