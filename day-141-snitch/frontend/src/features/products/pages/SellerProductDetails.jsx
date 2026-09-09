@@ -6,12 +6,14 @@ import { Pencil, Trash2, X, Plus } from "lucide-react";
 const SellerProductDetails = () => {
 
     const { productId } = useParams();
-    const { handleGetProductById, handleAddProductVariant, handleDeleteProduct, handleUpdateProduct } = useProduct();
+    const { handleGetProductById, handleAddProductVariant, handleDeleteProduct, handleUpdateProduct, handleDeleteProductVariant } = useProduct();
     const navigate = useNavigate();
 
     const [product, setProduct] = useState(null);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [variantToDelete, setVariantToDelete] = useState(null)
+    const [isDeletingVariant, setIsDeletingVariant] = useState(false)
     
     // --- Edit Product States ---
     const [isEditing, setIsEditing] = useState(false);
@@ -42,6 +44,18 @@ const SellerProductDetails = () => {
     useEffect(() => {
         fetchProductDetails();
     }, [productId]);
+
+    const onConfirmDeleteVariant = async () => {
+        if (!variantToDelete) return;
+
+        setIsDeletingVariant(true)
+        const updatedProduct = await handleDeleteProductVariant(productId, variantToDelete._id);
+        if (updatedProduct) {
+            setProduct(updatedProduct);
+            setVariantToDelete(null)
+        }
+        setIsDeletingVariant(false);
+    };
 
     const formatPrice = (amount, currency) => {
         if (amount == null) return "";
@@ -524,7 +538,13 @@ const SellerProductDetails = () => {
                                         {/* Actions (Mock) */}
                                         <div className="flex sm:flex-col justify-end gap-2 shrink-0">
                                             <button className="px-4 py-2 border border-white/10 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:border-gold hover:text-gold transition-colors cursor-pointer">Edit</button>
-                                            <button className="px-4 py-2 border border-red-500/20 text-red-400 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:bg-red-500/10 transition-colors cursor-pointer">Delete</button>
+                                            <button 
+                                                type='button'
+                                                onClick={() => setVariantToDelete(v)}
+                                                className="px-4 py-2 border border-red-500/20 text-red-400 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:bg-red-500/10 transition-colors cursor-pointer"
+                                            >
+                                                Delete
+                                            </button>
                                         </div>
                                     </div>
                                 ))}
@@ -562,6 +582,42 @@ const SellerProductDetails = () => {
                                 className="flex-1 py-3.5 px-5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-inter text-[11px] font-bold uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_25px_rgba(220,38,38,0.5)] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
                             >
                                 { isDeleting ? "Deleting..." : "Delete Product" }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Variant Delete Confirmation Modal */}
+            {variantToDelete && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                    <div className="relative w-full max-w-md bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-[fadeInUp_0.3s_ease_both] text-center">
+
+                        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                            <Trash2 className="w-6 h-6" />
+                        </div>
+
+                        <h3 className="font-bodoni text-2xl font-bold text-white mb-2 tracking-tight">Delete Variant?</h3>
+                        <p className="font-inter text-xs sm:text-sm text-[#888] leading-relaxed mb-8">
+                            Are you sure you want to permanently delete this variant? This action cannot be undone.
+                        </p>
+                        
+                        <div className="flex flex-col sm:flex-row gap-3 w-full">
+                            <button 
+                                type="button"
+                                onClick={() => setVariantToDelete(null)}
+                                className="flex-1 py-3.5 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                            >
+                                Cancel
+                            </button>
+
+                            <button 
+                                type="button"
+                                onClick={onConfirmDeleteVariant}
+                                disabled={isDeletingVariant}
+                                className="flex-1 py-3.5 px-5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-inter text-[11px] font-bold uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_25px_rgba(220,38,38,0.5)] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                            >
+                                { isDeletingVariant ? "Deleting..." : "Delete Variant" }
                             </button>
                         </div>
                     </div>

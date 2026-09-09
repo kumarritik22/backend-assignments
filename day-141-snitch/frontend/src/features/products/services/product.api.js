@@ -54,3 +54,8 @@ export async function updateProductApi(productId, formData) {
     const response = await productApiInstance.put(`/${productId}`, formData)
     return response.data;
 }
+
+export async function deleteProductVariantApi(productId, variantId) {
+    const response = await productApiInstance.delete(`/${productId}/variants/${variantId}`)
+    return response.data;
+}
