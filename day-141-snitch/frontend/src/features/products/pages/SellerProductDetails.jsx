@@ -66,12 +66,20 @@ const SellerProductDetails = () => {
 
     const handleEditImageUpload = (e) => {
         const files = Array.from(e.target.files);
-        const currentTotal = editExistingImages.length + editNewImages.length;
-
-        if (currentTotal + files.length > 7) {
-            return alert(`You can only have a maximum of 7 images total. You currently have ${currentTotal}.`);
+        if (!files.length) return;
+        if (files.length > 7) {
+            return alert('You can select a maximum of 7 images at once.');
         }
-        setEditNewImages((prev) => [...prev, ...files]);
+
+        // Combine any already chosen new images with the freshly selected files (capped at 7)
+        const updatedNewImages = [...editNewImages, ...files].slice(0, 7);
+
+        // Calculate how many existing images can stay so the combined total is at most 7
+        const maxExistingAllowed = Math.max(0, 7 - updatedNewImages.length);
+
+        // Automatically trim existing images if the new ones exceed the limit
+        setEditExistingImages((prev) => prev.slice(0, maxExistingAllowed));
+        setEditNewImages(updatedNewImages);
     };
 
     const handleRemoveEditNewImage = (index) => {
@@ -202,22 +210,22 @@ const SellerProductDetails = () => {
     return (
         <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30 pb-20">
 
-            <main className="max-w-350 mx-auto px-5 sm:px-8 py-10 sm:py-16 animate-[fadeInUp_0.5s_ease_both]">
+            <main className="max-w-350 mx-auto px-5 sm:px-8 py-6 sm:py-8 animate-[fadeInUp_0.5s_ease_both]">
                 
                 {/* ── 1. Buyer View (Product Preview) ── */}
-                <div className="mb-20 pb-16 border-b border-white/10">
+                <div className="mb-12 pb-10 border-b border-white/10">
                     <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
                         {/* Left: Image Gallery */}
-                        <div className="w-full lg:w-[45%] xl:w-1/2 flex flex-col sm:flex-row gap-4 h-fit">
+                        <div className="w-full lg:w-[45%] xl:w-[42%] flex flex-col sm:flex-row gap-3 sm:gap-4 h-110 sm:h-120 lg:h-125">
                             
                             {/* Thumbnails Strip (Desktop Only) */}
                             {product?.images && product.images.length > 1 && (
-                                <div className="hidden sm:flex flex-col gap-3 w-16 xl:w-20 shrink-0 max-h-150 overflow-y-auto scrollbar-hide pr-1">
+                                <div className="hidden sm:flex flex-col gap-2 w-16 xl:w-20 shrink-0 h-full">
                                     {product.images.map((img, idx) => (
                                         <button 
                                             key={idx}
                                             onClick={() => setActiveImage(idx)}
-                                            className={`w-full aspect-4/5 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer shrink-0 ${
+                                            className={`w-full flex-1 min-h-0 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
                                                 activeImage === idx 
                                                 ? 'border-gold opacity-100 shadow-[0_0_10px_rgba(201,169,110,0.2)]' 
                                                 : 'border-transparent opacity-50 hover:opacity-100 hover:border-white/20'
@@ -230,7 +238,7 @@ const SellerProductDetails = () => {
                             )}
 
                             {/* Main Image Viewer */}
-                            <div className="w-full flex-1 aspect-4/5 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
+                            <div className="w-full h-full flex-1 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
                                 {product?.images && product?.images.length > 0 ? (
                                     <>
                                         <img 
@@ -293,7 +301,7 @@ const SellerProductDetails = () => {
                             
                             <div className="w-full h-px bg-white/10 mb-8" />
                             
-                            <div className="mb-12">
+                            <div className="mb-6">
                                 <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#888] uppercase mb-4">Details</h3>
                                 <p className="font-inter text-sm sm:text-base text-[#ccc] leading-relaxed font-light">
                                     {product?.description}
@@ -442,7 +450,7 @@ const SellerProductDetails = () => {
                                                 <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                                                     {/* Existing Saved Images */}
                                                     {editExistingImages.map((img, idx) => (
-                                                        <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden">
+                                                        <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden group">
                                                             <img 
                                                                 src={img.url} 
                                                                 alt="existing" 
@@ -478,8 +486,8 @@ const SellerProductDetails = () => {
                                                     </div>
                                                 ))}
                                                 
-                                                {/* Add Photo Button (Appears whenever total is less than 7) */}
-                                                {editExistingImages.length + editNewImages.length < 7 && (
+                                                {/* Add Photo Button (Always visible whenever new images < 7) */}
+                                                {editNewImages.length < 7 && (
                                                     <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
                                                         <Plus className="w-5 h-5" />
                                                         <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
