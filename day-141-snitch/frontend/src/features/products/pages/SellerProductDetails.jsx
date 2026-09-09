@@ -6,7 +6,7 @@ import { Pencil, Trash2, X, Plus } from "lucide-react";
 const SellerProductDetails = () => {
 
     const { productId } = useParams();
-    const { handleGetProductById, handleAddProductVariant, handleDeleteProduct, handleUpdateProduct, handleDeleteProductVariant } = useProduct();
+    const { handleGetProductById, handleAddProductVariant, handleDeleteProduct, handleUpdateProduct, handleDeleteProductVariant, handleUpdateProductVariant } = useProduct();
     const navigate = useNavigate();
 
     const [product, setProduct] = useState(null);
@@ -26,6 +26,18 @@ const SellerProductDetails = () => {
         priceAmount: "",
         priceCurrency: ""
     });
+
+    // Edit Product Variant States
+    const [variantToEdit, setVariantToEdit] = useState(null)
+    const [isUpdatingVariant, setIsUpdatingVariant] = useState(false)
+    const [editVariantExistingImages, setEditVariantExistingImages] = useState([])
+    const [editVariantNewImages, setEditVariantNewImages] = useState([])
+    const [editVariantFormData, setEditVariantFormData] = useState({
+        stock: 0,
+        priceAmount: "",
+        priceCurrency: "",
+        attributes: []
+    })
 
     async function fetchProductDetails() {
         const data = await handleGetProductById(productId);
@@ -69,12 +81,24 @@ const SellerProductDetails = () => {
             title: product?.title || "",
             description: product?.description || "",
             priceAmount: product?.price?.amount || "",
-            priceCurrency: product?.price?.currency || "USD"
+            priceCurrency: product?.price?.currency || "INR"
         });
         setEditExistingImages(product?.images || []);
         setEditNewImages([]);
         setIsEditing(true);
     };
+
+    // Edit Product Variant
+    const handleStartEditingVariant = (variant) => {
+        setEditVariantFormData({
+            stock: variant?.stock || 0,
+            priceAmount: variant?.price?.amount || "",
+            priceCurrency: variant?.price?.currency || ""
+        })
+        setEditVariantExistingImages(variant?.images || []);
+        setEditVariantNewImages([]);
+        setVariantToEdit(variant);
+    }
 
     const handleEditInputChange = (e) => {
         const { name, value } = e.target;
