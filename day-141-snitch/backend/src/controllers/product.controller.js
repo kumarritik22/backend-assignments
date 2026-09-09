@@ -184,6 +184,21 @@ export async function updateProduct(req, res) {
         product.price.currency = req.body.priceCurrency
     }
 
+    // ── Images Update ──
+    let finalImages = [];
+    
+    // 1. Keep the existing images sent from frontend
+    if (req.body.existingImages) {
+        try {
+            finalImages = JSON.parse(req.body.existingImages);
+        } catch (err) {
+            finalImages = product.images || [];
+        }
+    } else {
+        finalImages = product.images || [];
+    }
+
+    // 2. Upload and append any new image files
     if (req.files && req.files.length > 0) {
         const uploadedImages = await Promise.all(
             req.files.map(async (file) => {
@@ -193,8 +208,11 @@ export async function updateProduct(req, res) {
                 });
             })
         );
-        product.images = uploadedImages
+        finalImages.push(...uploadedImages);
     }
+
+    // 3. Enforce maximum 7 images and save
+    product.images = finalImages.slice(0, 7);
 
     await product.save()
 

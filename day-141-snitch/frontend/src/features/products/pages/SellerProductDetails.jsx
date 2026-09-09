@@ -17,6 +17,7 @@ const SellerProductDetails = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [editNewImages, setEditNewImages] = useState([]);
+    const [editExistingImages, setEditExistingImages] = useState([])
     const [editFormData, setEditFormData] = useState({
         title: "",
         description: "",
@@ -50,6 +51,7 @@ const SellerProductDetails = () => {
             priceAmount: product?.price?.amount || "",
             priceCurrency: product?.price?.currency || "USD"
         });
+        setEditExistingImages(product?.images || []);
         setEditNewImages([]);
         setIsEditing(true);
     };
@@ -64,14 +66,20 @@ const SellerProductDetails = () => {
 
     const handleEditImageUpload = (e) => {
         const files = Array.from(e.target.files);
-        if (editNewImages.length + files.length > 7) {
-            return alert('You can only upload a maximum of 7 images.');
+        const currentTotal = editExistingImages.length + editNewImages.length;
+
+        if (currentTotal + files.length > 7) {
+            return alert(`You can only have a maximum of 7 images total. You currently have ${currentTotal}.`);
         }
         setEditNewImages((prev) => [...prev, ...files]);
     };
 
     const handleRemoveEditNewImage = (index) => {
         setEditNewImages((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const handleRemoveExistingImage = (index) => {
+        setEditExistingImages((prev) => prev.filter((_, i) => i !== index))
     };
 
     const handleSaveProductEdit = async (e) => {
@@ -83,6 +91,7 @@ const SellerProductDetails = () => {
         formData.append("description", editFormData.description);
         formData.append("priceAmount", editFormData.priceAmount);
         formData.append("priceCurrency", editFormData.priceCurrency);
+        formData.append("existingImages", JSON.stringify(editExistingImages));
 
         editNewImages.forEach((imageFile) => {
             formData.append("images", imageFile);
@@ -94,6 +103,7 @@ const SellerProductDetails = () => {
             setProduct(updatedProduct);
             setIsEditing(false);
             setEditNewImages([]);
+            setEditExistingImages([]);
         }
 
         setIsUpdating(false);
@@ -418,38 +428,72 @@ const SellerProductDetails = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Add New Images */}
+                                            {/* Images Section */}
                                             <div>
-                                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#888] mb-3">Add New Images (Optional)</label>
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <label className="font-inter text-[11px] font-bold uppercase tracking-widest text-[#888]">
+                                                        Product Images (Max 7 Total)
+                                                    </label>
+                                                    <span className="font-inter text-[10px] text-gold">
+                                                        {editExistingImages.length + editNewImages.length} / 7
+                                                    </span>
+                                                </div>
+
                                                 <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-                                                    {editNewImages.map((file, idx) => (
-                                                        <div key={idx} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden group">
-                                                            <img src={URL.createObjectURL(file)} alt="preview" className="w-full h-full object-cover" />
+                                                    {/* Existing Saved Images */}
+                                                    {editExistingImages.map((img, idx) => (
+                                                        <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden">
+                                                            <img 
+                                                                src={img.url} 
+                                                                alt="existing" 
+                                                                className="w-full h-full object-cover" 
+                                                            />
                                                             <button 
-                                                                type="button" 
-                                                                onClick={() => handleRemoveEditNewImage(idx)}
+                                                                type='button' 
+                                                                onClick={() => handleRemoveExistingImage(idx)}
                                                                 className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
                                                             >
                                                                 <X className="w-5 h-5" />
                                                             </button>
+                                                            <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-[#aaa] uppercase">
+                                                                Saved
+                                                            </span>
                                                         </div>
                                                     ))}
-                                                    
-                                                    {editNewImages.length < 7 && (
-                                                        <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
-                                                            <Plus className="w-5 h-5" />
-                                                            <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
-                                                            <input 
-                                                                type="file" 
-                                                                multiple 
-                                                                accept="image/*" 
-                                                                onChange={handleEditImageUpload} 
-                                                                className="hidden" 
-                                                            />
-                                                        </label>
-                                                    )}
-                                                </div>
+
+                                                {/* Newly Selected Images (Can be removed with X) */}
+                                                {editNewImages.map((file, idx) => (
+                                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
+                                                        <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
+                                                        <button 
+                                                            type="button" 
+                                                            onClick={() => handleRemoveEditNewImage(idx)}
+                                                            className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                                        >
+                                                            <X className="w-5 h-5" />
+                                                        </button>
+                                                        <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase">
+                                                            New
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                                
+                                                {/* Add Photo Button (Appears whenever total is less than 7) */}
+                                                {editExistingImages.length + editNewImages.length < 7 && (
+                                                    <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
+                                                        <Plus className="w-5 h-5" />
+                                                        <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
+                                                        <input 
+                                                            type="file" 
+                                                            multiple 
+                                                            accept="image/*" 
+                                                            onChange={handleEditImageUpload} 
+                                                            className="hidden" 
+                                                        />
+                                                    </label>
+                                                )}
                                             </div>
+                                        </div>
 
                                             {/* Action Buttons */}
                                             <div className="flex items-center justify-end gap-3 pt-6 border-t border-white/10">
