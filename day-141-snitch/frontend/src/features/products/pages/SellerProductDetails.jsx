@@ -100,6 +100,10 @@ const SellerProductDetails = () => {
         setVariantToEdit(variant);
     }
 
+    const handleAddVariantAttributeField = () => {
+        
+    }
+
     const handleEditInputChange = (e) => {
         const { name, value } = e.target;
         setEditFormData((prev) => ({
