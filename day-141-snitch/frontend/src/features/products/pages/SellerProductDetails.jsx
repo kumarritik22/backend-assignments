@@ -37,12 +37,26 @@ const SellerProductDetails = () => {
         priceAmount: "",
         priceCurrency: "",
         attributes: []
-    })
+    });
+
+
+    const formatPrice = (amount, currency) => {
+        if (amount == null) return "";
+        const symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥' };
+        return `${symbols[currency] || ''}${Number(amount).toLocaleString()}`;
+    };
+
 
     async function fetchProductDetails() {
         const data = await handleGetProductById(productId);
         setProduct(data);
-    }
+    };
+
+
+    useEffect(() => {
+        fetchProductDetails();
+    }, [productId]);
+
 
     const onConfirmDelete = async () => {
         setIsDeleting(true);
@@ -53,27 +67,6 @@ const SellerProductDetails = () => {
         setIsDeleting(false);
     };
 
-    useEffect(() => {
-        fetchProductDetails();
-    }, [productId]);
-
-    const onConfirmDeleteVariant = async () => {
-        if (!variantToDelete) return;
-
-        setIsDeletingVariant(true)
-        const updatedProduct = await handleDeleteProductVariant(productId, variantToDelete._id);
-        if (updatedProduct) {
-            setProduct(updatedProduct);
-            setVariantToDelete(null)
-        }
-        setIsDeletingVariant(false);
-    };
-
-    const formatPrice = (amount, currency) => {
-        if (amount == null) return "";
-        const symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥' };
-        return `${symbols[currency] || ''}${Number(amount).toLocaleString()}`;
-    }
 
     // --- Edit Product Handlers ---
     const handleStartEditing = () => {
@@ -88,22 +81,8 @@ const SellerProductDetails = () => {
         setIsEditing(true);
     };
 
-    // Edit Product Variant
-    const handleStartEditingVariant = (variant) => {
-        setEditVariantFormData({
-            stock: variant?.stock || 0,
-            priceAmount: variant?.price?.amount || "",
-            priceCurrency: variant?.price?.currency || ""
-        })
-        setEditVariantExistingImages(variant?.images || []);
-        setEditVariantNewImages([]);
-        setVariantToEdit(variant);
-    }
 
-    const handleAddVariantAttributeField = () => {
-        
-    }
-
+    // Product Image Handlers
     const handleEditInputChange = (e) => {
         const { name, value } = e.target;
         setEditFormData((prev) => ({
@@ -111,6 +90,7 @@ const SellerProductDetails = () => {
             [name]: value
         }));
     };
+
 
     const handleEditImageUpload = (e) => {
         const files = Array.from(e.target.files);
@@ -137,14 +117,17 @@ const SellerProductDetails = () => {
         e.target.value = '';
     };
 
+
     const handleRemoveEditNewImage = (index) => {
         setEditNewImages((prev) => prev.filter((_, i) => i !== index));
     };
 
+
     const handleRemoveExistingImage = (index) => {
-        setEditExistingImages((prev) => prev.filter((_, i) => i !== index))
+        setEditExistingImages((prev) => prev.filter((_, i) => i !== index));
     };
 
+    // Product Submit Handler
     const handleSaveProductEdit = async (e) => {
         e.preventDefault();
         setIsUpdating(true);
@@ -171,6 +154,148 @@ const SellerProductDetails = () => {
 
         setIsUpdating(false);
     };
+
+
+    // Variant Delete Handler
+    const onConfirmDeleteVariant = async () => {
+        if (!variantToDelete) return;
+
+        setIsDeletingVariant(true)
+        const updatedProduct = await handleDeleteProductVariant(productId, variantToDelete._id);
+        if (updatedProduct) {
+            setProduct(updatedProduct);
+            setVariantToDelete(null)
+        }
+        setIsDeletingVariant(false);
+    };
+
+
+    // Edit Variant Handler
+    const handleStartEditingVariant = (variant) => {
+        const attributeArray = Object.entries(variant?.attributes || {}).map(([key, value]) => ({
+            key,
+            value
+        }));
+
+        setEditVariantFormData({
+            stock: variant?.stock ?? 0,
+            priceAmount: variant?.price?.amount || "",
+            priceCurrency: variant?.price?.currency || "",
+            attributes: attributeArray.length > 0 ? attributeArray : [{ key: "", value: "" }]
+        });
+        setEditVariantExistingImages(variant?.images || []);
+        setEditVariantNewImages([]);
+        setVariantToEdit(variant);
+    }
+
+
+    const handleAddVariantAttributeField = () => {
+        setEditVariantFormData((prev) => ({
+            ...prev,
+            attributes: [...prev.attributes, { key: "", value: "" }]
+        }))
+    };
+
+
+    const handleVariantAttributeChange = (index, field, value) => {
+        setEditVariantFormData((prev) => {
+            const updated = [...prev.attributes ]
+            updated[index] = { ...updated[index], [field]: value }
+            return { ...prev, attributes: updated }
+        })
+    };
+
+
+    const handleRemoveVariantAttributeField = (index) => {
+        setEditVariantFormData((prev) => ({
+            ...prev,
+            attributes:  prev.attributes.filter((_, i) => i !== index)
+        }))
+    };
+
+
+    const handleEditVariantInputChange = (e) => {
+        const { name, value } = e.target;
+
+        setEditVariantFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+    };
+
+
+    // Variant Image Handlers
+    const handleEditVariantImageUpload = (e) => {
+        const files = Array.from(e.target.files);
+        if (!files.length) return;
+
+        if (files.length > 7) {
+            return alert("You can select a maximum of 7 images at once.");
+        }
+
+        const allImagesTimeline = [...editVariantExistingImages, ...editVariantNewImages, ...files];
+        const final7 = allImagesTimeline.slice(-7);
+
+        const keptExisting = final7.filter((item) => !(item instanceof File) && item.url);
+        const keptNew = final7.filter((item) => item instanceof File || !item.url);
+
+        setEditVariantExistingImages(keptExisting);
+        setEditVariantNewImages(keptNew);
+        e.target.value = "";
+    };
+
+
+    const handleRemoveEditVariantNewImage = (index) => {
+        setEditVariantNewImages((prev) => prev.filter((_, i) => i !== index));
+    };
+
+
+    const handleRemoveEditVariantExistingImage = (index) => {
+        setEditVariantExistingImages((prev) => prev.filter((_, i) => i !== index));
+    };
+
+
+    // Variant Submit Handler
+    const handleSaveVariantEdit = async (e) => {
+        e.preventDefault()
+        setIsUpdatingVariant(true)
+
+        const attributesObject = editVariantFormData.attributes.reduce(
+            (acc, attribute) => {
+                if (attribute.key.trim()) {
+                    acc[attribute.key.trim()] = attribute.value
+                }
+                return acc;
+            },
+            {}
+        )
+
+        const formData = new FormData();
+
+        formData.append("stock", editVariantFormData.stock);
+        if (editVariantFormData.priceAmount) {
+            formData.append("priceAmount", editVariantFormData.priceAmount);
+            formData.append("priceCurrency", editVariantFormData.priceCurrency);
+        }
+        formData.append("attributes", JSON.stringify(attributesObject));
+        formData.append("existingImages", JSON.stringify(editVariantExistingImages));
+
+        editVariantNewImages.forEach((file) => {
+            formData.append("images", file)
+        })
+
+        const updatedProductVariant = await handleUpdateProductVariant(productId, variantToEdit._id, formData);
+
+        if (updatedProductVariant) {
+            setProduct(updatedProductVariant)
+            setVariantToEdit(null)
+            setEditVariantNewImages([])
+            setEditVariantExistingImages([])
+        }
+
+        setIsUpdatingVariant(false);
+    };
+
 
     // --- State for Product Overview (Buyer View Mockup) ---
     const [activeImage, setActiveImage] = useState(0);
