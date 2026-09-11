@@ -14,6 +14,7 @@ const SellerProductDetails = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [variantToDelete, setVariantToDelete] = useState(null)
     const [isDeletingVariant, setIsDeletingVariant] = useState(false)
+    const [isSavingVariant, setIsSavingVariant] = useState(false)
     
     // --- Edit Product States ---
     const [isEditing, setIsEditing] = useState(false);
@@ -370,6 +371,8 @@ const SellerProductDetails = () => {
             return;
         }
 
+        setIsSavingVariant(true);
+
         const variantData = {
             attributes: attributesObj,
             stock: Number(newStock),
@@ -385,6 +388,8 @@ const SellerProductDetails = () => {
         setNewPriceAmount('');
         setNewImages([]);
         setIsAddingVariant(false);
+
+        setIsSavingVariant(false);
     };
 
     return (
@@ -612,7 +617,7 @@ const SellerProductDetails = () => {
 
                                 {/* Images Upload */}
                                 <div>
-                                    <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#888] mb-3">Images (Max 7, Optional)</label>
+                                    <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#888] mb-3">Images (Max 7)</label>
                                     
                                     <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                                         {newImages.map((file, idx) => (
@@ -638,8 +643,12 @@ const SellerProductDetails = () => {
                                     </div>
                                 </div>
 
-                                <button type="submit" className="w-full rounded-lg py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-linear-to-tr from-gold to-gold-dark hover:from-gold-light hover:to-gold transition-all duration-300 mt-4 cursor-pointer">
-                                    Save Variant
+                                <button 
+                                    type="submit" 
+                                    disabled={isSavingVariant}
+                                    className="w-full rounded-lg py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-linear-to-tr from-gold to-gold-dark hover:from-gold-light hover:to-gold transition-all duration-300 mt-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    { isSavingVariant ? "Saving..." : "Save Variant" }
                                 </button>
                             </form>
                         </div>
