@@ -137,8 +137,8 @@ const Dashboard = () => {
                     
                     {/* Top badging */}
                     <div className="absolute top-3 left-3 flex flex-col gap-2">
-                      <div className="bg-black/60 backdrop-blur-md rounded px-2 py-1 border border-white/10">
-                        <span className="font-bodoni text-[10px] font-bold text-white/90 tracking-widest uppercase">
+                      <div className="bg-black/40 backdrop-blur-md rounded-full px-2.5 py-0.5 border border-white/15 shadow-sm">
+                        <span className="font-bodoni text-[8.5px] font-bold text-white/90 tracking-[0.22em] uppercase">
                           VELORA
                         </span>
                       </div>
@@ -146,13 +146,13 @@ const Dashboard = () => {
                     
                     {/* Image count badge */}
                     {product.images?.length > 1 && (
-                      <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md rounded px-2 py-1 flex items-center gap-1.5 border border-white/10">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/70">
+                      <div className="absolute bottom-3 right-3 bg-black/40 backdrop-blur-md rounded-full px-2.5 py-0.5 flex items-center gap-1.5 border border-white/15 shadow-sm">
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/70">
                           <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                           <circle cx="8.5" cy="8.5" r="1.5" />
                           <polyline points="21 15 16 10 5 21" />
                         </svg>
-                        <span className="font-inter text-[9px] font-bold text-white/90">
+                        <span className="font-inter text-[8.5px] font-semibold text-white/90">
                           {product.images.length}
                         </span>
                       </div>
