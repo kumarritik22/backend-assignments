@@ -690,7 +690,13 @@ const SellerProductDetails = () => {
                                         
                                         {/* Actions (Mock) */}
                                         <div className="flex sm:flex-col justify-end gap-2 shrink-0">
-                                            <button className="px-4 py-2 border border-white/10 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:border-gold hover:text-gold transition-colors cursor-pointer">Edit</button>
+                                            <button 
+                                                onClick={() => handleStartEditingVariant(v)}
+                                                className="px-4 py-2 border border-white/10 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:border-gold hover:text-gold transition-colors cursor-pointer"
+                                            >
+                                                Edit
+                                            </button>
+
                                             <button 
                                                 type='button'
                                                 onClick={() => setVariantToDelete(v)}
@@ -941,6 +947,209 @@ const SellerProductDetails = () => {
                                     className="py-3 px-6 rounded-xl bg-gold hover:bg-gold-light text-[#0a0a0a] font-inter font-bold text-[11px] tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(201,169,110,0.2)] hover:shadow-[0_0_20px_rgba(201,169,110,0.4)] cursor-pointer disabled:opacity-50"
                                 >
                                     {isUpdating ? "Saving..." : "Save Changes"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Variant Modal */}
+            {variantToEdit && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                    <div className="relative w-full max-w-2xl bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+                        <form onSubmit={handleSaveVariantEdit} className="flex flex-col gap-6">
+                            
+                            {/* Header */}
+                            <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                                <h2 className="font-bodoni text-2xl font-bold text-white">Edit Variant</h2>
+                                <button 
+                                    type="button" 
+                                    onClick={() => {
+                                        setVariantToEdit(null)
+                                        setEditVariantNewImages([]);
+                                    }}
+                                    className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* Dynamic Attributes */}
+                            <div>
+                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-3">
+                                    Attributes
+                                </label>
+                                <div className="flex flex-col gap-3">
+                                    {editVariantFormData.attributes.map((attr, idx) => (
+                                        <div key={idx} className="flex items-start gap-3">
+                                            <input 
+                                                type="text" 
+                                                placeholder="Attribute (e.g. Size)"
+                                                value={attr.key}
+                                                onChange={(e) => handleVariantAttributeChange(idx, 'key', e.target.value)}
+                                                className="flex-1 bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors"
+                                            />
+                                            <input 
+                                                type="text" 
+                                                placeholder="Value (e.g. XL, Crimson Red)"
+                                                value={attr.value}
+                                                onChange={(e) => handleVariantAttributeChange(idx, 'value', e.target.value)}
+                                                className="flex-1 bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors"
+                                            />
+                                            {editVariantFormData.attributes.length > 1 && (
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => handleRemoveVariantAttributeField(idx)}
+                                                    className="p-3 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-red-400/20"
+                                                >
+                                                    <X className="w-4 h-4" />
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                    
+                                    <button 
+                                        type="button" 
+                                        onClick={handleAddVariantAttributeField}
+                                        className="self-start text-xs font-inter font-bold tracking-widest text-[#888] hover:text-gold uppercase flex items-center gap-1.5 mt-1 cursor-pointer transition-colors"
+                                    >
+                                        <Plus className="w-3.5 h-3.5" />
+                                        Add Another Attribute
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Stock */}
+                            <div>
+                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Stock</label>
+                                <input 
+                                    type="number" 
+                                    min="0"
+                                    name="stock" 
+                                    value={editVariantFormData.stock} 
+                                    onChange={handleEditVariantInputChange} 
+                                    required
+                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors" 
+                                />
+                            </div>
+
+                            {/* Price & Currency */}
+                            <div>
+                                <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-gold mb-2">Price Override (Optional)</label>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <input 
+                                        type="number"
+                                        name="priceAmount" 
+                                        min="0"
+                                        value={editVariantFormData.priceAmount} 
+                                        onChange={handleEditVariantInputChange}
+                                        className="sm:col-span-2 w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none"
+                                    />
+
+                                    <select 
+                                        name="priceCurrency" 
+                                        value={editVariantFormData.priceCurrency} 
+                                        onChange={handleEditVariantInputChange}
+                                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
+                                    >
+                                        <option value="USD">USD</option>
+                                        <option value="INR">INR</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="GBP">GBP</option>
+                                        <option value="JPY">JPY</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Images Section */}
+                            <div>
+                                <div className="flex justify-between items-center mb-3">
+                                    <label className="font-inter text-[11px] font-bold uppercase tracking-widest text-[#888]">
+                                        Variant Images (Max 7 Total)
+                                    </label>
+                                    <span className="font-inter text-[10px] text-gold">
+                                        {editVariantExistingImages.length + editVariantNewImages.length} / 7
+                                    </span>
+                                </div>
+
+                                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                                {/* Existing Saved Images */}
+                                {editVariantExistingImages.map((img, idx) => (
+                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden group">
+                                        <img 
+                                            src={img.url} 
+                                            alt="existing" 
+                                            className="w-full h-full object-cover" 
+                                        />
+                                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-[#aaa] uppercase group-hover:opacity-0 transition-opacity">
+                                            Saved
+                                        </span>
+                                        <button 
+                                            type='button' 
+                                            onClick={() => handleRemoveEditVariantExistingImage(idx)}
+                                            className="absolute inset-0 z-10 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                        >
+                                            <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
+                                                <X className="w-4 h-4" />
+                                            </div>
+                                        </button>
+                                    </div>
+                                ))}
+
+                                {/* Newly Selected Images */}
+                                {editVariantNewImages.map((file, idx) => (
+                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
+                                        <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
+                                        <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase group-hover:opacity-0 transition-opacity">
+                                            New
+                                        </span>
+                                        <button 
+                                            type="button" 
+                                            onClick={() => handleRemoveEditVariantNewImage(idx)}
+                                            className="absolute inset-0 z-10 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                        >
+                                            <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
+                                                <X className="w-4 h-4" />
+                                            </div>
+                                        </button>
+                                    </div>
+                                ))}
+                                
+                                {/* Add Photo Button (ALWAYS visible so you can upload to replace anytime!) */}
+                                <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
+                                    <Plus className="w-5 h-5" />
+                                    <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
+                                    <input 
+                                        type="file" 
+                                        multiple 
+                                        accept="image/*" 
+                                        onChange={handleEditVariantImageUpload} 
+                                        className="hidden" 
+                                    />
+                                </label>
+                            </div>
+                        </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex items-center justify-end gap-3 pt-6 border-t border-white/10">
+                                <button 
+                                    type="button" 
+                                    onClick={() => {
+                                        setVariantToEdit(null)
+                                        setEditVariantNewImages([])
+                                    }}
+                                    className="py-3 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button 
+                                    type="submit" 
+                                    disabled={ isUpdatingVariant } 
+                                    className="py-3 px-6 rounded-xl bg-gold hover:bg-gold-light text-[#0a0a0a] font-inter font-bold text-[11px] tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(201,169,110,0.2)] hover:shadow-[0_0_20px_rgba(201,169,110,0.4)] cursor-pointer disabled:opacity-50"
+                                >
+                                    { isUpdatingVariant ? "Saving..." : "Save Variant Changes" }
                                 </button>
                             </div>
                         </form>
