@@ -161,15 +161,15 @@ const Dashboard = () => {
 
                   {/* Content Area */}
                   <div className="p-5 flex-1 flex flex-col">
-                    <h3 className="font-bodoni text-[20px] font-bold text-white leading-tight tracking-tight mb-2 line-clamp-1 group-hover:text-gold transition-colors duration-200">
+                    <h3 className="font-bodoni text-[18px] sm:text-[19px] font-bold text-white leading-tight tracking-tight mb-2 line-clamp-2 group-hover:text-gold transition-colors duration-200">
                       {product.title}
                     </h3>
                     
-                    <p className="font-inter text-[12px] text-[#777] leading-relaxed mb-4 line-clamp-2 flex-1">
+                    <p className="font-inter text-[12px] text-[#8e8e8e] leading-relaxed mb-4 line-clamp-2">
                       {product.description || 'No description provided.'}
                     </p>
                     
-                    <div className="flex items-end justify-between mt-auto">
+                    <div className="flex items-end justify-between mt-auto pt-2 border-t border-white/5">
                       <div>
                         <span className="font-inter text-[9px] text-[#555] font-bold tracking-widest uppercase block mb-1">
                           Price
