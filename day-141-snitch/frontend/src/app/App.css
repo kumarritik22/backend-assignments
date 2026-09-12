@@ -5,7 +5,8 @@
   --color-gold:       #C9A96E;
   --color-gold-light: #e0c48a;
   --color-gold-dark:  #a07840;
-  --font-bodoni:      "Bodoni Moda", serif;
+  --font-bodoni:      "Cinzel", serif;
+  --font-serif:       var(--font-bodoni);
   --font-inter:       "Inter", sans-serif;
 }
 
