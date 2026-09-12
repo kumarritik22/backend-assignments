@@ -49,15 +49,41 @@ html.light body {
 ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #444; }
 
-/* ── Fix Chrome/Edge/Safari autofill white background in dark theme ── */
+html.light ::-webkit-scrollbar-track { background: #f0ede6; }
+html.light ::-webkit-scrollbar-thumb { background: #d0cbc3; }
+html.light ::-webkit-scrollbar-thumb:hover { background: #b0aaa0; }
+
+/* ── Fix Chrome/Edge/Safari autofill background in dark & light themes ── */
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active,
 textarea:-webkit-autofill,
-select:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #141414 inset !important;
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
   -webkit-text-fill-color: #ffffff !important;
   caret-color: #ffffff !important;
-  transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 600000s ease-in-out 0s, color 600000s ease-in-out 0s !important;
+}
+
+html.light input:-webkit-autofill,
+html.light input:-webkit-autofill:hover, 
+html.light input:-webkit-autofill:focus, 
+html.light input:-webkit-autofill:active,
+html.light textarea:-webkit-autofill,
+html.light textarea:-webkit-autofill:hover,
+html.light textarea:-webkit-autofill:focus,
+html.light select:-webkit-autofill,
+html.light select:-webkit-autofill:hover,
+html.light select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #121212 !important;
+  caret-color: #121212 !important;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 600000s ease-in-out 0s, color 600000s ease-in-out 0s !important;
 }

@@ -10,7 +10,7 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
   <div className="flex flex-col gap-1.5">
     <label
       htmlFor={id}
-      className={`font-inter text-[10px] font-bold uppercase tracking-widest ${error ? 'text-red-400' : 'text-gold'}`}
+      className={`font-inter text-[10px] font-bold uppercase tracking-widest ${error ? 'text-red-500 dark:text-red-400' : 'text-[#8C703B] dark:text-gold'}`}
     >
       {label}
     </label>
@@ -25,17 +25,17 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
         aria-describedby={error ? `${id}-error` : undefined}
         className={[
           'w-full rounded-lg px-4 py-2.75 text-sm font-light font-inter',
-          'bg-[#141414] text-white placeholder-[#3a3a3a]',
+          'bg-[#FBFBF9] dark:bg-[#141414] text-[#121212] dark:text-white placeholder-[#9E9B95] dark:placeholder-[#3a3a3a]',
           'border outline-none transition-all duration-200',
           'focus:border-gold focus:ring-2 focus:ring-gold/10',
-          error ? 'border-red-400/70 ring-2 ring-red-400/10' : 'border-[#1e1e1e]',
+          error ? 'border-red-400/70 ring-2 ring-red-400/10' : 'border-black/10 dark:border-[#1e1e1e]',
           children ? 'pr-11' : '',
         ].join(' ')}
       />
       {children}
     </div>
     {error && (
-      <p id={`${id}-error`} role="alert" className="font-inter text-[11px] text-red-400">
+      <p id={`${id}-error`} role="alert" className="font-inter text-[11px] text-red-500 dark:text-red-400">
         {error}
       </p>
     )}
@@ -110,10 +110,10 @@ const Login = () => {
        * Desktop : h-screen, flex-row — form LEFT, model RIGHT (flipped from Register)
        * Mobile  : flex-col — model image strip on TOP, form BELOW (natural scroll)
        */}
-      <main className="flex flex-col-reverse md:flex-row min-h-screen md:h-screen md:overflow-hidden bg-[#0a0a0a]">
+      <main className="flex flex-col-reverse md:flex-row min-h-screen md:h-screen md:overflow-hidden bg-[#F6F5F2] dark:bg-[#0a0a0a]">
 
         {/*  LEFT — Login Form Panel */}
-        <section className="flex-1 flex items-center justify-center bg-[#111] md:border-r md:border-white/5 overflow-y-auto px-6 py-10 sm:px-10 md:px-10 lg:px-12 xl:px-16">
+        <section className="flex-1 flex items-center justify-center bg-white dark:bg-[#111] md:border-r border-black/5 dark:border-white/5 overflow-y-auto px-6 py-10 sm:px-10 md:px-10 lg:px-12 xl:px-16">
           <div className="w-full max-w-100 mx-auto">
 
             {/* Header */}
@@ -127,11 +127,11 @@ const Login = () => {
                 </span>
               </div>
 
-              <h1 className="font-bodoni text-[34px] font-bold tracking-tight text-white leading-[1.1]">
+              <h1 className="font-bodoni text-[34px] font-bold tracking-tight text-[#121212] dark:text-white leading-[1.1]">
                 Sign In
               </h1>
 
-              <p className="font-inter text-[13px] text-[#888] mt-2 leading-relaxed">
+              <p className="font-inter text-[13px] text-[#636059] dark:text-[#888] mt-2 leading-relaxed">
                 New here?{' '}
                 <Link
                   to="/register"
@@ -144,8 +144,8 @@ const Login = () => {
             </div>
 
             {error && (
-                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-400/40 text-[11px] font-bold">
+                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-500/20 bg-red-500/10 dark:bg-red-400/5 px-4 py-3 text-sm text-red-600 dark:text-red-300">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-500/40 text-[11px] font-bold">
                         !
                     </span>
                     <p>{error}</p>
@@ -176,7 +176,7 @@ const Login = () => {
                     type="button" id="toggle-password"
                     onClick={() => setShowPassword(v => !v)}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className="absolute right-3 p-0 bg-transparent border-none cursor-pointer text-[#3a3a3a] hover:text-gold flex items-center transition-colors duration-150"
+                    className="absolute right-3 p-0 bg-transparent border-none cursor-pointer text-[#888] hover:text-gold dark:text-[#3a3a3a] dark:hover:text-gold flex items-center transition-colors duration-150"
                   >
                     <span className="material-symbols-outlined">
                       {showPassword ? 'visibility' : 'visibility_off'}
@@ -188,7 +188,7 @@ const Login = () => {
                 <div className="flex justify-end mt-2">
                   <Link
                     to="/forgot-password"
-                    className="font-inter text-[11px] text-gold hover:text-gold-light underline-offset-2 hover:underline transition-colors transition-[transform, colors] duration-200 active:scale-95"
+                    className="font-inter text-[11px] text-[#8C703B] dark:text-gold hover:text-gold dark:hover:text-gold-light underline-offset-2 hover:underline transition-colors transition-[transform, colors] duration-200 active:scale-95"
                   >
                     Forgot password?
                   </Link>
@@ -196,7 +196,7 @@ const Login = () => {
               </div>
 
               {/* Divider */}
-              <hr className="border-t border-[#1a1a1a] animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.22s] [animation-fill-mode:both]" />
+              <hr className="border-t border-black/10 dark:border-[#1a1a1a] animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.22s] [animation-fill-mode:both]" />
 
               {/* Sign In CTA */}
               <button
@@ -206,22 +206,22 @@ const Login = () => {
                 className={[
                   'w-full rounded-lg py-3.5 px-6 font-inter font-bold text-[11px] tracking-[0.16em] uppercase',
                   'bg-linear-to-r from-gold to-gold-dark text-[#0a0a0a]',
-                  'hover:from-gold-light hover:to-gold transition-all duration-220',
+                  'hover:from-gold-light hover:to-gold transition-all duration-220 shadow-md shadow-gold/10',
                   'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.26s] [animation-fill-mode:both]', loading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
                 ].join(' ')}
               >
                 {loading ? "Signing in..." : "Sign in"}
               </button>
 
-              <div className="flex-1 border-t border-[#1e1e1e]" />
+              <div className="flex-1 border-t border-black/10 dark:border-[#1e1e1e]" />
 
               {/* Continue with Google button */}
               <ContinueWithGoogle />
 
               {/* Terms */}
-              <p className="font-inter text-center text-[10px] text-[#3a3a3a] leading-relaxed animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.42s] [animation-fill-mode:both]">
+              <p className="font-inter text-center text-[10px] text-[#888] dark:text-[#3a3a3a] leading-relaxed animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.42s] [animation-fill-mode:both]">
                 Protected by reCAPTCHA &amp; subject to our{' '}
-                <a href="#" className="text-[#555] underline hover:text-[#888] transition-colors">Privacy Policy</a>
+                <a href="#" className="text-[#555] dark:text-[#555] underline hover:text-[#111] dark:hover:text-[#888] transition-colors">Privacy Policy</a>
               </p>
 
             </form>
@@ -240,15 +240,13 @@ const Login = () => {
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
 
-          {/* Lighter overlays — let the image breathe */}
-          {/* Left-edge feather into form panel */}
-          <div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-[#0a0a0a]/35" />
-          {/* Top vignette + bottom for text legibility */}
+          {/* Overlays */}
+          <div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-[#F6F5F2]/40 dark:to-[#0a0a0a]/35" />
           <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/70" />
 
           {/* Logo — Velora image, top right */}
-          <Link to="/" className="absolute top-5 right-5 md:top-7 md:right-7 z-10 flex items-center gap-3">
-            <img src="/logo.png" alt="Velora Logo" className="h-8 md:h-12 w-auto object-contain drop-shadow-lg opacity-90" />
+          <Link to="/" className="absolute top-5 right-5 md:top-7 md:right-7 z-10 flex items-center gap-3 group">
+            <img src="/logo.png" alt="Velora Logo" className="h-8 md:h-12 w-auto object-contain drop-shadow-lg opacity-90 group-hover:opacity-100 transition-opacity" />
             <span className="font-bodoni text-[22px] font-bold tracking-[0.2em] text-white uppercase drop-shadow-md">
               Velora
             </span>
@@ -261,14 +259,14 @@ const Login = () => {
               Welcome<br />
               <span className="text-gold">Back.</span>
             </h2>
-            <p className="font-inter text-xs sm:text-sm text-white/60 mt-2 font-light leading-relaxed max-w-65">
+            <p className="font-inter text-xs sm:text-sm text-white/70 mt-2 font-light leading-relaxed max-w-65">
               Your style. Your story. Pick up where you left off.
             </p>
             <div className="flex gap-6 mt-4">
               {[['120K+', 'Members'], ['50+', 'Collections'], ['🌍', 'Worldwide']].map(([num, lbl]) => (
                 <div key={lbl}>
                   <div className="font-inter text-sm font-bold text-gold">{num}</div>
-                  <div className="font-inter text-[9px] text-white/50 tracking-widest uppercase mt-0.5">{lbl}</div>
+                  <div className="font-inter text-[9px] text-white/60 tracking-widest uppercase mt-0.5">{lbl}</div>
                 </div>
               ))}
             </div>

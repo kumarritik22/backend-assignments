@@ -123,39 +123,39 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#e5e2e1] selection:bg-gold/30 selection:text-white">
+    <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0A0A0A] text-[#121212] dark:text-[#e5e2e1] selection:bg-gold/30 selection:text-white">
       
       {/* ── Ambient Background Glows ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-160 h-160 bg-gold/5 rounded-full blur-[140px]" />
-        <div className="absolute top-1/3 -right-40 w-120 h-120 bg-gold/3 rounded-full blur-[120px]" />
-        <div className="absolute bottom-10 -left-40 w-120 h-120 bg-white/2 rounded-full blur-[120px]" />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-160 h-160 bg-gold/10 dark:bg-gold/5 rounded-full blur-[140px]" />
+        <div className="absolute top-1/3 -right-40 w-120 h-120 bg-gold/5 dark:bg-gold/3 rounded-full blur-[120px]" />
+        <div className="absolute bottom-10 -left-40 w-120 h-120 bg-black/5 dark:bg-white/2 rounded-full blur-[120px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-24">
         
         {/* ── Breadcrumb / Header Micro-badge ── */}
         <div className="flex flex-col items-center text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-gold/30 bg-[#141414]/80 backdrop-blur-md shadow-[0_0_15px_rgba(201,169,110,0.1)] mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-gold/30 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-md shadow-[0_0_15px_rgba(201,169,110,0.1)] mb-6">
             <Gem className="w-3.5 h-3.5 text-gold" />
             <span className="font-inter text-[11px] font-semibold tracking-[0.25em] text-gold uppercase">
               Atelier Concierge · Client Advisory
             </span>
           </div>
 
-          <h1 className="font-bodoni text-3xl sm:text-5xl lg:text-6xl font-normal text-white tracking-tight leading-[1.15] mb-6 max-w-3xl">
+          <h1 className="font-bodoni text-3xl sm:text-5xl lg:text-6xl font-normal text-[#121212] dark:text-white tracking-tight leading-[1.15] mb-6 max-w-3xl">
             How May Our Advisors Assist You?
           </h1>
 
-          <p className="font-inter text-sm sm:text-base text-[#998f81] max-w-2xl leading-relaxed font-light">
+          <p className="font-inter text-sm sm:text-base text-[#636059] dark:text-[#998f81] max-w-2xl leading-relaxed font-light">
             From bespoke sizing consultations and styling advice to order concierge and private boutique appointments, our client advisors are dedicated to your service.
           </p>
 
-          {/* Quick Mobile Action Pills (Visible on Mobile/Tablet for Rapid Access) */}
+          {/* Quick Mobile Action Pills */}
           <div className="grid grid-cols-2 gap-3 w-full max-w-md mt-8 sm:hidden">
             <a 
               href="tel:+91800835672"
-              className="flex items-center justify-center gap-2 py-3 px-4 bg-[#141414] border border-gold/30 rounded-lg text-xs font-inter font-medium text-white hover:border-gold transition-all"
+              className="flex items-center justify-center gap-2 py-3 px-4 bg-white dark:bg-[#141414] border border-gold/30 rounded-lg text-xs font-inter font-medium text-[#121212] dark:text-white hover:border-gold transition-all"
             >
               <Phone className="w-3.5 h-3.5 text-gold" />
               <span>Call Concierge</span>
@@ -164,7 +164,7 @@ const Contact = () => {
               href="https://wa.me/91800835672?text=Hello%20Velora%20Concierge" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-3 px-4 bg-[#141414] border border-white/10 rounded-lg text-xs font-inter font-medium text-white hover:border-gold/50 transition-all"
+              className="flex items-center justify-center gap-2 py-3 px-4 bg-white dark:bg-[#141414] border border-black/10 dark:border-white/10 rounded-lg text-xs font-inter font-medium text-[#121212] dark:text-white hover:border-gold/50 transition-all"
             >
               <FaWhatsapp className="w-3.5 h-3.5 text-[#25D366]" />
               <span>WhatsApp 4h</span>
@@ -179,27 +179,27 @@ const Contact = () => {
           <div className="lg:col-span-5 flex flex-col gap-6">
             
             {/* Channel 1: Private Client Hotline */}
-            <div className="bg-[#111111]/90 backdrop-blur-xl border border-[#222222] hover:border-gold/40 rounded-xl p-6 sm:p-7 transition-all duration-300 group shadow-lg">
+            <div className="bg-white/90 dark:bg-[#111111]/90 backdrop-blur-xl border border-black/5 dark:border-[#222222] hover:border-gold/40 rounded-xl p-6 sm:p-7 transition-all duration-300 group shadow-md dark:shadow-lg">
               <div className="flex items-start gap-4">
-                <div className="w-11 h-11 rounded-lg bg-[#191919] border border-white/5 flex items-center justify-center shrink-0 group-hover:border-gold/40 group-hover:bg-gold/5 transition-all">
+                <div className="w-11 h-11 rounded-lg bg-[#F6F5F2] dark:bg-[#191919] border border-black/5 dark:border-white/5 flex items-center justify-center shrink-0 group-hover:border-gold/40 group-hover:bg-gold/5 transition-all">
                   <Headphones className="w-5 h-5 text-gold" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <h3 className="font-bodoni text-lg sm:text-xl font-medium text-white">Private Client Hotline</h3>
-                    <span className="font-inter text-[10px] tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-2 py-0.5 rounded">ONLINE</span>
+                    <h3 className="font-bodoni text-lg sm:text-xl font-medium text-[#121212] dark:text-white">Private Client Hotline</h3>
+                    <span className="font-inter text-[10px] tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded">ONLINE</span>
                   </div>
-                  <p className="font-inter text-xs text-[#8e9192] leading-relaxed mb-3">
+                  <p className="font-inter text-xs text-[#636059] dark:text-[#8e9192] leading-relaxed mb-3">
                     Immediate assistance regarding orders, bespoke requests, or private styling.
                   </p>
                   <div className="flex flex-col gap-1">
                     <a 
                       href="tel:+91800835672" 
-                      className="font-inter text-sm font-semibold text-gold hover:text-white transition-colors tracking-wide inline-flex items-center gap-2"
+                      className="font-inter text-sm font-semibold text-gold hover:text-[#121212] dark:hover:text-white transition-colors tracking-wide inline-flex items-center gap-2"
                     >
                       +91 (0) 800-VELORA / +91 98765 43210
                     </a>
-                    <span className="font-inter text-[11px] text-[#636565] flex items-center gap-1.5 mt-0.5">
+                    <span className="font-inter text-[11px] text-[#888] dark:text-[#636565] flex items-center gap-1.5 mt-0.5">
                       <Clock className="w-3 h-3" /> Mon – Sat · 10:00 AM – 8:00 PM IST
                     </span>
                   </div>
@@ -208,28 +208,28 @@ const Contact = () => {
             </div>
 
             {/* Channel 2: Digital Concierge & WhatsApp */}
-            <div className="bg-[#111111]/90 backdrop-blur-xl border border-[#222222] hover:border-gold/40 rounded-xl p-6 sm:p-7 transition-all duration-300 group shadow-lg">
+            <div className="bg-white/90 dark:bg-[#111111]/90 backdrop-blur-xl border border-black/5 dark:border-[#222222] hover:border-gold/40 rounded-xl p-6 sm:p-7 transition-all duration-300 group shadow-md dark:shadow-lg">
               <div className="flex items-start gap-4">
-                <div className="w-11 h-11 rounded-lg bg-[#191919] border border-white/5 flex items-center justify-center shrink-0 group-hover:border-gold/40 group-hover:bg-gold/5 transition-all">
+                <div className="w-11 h-11 rounded-lg bg-[#F6F5F2] dark:bg-[#191919] border border-black/5 dark:border-white/5 flex items-center justify-center shrink-0 group-hover:border-gold/40 group-hover:bg-gold/5 transition-all">
                   <MessageCircle className="w-5 h-5 text-gold" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <h3 className="font-bodoni text-lg sm:text-xl font-medium text-white">Digital Concierge</h3>
+                    <h3 className="font-bodoni text-lg sm:text-xl font-medium text-[#121212] dark:text-white">Digital Concierge</h3>
                     <span className="font-inter text-[10px] tracking-wider text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded">4H REPLY</span>
                   </div>
-                  <p className="font-inter text-xs text-[#8e9192] leading-relaxed mb-3">
+                  <p className="font-inter text-xs text-[#636059] dark:text-[#8e9192] leading-relaxed mb-3">
                     Direct correspondence with our curatorial team for styling, sourcing, and order queries.
                   </p>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-1">
                     <a 
                       href="mailto:concierge@velorafashion.com" 
-                      className="font-inter text-xs font-semibold text-white hover:text-gold transition-colors inline-flex items-center gap-1.5"
+                      className="font-inter text-xs font-semibold text-[#121212] dark:text-white hover:text-gold transition-colors inline-flex items-center gap-1.5"
                     >
                       <Mail className="w-3.5 h-3.5 text-gold" />
                       concierge@velorafashion.com
                     </a>
-                    <span className="hidden sm:inline text-white/20">|</span>
+                    <span className="hidden sm:inline text-black/20 dark:text-white/20">|</span>
                     <a 
                       href="https://wa.me/91800835672?text=Hello%20Velora%20Concierge" 
                       target="_blank" 
@@ -245,22 +245,22 @@ const Contact = () => {
             </div>
 
             {/* Channel 3: Flagship Boutiques */}
-            <div className="bg-[#111111]/90 backdrop-blur-xl border border-[#222222] rounded-xl p-6 sm:p-7 shadow-lg">
-              <div className="flex items-center gap-3 mb-5 pb-3 border-b border-white/5">
+            <div className="bg-white/90 dark:bg-[#111111]/90 backdrop-blur-xl border border-black/5 dark:border-[#222222] rounded-xl p-6 sm:p-7 shadow-md dark:shadow-lg">
+              <div className="flex items-center gap-3 mb-5 pb-3 border-b border-black/5 dark:border-white/5">
                 <Building2 className="w-5 h-5 text-gold" />
-                <h3 className="font-bodoni text-lg sm:text-xl font-medium text-white">Flagship Boutiques</h3>
+                <h3 className="font-bodoni text-lg sm:text-xl font-medium text-[#121212] dark:text-white">Flagship Boutiques</h3>
               </div>
 
               <div className="space-y-5">
                 {/* Mumbai Boutique */}
                 <div className="group">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-inter text-sm font-semibold text-white group-hover:text-gold transition-colors">
+                    <h4 className="font-inter text-sm font-semibold text-[#121212] dark:text-white group-hover:text-gold transition-colors">
                       Mumbai · Bandra Atelier
                     </h4>
                     <span className="font-inter text-[10px] tracking-widest text-gold uppercase">Flagship</span>
                   </div>
-                  <p className="font-inter text-xs text-[#8e9192] mt-1 leading-relaxed">
+                  <p className="font-inter text-xs text-[#636059] dark:text-[#8e9192] mt-1 leading-relaxed">
                     18 Altamount Road, Bandra West, Mumbai 400050
                   </p>
                   <button 
@@ -268,23 +268,23 @@ const Contact = () => {
                       setFormData(prev => ({ ...prev, department: 'styling', message: 'I would like to schedule a private viewing at the Mumbai Bandra Atelier.' }))
                       document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
                     }}
-                    className="mt-2 font-inter text-[11px] font-medium text-gold hover:text-white tracking-wider uppercase inline-flex items-center gap-1 cursor-pointer transition-colors"
+                    className="mt-2 font-inter text-[11px] font-medium text-gold hover:text-[#121212] dark:hover:text-white tracking-wider uppercase inline-flex items-center gap-1 cursor-pointer transition-colors"
                   >
                     Schedule Private Viewing <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>
 
-                <div className="h-px bg-white/5" />
+                <div className="h-px bg-black/5 dark:bg-white/5" />
 
                 {/* Paris Boutique */}
                 <div className="group">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-inter text-sm font-semibold text-white group-hover:text-gold transition-colors">
+                    <h4 className="font-inter text-sm font-semibold text-[#121212] dark:text-white group-hover:text-gold transition-colors">
                       Paris · Place Vendôme
                     </h4>
                     <span className="font-inter text-[10px] tracking-widest text-[#888] uppercase">Boutique</span>
                   </div>
-                  <p className="font-inter text-xs text-[#8e9192] mt-1 leading-relaxed">
+                  <p className="font-inter text-xs text-[#636059] dark:text-[#8e9192] mt-1 leading-relaxed">
                     14 Place Vendôme, 75001 Paris, France
                   </p>
                   <button 
@@ -292,7 +292,7 @@ const Contact = () => {
                       setFormData(prev => ({ ...prev, department: 'styling', message: 'I would like to schedule a private viewing at the Paris Place Vendôme Boutique.' }))
                       document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
                     }}
-                    className="mt-2 font-inter text-[11px] font-medium text-gold hover:text-white tracking-wider uppercase inline-flex items-center gap-1 cursor-pointer transition-colors"
+                    className="mt-2 font-inter text-[11px] font-medium text-gold hover:text-[#121212] dark:hover:text-white tracking-wider uppercase inline-flex items-center gap-1 cursor-pointer transition-colors"
                   >
                     Schedule Private Viewing <ArrowRight className="w-3 h-3" />
                   </button>
@@ -301,9 +301,9 @@ const Contact = () => {
             </div>
 
             {/* Atelier Promise Bar */}
-            <div className="bg-linear-to-r from-[#141414] via-[#161616] to-[#141414] border border-gold/20 rounded-xl p-5 flex items-center gap-4 shadow-lg">
+            <div className="bg-linear-to-r from-[#fbf9f5] via-[#f7f3eb] to-[#fbf9f5] dark:from-[#141414] dark:via-[#161616] dark:to-[#141414] border border-gold/30 dark:border-gold/20 rounded-xl p-5 flex items-center gap-4 shadow-sm dark:shadow-lg">
               <Sparkles className="w-5 h-5 text-gold shrink-0" />
-              <p className="font-inter text-[11px] tracking-wider text-[#c7c6c6] uppercase leading-relaxed">
+              <p className="font-inter text-[11px] tracking-wider text-[#636059] dark:text-[#c7c6c6] uppercase leading-relaxed">
                 The Atelier Promise: Discretion, White-Glove Care, and Uncompromising Sartorial Precision.
               </p>
             </div>
@@ -312,10 +312,10 @@ const Contact = () => {
 
           {/* ════ RIGHT COLUMN: Interactive Inquiry Form (7 cols) ════ */}
           <div id="inquiry-form" className="lg:col-span-7">
-            <div className="bg-[#111111]/90 backdrop-blur-2xl border border-[#222222] rounded-2xl p-6 sm:p-10 lg:p-12 relative overflow-hidden shadow-2xl">
+            <div className="bg-white/95 dark:bg-[#111111]/90 backdrop-blur-2xl border border-black/5 dark:border-[#222222] rounded-2xl p-6 sm:p-10 lg:p-12 relative overflow-hidden shadow-xl dark:shadow-2xl">
               
               {/* Subtle Ambient Radial Glow */}
-              <div className="absolute -top-24 -right-24 w-80 h-80 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -top-24 -right-24 w-80 h-80 bg-gold/10 dark:bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
               {isSubmitted ? (
                 /* Success State */
@@ -327,10 +327,10 @@ const Contact = () => {
                     <span className="font-inter text-[11px] font-bold tracking-[0.25em] text-gold uppercase block mb-2">
                       Transmission Confirmed
                     </span>
-                    <h3 className="font-bodoni text-2xl sm:text-3xl font-medium text-white mb-3">
+                    <h3 className="font-bodoni text-2xl sm:text-3xl font-medium text-[#121212] dark:text-white mb-3">
                       Your Request Has Been Received
                     </h3>
-                    <p className="font-inter text-xs sm:text-sm text-[#8e9192] max-w-md mx-auto leading-relaxed">
+                    <p className="font-inter text-xs sm:text-sm text-[#636059] dark:text-[#8e9192] max-w-md mx-auto leading-relaxed">
                       A dedicated client advisor has been assigned to your inquiry and will contact you within our guaranteed 4-hour window.
                     </p>
                   </div>
@@ -348,10 +348,10 @@ const Contact = () => {
                     <span className="font-inter text-[10px] font-bold tracking-[0.25em] text-gold uppercase block mb-1">
                       Direct Atelier Dispatch
                     </span>
-                    <h2 className="font-bodoni text-2xl sm:text-3xl font-medium text-white mb-2">
+                    <h2 className="font-bodoni text-2xl sm:text-3xl font-medium text-[#121212] dark:text-white mb-2">
                       Transmit Your Request
                     </h2>
-                    <p className="font-inter text-xs sm:text-sm text-[#8e9192]">
+                    <p className="font-inter text-xs sm:text-sm text-[#636059] dark:text-[#8e9192]">
                       Please provide your details below. A dedicated client advisor will curate a bespoke response tailored to your request.
                     </p>
                   </div>
@@ -361,7 +361,7 @@ const Contact = () => {
                     {/* Row 1: Name & Email */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="space-y-2">
-                        <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#c7c6c6] block">
+                        <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#444] dark:text-[#c7c6c6] block">
                           Full Name <span className="text-gold">*</span>
                         </label>
                         <input
@@ -370,21 +370,21 @@ const Contact = () => {
                           value={formData.name}
                           onChange={handleInputChange}
                           placeholder="e.g. Mahaan Dubey"
-                          className={`w-full bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-white placeholder-[#555] transition-all ${
+                          className={`w-full bg-[#fbf9f5] dark:bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-[#121212] dark:text-white placeholder-[#999] dark:placeholder-[#555] transition-all ${
                             errors.name 
                             ? 'border border-red-500/60 focus:border-red-500 focus:ring-1 focus:ring-red-500/30' 
-                            : 'border border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
+                            : 'border border-black/10 dark:border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
                           }`}
                         />
                         {errors.name && (
-                            <p className="font-inter text-[11px] text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
+                            <p className="font-inter text-[11px] text-red-500 dark:text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
                                 <span>•</span> {errors.name}
                             </p>
                         )}
                       </div>
 
                       <div className="space-y-2">
-                        <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#c7c6c6] block">
+                        <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#444] dark:text-[#c7c6c6] block">
                           Email Address <span className="text-gold">*</span>
                         </label>
                         <input
@@ -393,14 +393,14 @@ const Contact = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           placeholder="e.g. ranbir@velora.com"
-                          className={`w-full bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-white placeholder-[#555] transition-all ${
+                          className={`w-full bg-[#fbf9f5] dark:bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-[#121212] dark:text-white placeholder-[#999] dark:placeholder-[#555] transition-all ${
                             errors.email 
                             ? 'border border-red-500/60 focus:border-red-500 focus:ring-1 focus:ring-red-500/30' 
-                            : 'border border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
+                            : 'border border-black/10 dark:border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
                           }`}
                         />
                         {errors.email && (
-                            <p className="font-inter text-[11px] text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
+                            <p className="font-inter text-[11px] text-red-500 dark:text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
                                 <span>•</span> {errors.email}
                             </p>
                         )}
@@ -410,7 +410,7 @@ const Contact = () => {
                     {/* Row 2: Phone & Order ID */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="space-y-2">
-                        <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#c7c6c6] block">
+                        <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#444] dark:text-[#c7c6c6] block">
                           Contact Number
                         </label>
                         <input
@@ -419,22 +419,22 @@ const Contact = () => {
                           value={formData.phone}
                           onChange={handleInputChange}
                           placeholder="+91 98765 43210"
-                          className={`w-full bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-white placeholder-[#555] transition-all ${
+                          className={`w-full bg-[#fbf9f5] dark:bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-[#121212] dark:text-white placeholder-[#999] dark:placeholder-[#555] transition-all ${
                             errors.phone 
                             ? 'border border-red-500/60 focus:border-red-500 focus:ring-1 focus:ring-red-500/30' 
-                            : 'border border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
+                            : 'border border-black/10 dark:border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
                           }`}
                         />
                         {errors.phone && (
-                            <p className="font-inter text-[11px] text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
+                            <p className="font-inter text-[11px] text-red-500 dark:text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
                                 <span>•</span> {errors.phone}
                             </p>
                         )}
                       </div>
 
                       <div className="space-y-2">
-                        <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#c7c6c6] block">
-                          Order Reference <span className="text-[#666] text-[10px]">(If Applicable)</span>
+                        <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#444] dark:text-[#c7c6c6] block">
+                          Order Reference <span className="text-[#888] text-[10px]">(If Applicable)</span>
                         </label>
                         <input
                           type="text"
@@ -442,14 +442,14 @@ const Contact = () => {
                           value={formData.orderReference}
                           onChange={handleInputChange}
                           placeholder="e.g. VEL-89241"
-                          className="w-full bg-[#161616] border border-[#262626] rounded-lg px-4 py-3 text-xs sm:text-sm text-white placeholder-[#555] focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all"
+                          className="w-full bg-[#fbf9f5] dark:bg-[#161616] border border-black/10 dark:border-[#262626] rounded-lg px-4 py-3 text-xs sm:text-sm text-[#121212] dark:text-white placeholder-[#999] dark:placeholder-[#555] focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all"
                         />
                       </div>
                     </div>
 
                     {/* Row 3: Nature of Inquiry Dropdown */}
                     <div className="space-y-2">
-                      <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#c7c6c6] block">
+                      <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#444] dark:text-[#c7c6c6] block">
                         Nature of Inquiry <span className="text-gold">*</span>
                       </label>
                       <div className="relative">
@@ -457,25 +457,25 @@ const Contact = () => {
                           name="department"
                           value={formData.department}
                           onChange={handleInputChange}
-                          className={`w-full bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-white placeholder-[#555] transition-all appearance-none cursor-pointer pr-10 ${
+                          className={`w-full bg-[#fbf9f5] dark:bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-[#121212] dark:text-white placeholder-[#999] dark:placeholder-[#555] transition-all appearance-none cursor-pointer pr-10 ${
                             errors.department 
                             ? 'border border-red-500/60 focus:border-red-500 focus:ring-1 focus:ring-red-500/30' 
-                            : 'border border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
+                            : 'border border-black/10 dark:border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
                           }`}
                         >
-                          <option value="" disabled>Select inquiry classification...</option>
-                          <option value="bespoke">Bespoke Tailoring & Made-to-Measure</option>
-                          <option value="styling">Private Styling & Sizing Consultation</option>
-                          <option value="order">Order Concierge & White-Glove Dispatch</option>
-                          <option value="returns">Returns & Private Exchanges</option>
-                          <option value="boutique">Flagship Boutique Appointment</option>
-                          <option value="press">Press, Collaborations & Brand Partnerships</option>
-                          <option value="other">General Client Inquiries</option>
+                          <option value="" disabled className="bg-white dark:bg-[#161616] text-[#888]">Select inquiry classification...</option>
+                          <option value="bespoke" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Bespoke Tailoring & Made-to-Measure</option>
+                          <option value="styling" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Private Styling & Sizing Consultation</option>
+                          <option value="order" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Order Concierge & White-Glove Dispatch</option>
+                          <option value="returns" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Returns & Private Exchanges</option>
+                          <option value="boutique" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Flagship Boutique Appointment</option>
+                          <option value="press" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Press, Collaborations & Brand Partnerships</option>
+                          <option value="other" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">General Client Inquiries</option>
                         </select>
                         <ChevronDown className="w-4 h-4 text-gold absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                       {errors.department && (
-                        <p className="font-inter text-[11px] text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
+                        <p className="font-inter text-[11px] text-red-500 dark:text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
                             <span>•</span> {errors.department}
                         </p>
                        )}
@@ -483,7 +483,7 @@ const Contact = () => {
 
                     {/* Row 4: Preferred Contact Channel */}
                     <div className="space-y-2">
-                      <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#c7c6c6] block">
+                      <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#444] dark:text-[#c7c6c6] block">
                         Preferred Response Channel
                       </label>
                       <div className="grid grid-cols-3 gap-3">
@@ -501,8 +501,8 @@ const Contact = () => {
                               onClick={() => setFormData(prev => ({ ...prev, preferredChannel: channel.id }))}
                               className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border text-xs font-inter font-medium transition-all cursor-pointer ${
                                 isSelected 
-                                  ? 'border-gold bg-gold/10 text-white shadow-[0_0_10px_rgba(201,169,110,0.15)]' 
-                                  : 'border-[#262626] bg-[#161616] text-[#888] hover:text-white hover:border-[#444]'
+                                  ? 'border-gold bg-gold/10 text-[#121212] dark:text-white shadow-[0_0_10px_rgba(201,169,110,0.15)] font-semibold' 
+                                  : 'border-black/10 dark:border-[#262626] bg-[#fbf9f5] dark:bg-[#161616] text-[#636059] dark:text-[#888] hover:text-[#121212] dark:hover:text-white hover:border-black/20 dark:hover:border-[#444]'
                               }`}
                             >
                               <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-gold' : ''}`} />
@@ -515,7 +515,7 @@ const Contact = () => {
 
                     {/* Row 5: Detailed Message */}
                     <div className="space-y-2">
-                      <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#c7c6c6] block">
+                      <label className="font-inter text-[11px] font-medium uppercase tracking-wider text-[#444] dark:text-[#c7c6c6] block">
                         Your Message / Specifics <span className="text-gold">*</span>
                       </label>
                       <textarea
@@ -525,14 +525,14 @@ const Contact = () => {
                         value={formData.message}
                         onChange={handleInputChange}
                         placeholder="Detail your request, preferred dates for fittings, or order specifics..."
-                        className={`w-full bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-white placeholder-[#555] transition-all resize-none ${
+                        className={`w-full bg-[#fbf9f5] dark:bg-[#161616] rounded-lg px-4 py-3 text-xs sm:text-sm text-[#121212] dark:text-white placeholder-[#999] dark:placeholder-[#555] transition-all resize-none ${
                         errors.message 
                             ? 'border border-red-500/60 focus:border-red-500 focus:ring-1 focus:ring-red-500/30' 
-                            : 'border border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
+                            : 'border border-black/10 dark:border-[#262626] focus:border-gold focus:ring-1 focus:ring-gold/30'
                         }`}
                       />
                       {errors.message && (
-                        <p className="font-inter text-[11px] text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
+                        <p className="font-inter text-[11px] text-red-500 dark:text-red-400 mt-1 flex items-center gap-1 animate-[fadeIn_0.2s_ease_both]">
                             <span>•</span> {errors.message}
                         </p>
                        )}
@@ -557,7 +557,7 @@ const Contact = () => {
                           </>
                         )}
                       </button>
-                      <p className="font-inter text-[10px] text-[#636565] text-center mt-3 tracking-wider">
+                      <p className="font-inter text-[10px] text-[#888] dark:text-[#636565] text-center mt-3 tracking-wider">
                         Protected by end-to-end luxury client discretion protocol.
                       </p>
                     </div>
@@ -572,16 +572,16 @@ const Contact = () => {
         </div>
 
         {/* ── Atelier FAQ Accordion Section ── */}
-        <div className="mt-20 pt-16 border-t border-white/5 max-w-4xl mx-auto">
+        <div className="mt-20 pt-16 border-t border-black/5 dark:border-white/5 max-w-4xl mx-auto">
           
           <div className="text-center mb-12">
             <span className="font-inter text-[10px] font-bold tracking-[0.25em] text-gold uppercase block mb-2">
               Concierge Knowledge Base
             </span>
-            <h2 className="font-bodoni text-2xl sm:text-4xl font-normal text-white mb-3">
+            <h2 className="font-bodoni text-2xl sm:text-4xl font-normal text-[#121212] dark:text-white mb-3">
               Frequently Inquired
             </h2>
-            <p className="font-inter text-xs sm:text-sm text-[#8e9192]">
+            <p className="font-inter text-xs sm:text-sm text-[#636059] dark:text-[#8e9192]">
               Answers regarding made-to-measure services, white-glove shipping, and boutique fittings.
             </p>
           </div>
@@ -592,22 +592,22 @@ const Contact = () => {
               return (
                 <div 
                   key={index}
-                  className="bg-[#111111]/80 border border-[#222222] rounded-xl overflow-hidden transition-all duration-200"
+                  className="bg-white/90 dark:bg-[#111111]/80 border border-black/5 dark:border-[#222222] rounded-xl overflow-hidden transition-all duration-200 shadow-xs dark:shadow-none"
                 >
                   <button
                     onClick={() => toggleFaq(index)}
                     className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 cursor-pointer group"
                   >
-                    <span className={`font-bodoni text-base sm:text-lg transition-colors ${isOpen ? 'text-gold' : 'text-white group-hover:text-gold'}`}>
+                    <span className={`font-bodoni text-base sm:text-lg transition-colors ${isOpen ? 'text-gold' : 'text-[#121212] dark:text-white group-hover:text-gold'}`}>
                       {faq.question}
                     </span>
-                    <div className={`w-7 h-7 rounded-full bg-[#181818] border border-white/10 flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 bg-gold/10 border-gold/30 text-gold' : 'text-[#888]'}`}>
+                    <div className={`w-7 h-7 rounded-full bg-[#F6F5F2] dark:bg-[#181818] border border-black/5 dark:border-white/10 flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 bg-gold/10 border-gold/30 text-gold' : 'text-[#888]'}`}>
                       <ChevronDown className="w-4 h-4" />
                     </div>
                   </button>
 
                   {isOpen && (
-                    <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm font-inter text-[#998f81] leading-relaxed border-t border-white/5 animate-[fadeIn_0.3s_ease_both]">
+                    <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm font-inter text-[#636059] dark:text-[#998f81] leading-relaxed border-t border-black/5 dark:border-white/5 animate-[fadeIn_0.3s_ease_both]">
                       {faq.answer}
                     </div>
                   )}
@@ -617,16 +617,16 @@ const Contact = () => {
           </div>
 
           {/* Bottom Direct Help Banner */}
-          <div className="mt-12 p-6 rounded-xl bg-[#0e0e0e] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="mt-12 p-6 rounded-xl bg-white dark:bg-[#0e0e0e] border border-black/5 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-sm dark:shadow-none">
             <div>
-              <h4 className="font-bodoni text-base text-white font-medium">Require immediate custom assistance?</h4>
-              <p className="font-inter text-xs text-[#777] mt-0.5">Our Private Client Desk is available on WhatsApp 24/7.</p>
+              <h4 className="font-bodoni text-base text-[#121212] dark:text-white font-medium">Require immediate custom assistance?</h4>
+              <p className="font-inter text-xs text-[#636059] dark:text-[#777] mt-0.5">Our Private Client Desk is available on WhatsApp 24/7.</p>
             </div>
             <a
               href="https://wa.me/91800835672?text=Hello%20Velora%20Concierge"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2.5 rounded-full bg-[#161616] hover:bg-[#202020] border border-gold/40 text-gold font-inter text-xs font-semibold tracking-wider uppercase inline-flex items-center gap-2 transition-all shrink-0"
+              className="px-5 py-2.5 rounded-full bg-[#F6F5F2] dark:bg-[#161616] hover:bg-gold/10 border border-gold/40 text-gold font-inter text-xs font-semibold tracking-wider uppercase inline-flex items-center gap-2 transition-all shrink-0"
             >
               <FaWhatsapp className="w-4 h-4 text-[#25D366]" />
               Chat on WhatsApp

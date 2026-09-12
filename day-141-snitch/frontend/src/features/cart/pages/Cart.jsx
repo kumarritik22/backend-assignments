@@ -231,27 +231,27 @@ const Cart = () => {
     const isEmpty = cart.items.length === 0
 
     return (
-        <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
+        <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0c0c0c] text-[#121212] dark:text-white selection:bg-gold/30 transition-colors duration-300">
 
             <main className="max-w-350 mx-auto px-5 sm:px-8 py-10 sm:py-16 animate-[fadeInUp_0.5s_ease_both]">
 
                 {/* Empty Cart State */}
                 {isEmpty ? (
                     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center">
-                        <div className="w-20 h-20 rounded-full bg-[#141414] border border-white/5 flex items-center justify-center mb-2">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-[#444]">
+                        <div className="w-20 h-20 rounded-full bg-white dark:bg-[#141414] border border-black/5 dark:border-white/5 flex items-center justify-center mb-2 shadow-sm dark:shadow-none">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-[#888] dark:text-[#444]">
                                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                                 <line x1="3" y1="6" x2="21" y2="6" />
                                 <path d="M16 10a4 4 0 0 1-8 0" />
                             </svg>
                         </div>
                         <div>
-                            <h1 className="font-bodoni text-[36px] sm:text-[48px] font-bold text-white mb-3">Your Cart is Empty</h1>
-                            <p className="font-inter text-sm text-[#666] max-w-sm">Looks like you haven't added anything yet. Explore our collection and find something you love.</p>
+                            <h1 className="font-bodoni text-[36px] sm:text-[48px] font-bold text-[#121212] dark:text-white mb-3">Your Cart is Empty</h1>
+                            <p className="font-inter text-sm text-[#636059] dark:text-[#666] max-w-sm">Looks like you haven't added anything yet. Explore our collection and find something you love.</p>
                         </div>
                         <Link
                             to="/"
-                            className="mt-4 inline-flex items-center gap-2 border border-white/20 hover:border-gold hover:text-gold text-white rounded-xl px-8 py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300"
+                            className="mt-4 inline-flex items-center gap-2 border border-black/20 dark:border-white/20 hover:border-gold hover:text-gold text-[#121212] dark:text-white rounded-xl px-8 py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 shadow-sm dark:shadow-none"
                         >
                             Explore Collection
                         </Link>
@@ -262,8 +262,8 @@ const Cart = () => {
                         {/* ── Left: Cart Items ── */}
                         <div className="min-w-0 w-full lg:flex-1 overflow-hidden">
                             <div className="flex items-baseline gap-4 mb-8">
-                                <h1 className="font-bodoni text-[36px] sm:text-[42px] font-bold text-white leading-tight">Your Cart</h1>
-                                <span className="font-inter text-sm text-[#555]">{cart.items.length} {cart.items.length === 1 ? 'item' : 'items'}</span>
+                                <h1 className="font-bodoni text-[36px] sm:text-[42px] font-bold text-[#121212] dark:text-white leading-tight">Your Cart</h1>
+                                <span className="font-inter text-sm text-[#636059] dark:text-[#555]">{cart.items.length} {cart.items.length === 1 ? 'item' : 'items'}</span>
                             </div>
 
                             <div className="flex flex-col">
@@ -280,12 +280,12 @@ const Cart = () => {
                                                 {/* Product Image */}
                                                 <Link
                                                     to={`/product/${item.product?._id}`}
-                                                    className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-[#141414] border border-white/5 block"
+                                                    className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-white dark:bg-[#141414] border border-black/5 dark:border-white/5 shadow-xs dark:shadow-none block"
                                                 >
                                                     {displayImage ? (
                                                         <img src={displayImage} alt={item.product?.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                                                     ) : (
-                                                        <div className="w-full h-full flex items-center justify-center text-[#333]">
+                                                        <div className="w-full h-full flex items-center justify-center text-[#777] dark:text-[#333]">
                                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
                                                         </div>
                                                     )}
@@ -295,7 +295,7 @@ const Cart = () => {
                                                 <div className="flex-1 flex flex-col justify-between min-w-0 overflow-hidden">
                                                     <div>
                                                         <Link to={`/product/${item.product?._id}`} className="hover:text-gold transition-colors duration-200">
-                                                            <h3 className="font-inter font-semibold text-[15px] text-white leading-snug mb-2 truncate pr-4">
+                                                            <h3 className="font-inter font-semibold text-[15px] text-[#121212] dark:text-white leading-snug mb-2 truncate pr-4">
                                                                 {item.product?.title}
                                                             </h3>
                                                         </Link>
@@ -304,8 +304,8 @@ const Cart = () => {
                                                         {variant?.attributes && Object.keys(variant.attributes).length > 0 && (
                                                             <div className="flex flex-wrap gap-2 mb-3">
                                                                 {Object.entries(variant.attributes).map(([key, val]) => (
-                                                                    <span key={key} className="bg-white/5 border border-white/8 rounded-md px-2 py-1 font-inter text-[10px] text-[#888]">
-                                                                        <span className="text-[#555]">{key}: </span>{val}
+                                                                    <span key={key} className="bg-black/5 dark:bg-white/5 border border-black/8 dark:border-white/8 rounded-md px-2 py-1 font-inter text-[10px] text-[#636059] dark:text-[#888]">
+                                                                        <span className="text-[#888] dark:text-[#555]">{key}: </span>{val}
                                                                     </span>
                                                                 ))}
                                                             </div>
@@ -330,7 +330,7 @@ const Cart = () => {
 
                                                     {/* Quantity & Delete Row */}
                                                     <div className="flex items-center justify-between mt-4">
-                                                        <div className="flex items-center gap-0 border border-white/10 rounded-lg overflow-hidden">
+                                                        <div className="flex items-center gap-0 border border-black/10 dark:border-white/10 rounded-lg overflow-hidden bg-white dark:bg-transparent shadow-xs dark:shadow-none">
                                                             <button
                                                                 onClick={() => 
                                                                     handleDecreaseCartItemQuantity({
@@ -338,10 +338,10 @@ const Cart = () => {
                                                                         variantId: item.variant
                                                                     })
                                                                 }
-                                                                className="w-9 h-9 flex items-center justify-center text-[#666] hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+                                                                className="w-9 h-9 flex items-center justify-center text-[#555] dark:text-[#666] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-200 cursor-pointer">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                                             </button>
-                                                            <span className="w-10 h-9 flex items-center justify-center font-inter text-sm text-white border-l border-r border-white/10">
+                                                            <span className="w-10 h-9 flex items-center justify-center font-inter text-sm text-[#121212] dark:text-white border-l border-r border-black/10 dark:border-white/10">
                                                                 {item.quantity || 1}
                                                             </span>
                                                             <button 
@@ -351,7 +351,7 @@ const Cart = () => {
                                                                         variantId: item.variant
                                                                     })
                                                                 }
-                                                                className="w-9 h-9 flex items-center justify-center text-[#666] hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+                                                                className="w-9 h-9 flex items-center justify-center text-[#555] dark:text-[#666] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-200 cursor-pointer">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                                             </button>
                                                         </div>
@@ -363,7 +363,7 @@ const Cart = () => {
                                                                     variantId: item.variant
                                                                 })
                                                             }
-                                                            className="flex items-center gap-1.5 text-[#444] hover:text-red-400 transition-colors duration-200 cursor-pointer opacity-0 group-hover:opacity-100 font-inter text-[11px] uppercase tracking-wider">
+                                                            className="flex items-center gap-1.5 text-[#888] dark:text-[#444] hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 cursor-pointer opacity-80 sm:opacity-0 group-hover:opacity-100 font-inter text-[11px] uppercase tracking-wider">
                                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                                                 <polyline points="3 6 5 6 21 6" />
                                                                 <path d="M19 6l-1 14H6L5 6" />
@@ -377,7 +377,7 @@ const Cart = () => {
                                             </div>
 
                                             {index < cart.items.length - 1 && (
-                                                <div className="w-full h-px bg-white/5" />
+                                                <div className="w-full h-px bg-black/5 dark:bg-white/5" />
                                             )}
                                         </div>
                                     )
@@ -387,33 +387,33 @@ const Cart = () => {
 
                         {/* ── Right: Order Summary ── */}
                         <div className="w-full lg:w-95 xl:w-105 shrink-0 lg:sticky lg:top-24">
-                            <div className="bg-[#111] border border-white/8 rounded-2xl p-6 sm:p-8">
+                            <div className="bg-white dark:bg-[#111] border border-black/5 dark:border-white/8 rounded-2xl p-6 sm:p-8 shadow-sm dark:shadow-none">
 
                                 {/* Header + Currency Picker */}
                                 <div className="flex items-center justify-between mb-6">
-                                    <h2 className="font-bodoni text-[24px] font-bold text-white">Order Summary</h2>
+                                    <h2 className="font-bodoni text-[24px] font-bold text-[#121212] dark:text-white">Order Summary</h2>
 
-                                    {/* STEP 6: Currency Selector */}
+                                    {/* Currency Selector */}
                                     <div className="relative">
                                         <select
                                             value={displayCurrency}
                                             onChange={e => handleChangeCurrency(e.target.value)}
                                             disabled={ratesLoading || ratesError}
-                                            className="appearance-none bg-[#1a1a1a] border border-white/10 rounded-lg pl-3 pr-7 py-1.5 font-inter text-[11px] font-bold text-white focus:border-gold focus:outline-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                                            className="appearance-none bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-lg pl-3 pr-7 py-1.5 font-inter text-[11px] font-bold text-[#121212] dark:text-white focus:border-gold focus:outline-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                                         >
                                             {SUPPORTED_CURRENCIES.map(c => (
-                                                <option key={c} value={c}>{CURRENCY_SYMBOLS[c]} {c}</option>
+                                                <option key={c} value={c} className="bg-white dark:bg-[#1a1a1a] text-[#121212] dark:text-white">{CURRENCY_SYMBOLS[c]} {c}</option>
                                             ))}
                                         </select>
-                                        <svg className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[#555]" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
+                                        <svg className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[#777] dark:text-[#555]" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
                                     </div>
                                 </div>
 
                                 {/* Mixed currencies notice */}
                                 {hasMixedCurrencies && (
-                                    <div className="flex items-start gap-2 bg-gold/5 border border-gold/15 rounded-lg px-3 py-2.5 mb-5">
+                                    <div className="flex items-start gap-2 bg-gold/10 border border-gold/20 rounded-lg px-3 py-2.5 mb-5">
                                         <svg className="text-gold shrink-0 mt-0.5" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                        <p className="font-inter text-[10px] text-gold/80 leading-relaxed">
+                                        <p className="font-inter text-[10px] text-gold dark:text-gold/80 leading-relaxed font-medium">
                                             Your cart has items in multiple currencies. Prices are converted using live exchange rates.
                                         </p>
                                     </div>
@@ -422,34 +422,34 @@ const Cart = () => {
                                 {/* Line Items */}
                                 <div className="flex flex-col gap-4 mb-6">
                                     <div className="flex items-center justify-between font-inter text-sm">
-                                        <span className="text-[#888]">Subtotal ({cart.items.length} {cart.items.length === 1 ? 'item' : 'items'})</span>
-                                        <span className="text-white">
+                                        <span className="text-[#636059] dark:text-[#888]">Subtotal ({cart.items.length} {cart.items.length === 1 ? 'item' : 'items'})</span>
+                                        <span className="text-[#121212] dark:text-white font-medium">
                                             {ratesLoading ? (
-                                                <span className="w-16 h-4 bg-white/5 rounded animate-pulse inline-block" />
+                                                <span className="w-16 h-4 bg-black/5 dark:bg-white/5 rounded animate-pulse inline-block" />
                                             ) : ratesError ? '—' : formatDisplayPrice(convertedSubtotal)}
                                         </span>
                                     </div>
                                     <div className="flex items-center justify-between font-inter text-sm">
-                                        <span className="text-[#888]">Shipping</span>
-                                        <span className="text-green-400 font-medium">Free</span>
+                                        <span className="text-[#636059] dark:text-[#888]">Shipping</span>
+                                        <span className="text-emerald-600 dark:text-green-400 font-medium">Free</span>
                                     </div>
                                     <div className="flex items-center justify-between font-inter text-sm">
-                                        <span className="text-[#888]">Taxes</span>
-                                        <span className="text-[#888]">Included (GST 18%)</span>
+                                        <span className="text-[#636059] dark:text-[#888]">Taxes</span>
+                                        <span className="text-[#636059] dark:text-[#888]">Included (GST 18%)</span>
                                     </div>
                                 </div>
 
-                                <div className="w-full h-px bg-white/8 mb-6" />
+                                <div className="w-full h-px bg-black/8 dark:bg-white/8 mb-6" />
 
                                 {/* Total */}
                                 <div className="mb-6">
                                     <div className="flex items-center justify-between">
-                                        <span className="font-inter text-base font-semibold text-white">Total</span>
+                                        <span className="font-inter text-base font-semibold text-[#121212] dark:text-white">Total</span>
                                         <div className="text-right">
                                             {ratesLoading ? (
-                                                <span className="w-24 h-7 bg-white/5 rounded animate-pulse inline-block" />
+                                                <span className="w-24 h-7 bg-black/5 dark:bg-white/5 rounded animate-pulse inline-block" />
                                             ) : ratesError ? (
-                                                <span className="font-inter text-sm text-[#555]">Rate fetch failed</span>
+                                                <span className="font-inter text-sm text-[#777] dark:text-[#555]">Rate fetch failed</span>
                                             ) : (
                                                 <span className="font-bodoni text-[24px] font-bold text-gold">
                                                     {formatDisplayPrice(convertedSubtotal)}
@@ -457,7 +457,7 @@ const Cart = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <p className="text-[11px] font-inter text-[#666] text-right mt-1.5">
+                                    <p className="text-[11px] font-inter text-[#888] dark:text-[#666] text-right mt-1.5">
                                         All taxes & luxury duties included
                                     </p>
                                 </div>
@@ -465,28 +465,28 @@ const Cart = () => {
                                 {/* CTA */}
                                 <button
                                     onClick={() => setIsCheckoutOpen(true)}
-                                    className="w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mb-4">
+                                    className="w-full bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.25)] cursor-pointer mb-4">
                                     Proceed to Checkout
                                 </button>
 
                                 <Link
                                     to="/"
-                                    className="block text-center font-inter text-[11px] text-[#555] hover:text-gold transition-colors duration-200 tracking-wider uppercase"
+                                    className="block text-center font-inter text-[11px] text-[#636059] dark:text-[#555] hover:text-gold transition-colors duration-200 tracking-wider uppercase"
                                 >
                                     Continue Shopping
                                 </Link>
 
                                 {/* Trust Badges */}
-                                <div className="flex items-center justify-center gap-6 mt-8 pt-6 border-t border-white/5">
-                                    <div className="flex flex-col items-center gap-1.5 text-[#444]">
+                                <div className="flex items-center justify-center gap-6 mt-8 pt-6 border-t border-black/5 dark:border-white/5">
+                                    <div className="flex flex-col items-center gap-1.5 text-[#636059] dark:text-[#444]">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                                         <span className="font-inter text-[9px] uppercase tracking-widest">Secure</span>
                                     </div>
-                                    <div className="flex flex-col items-center gap-1.5 text-[#444]">
+                                    <div className="flex flex-col items-center gap-1.5 text-[#636059] dark:text-[#444]">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                                         <span className="font-inter text-[9px] uppercase tracking-widest">Returns</span>
                                     </div>
-                                    <div className="flex flex-col items-center gap-1.5 text-[#444]">
+                                    <div className="flex flex-col items-center gap-1.5 text-[#636059] dark:text-[#444]">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                                         <span className="font-inter text-[9px] uppercase tracking-widest">24/7 Help</span>
                                     </div>
@@ -500,35 +500,35 @@ const Cart = () => {
                 {isCheckoutOpen && (
                     <div 
                         onClick={() => setIsCheckoutOpen(false)}
-                        className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+                        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
                     >
                         <div 
                             onClick={(e) => e.stopPropagation()}
-                            className="fixed right-0 top-0 h-screen z-50 w-full max-w-lg bg-[#111] p-6 sm:p-8 pb-16 sm:pb-20 overflow-y-auto overscroll-contain border-l border-white/10 shadow-2xl animate-in slide-in-from-right duration-300"
+                            className="fixed right-0 top-0 h-screen z-50 w-full max-w-lg bg-white dark:bg-[#111] p-6 sm:p-8 pb-16 sm:pb-20 overflow-y-auto overscroll-contain border-l border-black/10 dark:border-white/10 shadow-2xl animate-in slide-in-from-right duration-300"
                         >
                             {/* ── Delivery Destination Form Card ── */}
                             <div className="space-y-6">
-                                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                                <div className="flex items-center justify-between border-b border-black/5 dark:border-white/5 pb-4">
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold">
                                             <MapPin className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h3 className="font-bodoni text-lg font-bold text-white">Delivery Destination</h3>
-                                            <p className="font-inter text-xs text-[#888]">White-glove courier shipping location</p>
+                                            <h3 className="font-bodoni text-lg font-bold text-[#121212] dark:text-white">Delivery Destination</h3>
+                                            <p className="font-inter text-xs text-[#636059] dark:text-[#888]">White-glove courier shipping location</p>
                                         </div>
                                     </div>
                                     <button 
                                         onClick={() => setIsCheckoutOpen(false)}
-                                        className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-[#888] hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
+                                        className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-[#555] dark:text-[#888] hover:text-black dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
                                     >
                                         ✕
                                     </button>
                                 </div>
 
                                 {addressError && (
-                                    <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 font-inter text-xs animate-fade-in">
-                                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                                    <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 font-inter text-xs animate-fade-in">
+                                        <AlertCircle className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" />
                                         <span>{addressError}</span>
                                     </div>
                                 )}
@@ -536,127 +536,127 @@ const Cart = () => {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-inter">
                                     {/* Full Name */}
                                     <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Recipient Full Name *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Recipient Full Name *</label>
                                         <input 
                                             type="text"
                                             name="fullname"
                                             value={shippingAddress.fullname}
                                             onChange={handleAddressChange}
                                             placeholder="e.g. Ritik Kumar"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
 
                                     {/* Address Line 1 */}
                                     <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Street Address / House No. *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Street Address / House No. *</label>
                                         <input 
                                             type="text"
                                             name="addressLine1"
                                             value={shippingAddress.addressLine1}
                                             onChange={handleAddressChange}
                                             placeholder="e.g. W-42 Sector-12"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
 
                                     {/* Address Line 2 (Optional) */}
                                     <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666]">Landmark / Building (Optional)</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888] dark:text-[#666]">Landmark / Building (Optional)</label>
                                         <input 
                                             type="text"
                                             name="addressLine2"
                                             value={shippingAddress.addressLine2}
                                             onChange={handleAddressChange}
                                             placeholder="e.g. Near Noida Stadium Gate no-7"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
 
                                     {/* Contact Number */}
                                     <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Contact Number *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Contact Number *</label>
                                         <input 
                                             type="text"
                                             name="contact"
                                             value={shippingAddress.contact}
                                             onChange={handleAddressChange}
                                             placeholder="e.g. 9876543210"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
 
                                     {/* PIN Code */}
                                     <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">PIN Code *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">PIN Code *</label>
                                         <input 
                                             type="text"
                                             name="pinCode"
                                             value={shippingAddress.pinCode}
                                             onChange={handleAddressChange}
                                             placeholder="e.g. 400001"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
 
                                     {/* Country */}
                                     <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">Country *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Country *</label>
                                         <div className="relative">
                                             <select 
                                                 name="country"
                                                 value={shippingAddress.country}
                                                 onChange={handleAddressChange}
-                                                className="w-full appearance-none bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-white transition-all outline-none cursor-pointer"
+                                                className="w-full appearance-none bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-[#121212] dark:text-white transition-all outline-none cursor-pointer"
                                             >
                                                 {Object.keys(COUNTRY_STATES_MAP).map(countryName => (
-                                                    <option key={countryName} value={countryName} className="bg-[#141414] text-white py-1">
+                                                    <option key={countryName} value={countryName} className="bg-white dark:bg-[#141414] text-[#121212] dark:text-white py-1">
                                                         {countryName}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#666] text-xs">▼</span>
+                                            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#777] dark:text-[#666] text-xs">▼</span>
                                         </div>
                                     </div>
 
                                     {/* City */}
                                     <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">City *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">City *</label>
                                         <input 
                                             type="text"
                                             name="city"
                                             value={shippingAddress.city}
                                             onChange={handleAddressChange}
                                             placeholder="e.g. Mumbai"
-                                            className="w-full bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#444] transition-all outline-none"
+                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
                                         />
                                     </div>
 
                                     {/* State */}
                                     <div className="space-y-1.5 relative">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888]">State *</label>
+                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">State *</label>
                                         <div className="relative">
                                             <select 
                                                 name="state"
                                                 value={shippingAddress.state}
                                                 onChange={handleAddressChange}
-                                                className="w-full appearance-none bg-[#141414] border border-white/10 hover:border-white/20 focus:border-gold/50 focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-white transition-all outline-none cursor-pointer"
+                                                className="w-full appearance-none bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-[#121212] dark:text-white transition-all outline-none cursor-pointer"
                                             >
-                                                <option value="" disabled className="bg-[#141414] text-[#666]">Select State / Province</option>
+                                                <option value="" disabled className="bg-white dark:bg-[#141414] text-[#888] dark:text-[#666]">Select State / Province</option>
                                                 {(COUNTRY_STATES_MAP[shippingAddress.country] || []).map(stateName => (
-                                                    <option key={stateName} value={stateName} className="bg-[#141414] text-white">
+                                                    <option key={stateName} value={stateName} className="bg-white dark:bg-[#141414] text-[#121212] dark:text-white">
                                                         {stateName}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#666] text-xs">▼</span>
+                                            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#777] dark:text-[#666] text-xs">▼</span>
                                         </div>
                                     </div>
 
                                     {/* CTA */}
                                     <button  
                                         onClick={handleCheckout}
-                                        className="sm:col-span-2 w-full bg-white hover:bg-gold text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer mt-2 mb-8"
+                                        className="sm:col-span-2 w-full bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.25)] cursor-pointer mt-2 mb-8"
                                     >
                                         CONFIRM & PAY
                                     </button>

@@ -142,7 +142,7 @@ const ProductDetail = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[#0c0c0c] flex items-center justify-center">
+            <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0c0c0c] flex items-center justify-center transition-colors duration-300">
                 <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
             </div>
         )
@@ -150,15 +150,15 @@ const ProductDetail = () => {
 
     if (!product) {
         return (
-            <div className="min-h-screen bg-[#0c0c0c] text-white flex flex-col items-center justify-center">
-                <h1 className="text-2xl font-bodoni mb-4">Product Not Found</h1>
+            <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0c0c0c] text-[#121212] dark:text-white flex flex-col items-center justify-center transition-colors duration-300">
+                <h1 className="font-bodoni text-2xl mb-4">Product Not Found</h1>
                 <Link to="/" className="text-gold hover:underline">Return to Home</Link>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
+        <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0c0c0c] text-[#121212] dark:text-white selection:bg-gold/30 transition-colors duration-300">
             
             {/* ── Main Content ── */}
             <main className="max-w-350 mx-auto px-5 sm:px-8 py-6 sm:py-8 animate-[fadeInUp_0.5s_ease_both]">
@@ -177,7 +177,7 @@ const ProductDetail = () => {
                                         className={`w-full flex-1 min-h-0 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
                                             activeImage === idx 
                                             ? 'border-gold opacity-100 shadow-[0_0_10px_rgba(201,169,110,0.2)]' 
-                                            : 'border-transparent opacity-50 hover:opacity-100 hover:border-white/20'
+                                            : 'border-transparent opacity-60 hover:opacity-100 hover:border-black/20 dark:hover:border-white/20'
                                         }`}
                                     >
                                         <img src={img.url} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
@@ -187,7 +187,7 @@ const ProductDetail = () => {
                         )}
 
                         {/* Main Image Viewer */}
-                        <div className="w-full flex-1 h-full bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
+                        <div className="w-full flex-1 h-full bg-white dark:bg-[#141414] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm dark:shadow-none relative group">
                             {displayImages && displayImages.length > 0 ? (
                                 <>
                                     <img 
@@ -225,7 +225,7 @@ const ProductDetail = () => {
                                     )}
                                 </>
                             ) : (
-                                <div className="absolute inset-0 flex items-center justify-center text-[#333] font-inter text-sm">No Image Available</div>
+                                <div className="absolute inset-0 flex items-center justify-center text-[#777] dark:text-[#333] font-inter text-sm">No Image Available</div>
                             )}
                         </div>
                     </div>
@@ -243,7 +243,7 @@ const ProductDetail = () => {
                                     </span>
                                 </div>
                             )}
-                            <h1 className="font-bodoni text-[32px] sm:text-[42px] lg:text-[48px] font-bold text-white leading-[1.1] tracking-tight mb-4 drop-shadow-md">
+                            <h1 className="font-bodoni text-[32px] sm:text-[42px] lg:text-[48px] font-bold text-[#121212] dark:text-white leading-[1.1] tracking-tight mb-4 drop-shadow-sm dark:drop-shadow-md">
                                 {product.title}
                             </h1>
                             <div className="font-inter text-[24px] sm:text-[28px] text-gold font-light">
@@ -251,16 +251,16 @@ const ProductDetail = () => {
                             </div>
                         </div>
                         
-                        <div className="w-full h-px bg-white/10 mb-8" />
+                        <div className="w-full h-px bg-black/10 dark:bg-white/10 mb-8" />
                         
                         {/* Variant Attributes Selectors */}
                         {Object.keys(attributeOptions).length > 0 && (
                             <div className="mb-8 flex flex-col gap-6">
                                 {Object.entries(attributeOptions).map(([attrKey, values]) => (
                                     <div key={attrKey}>
-                                        <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#888] uppercase mb-3 flex items-center gap-2">
+                                        <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#636059] dark:text-[#888] uppercase mb-3 flex items-center gap-2">
                                             {attrKey} 
-                                            <span className="text-white font-medium capitalize border-l border-white/20 pl-2">
+                                            <span className="text-[#121212] dark:text-white font-medium capitalize border-l border-black/20 dark:border-white/20 pl-2">
                                                 {selectedAttributes[attrKey]}
                                             </span>
                                         </h3>
@@ -273,8 +273,8 @@ const ProductDetail = () => {
                                                         onClick={() => handleAttributeSelect(attrKey, val)}
                                                         className={`px-5 py-2.5 border rounded-lg font-inter text-sm transition-all duration-300 cursor-pointer outline-none ${
                                                             isSelected 
-                                                            ? 'border-gold text-gold bg-gold/5 shadow-[0_0_15px_rgba(201,169,110,0.1)]' 
-                                                            : 'border-white/10 text-[#aaa] hover:border-white/30 hover:text-white bg-[#141414]'
+                                                            ? 'border-gold text-gold bg-gold/5 shadow-[0_0_15px_rgba(201,169,110,0.15)] font-medium' 
+                                                            : 'border-black/10 dark:border-white/10 text-[#555] dark:text-[#aaa] hover:border-black/30 dark:hover:border-white/30 hover:text-black dark:hover:text-white bg-white dark:bg-[#141414] shadow-xs dark:shadow-none'
                                                         }`}
                                                     >
                                                         {val}
@@ -285,19 +285,19 @@ const ProductDetail = () => {
                                     </div>
                                 ))}
                                 
-                                <div className="w-full h-px bg-white/10 mt-2" />
+                                <div className="w-full h-px bg-black/10 dark:bg-white/10 mt-2" />
                             </div>
                         )}
                         
                         {/* Description */}
                         <div className="mb-12">
-                            <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#888] uppercase mb-4">Details</h3>
-                            <p className="font-inter text-sm sm:text-base text-[#ccc] leading-relaxed font-light whitespace-pre-wrap">
+                            <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#636059] dark:text-[#888] uppercase mb-4">Details</h3>
+                            <p className="font-inter text-sm sm:text-base text-[#555] dark:text-[#ccc] leading-relaxed font-light whitespace-pre-wrap">
                                 {product.description}
                             </p>
                         </div>
                         
-                        {/* Premium Stock Indicator (Only shows when stock is low but not 0) */}
+                        {/* Premium Stock Indicator */}
                         {displayStock !== null && displayStock > 0 && displayStock <= 5 && (
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shrink-0" />
@@ -324,8 +324,8 @@ const ProductDetail = () => {
                                 disabled={displayStock === 0}
                                 className={`flex-1 rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform ${
                                     displayStock === 0 
-                                    ? 'bg-white/10 text-[#555] cursor-not-allowed' 
-                                    : 'bg-white hover:bg-gold text-[#0a0a0a] hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(201,169,110,0.2)] cursor-pointer'
+                                    ? 'bg-black/10 dark:bg-white/10 text-[#888] dark:text-[#555] cursor-not-allowed' 
+                                    : 'bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(201,169,110,0.25)] cursor-pointer'
                                 }`}
                             >
                                 {displayStock === 0 ? 'Out of Stock' : 'Buy Now'}
@@ -334,8 +334,8 @@ const ProductDetail = () => {
                                 disabled={displayStock === 0}
                                 className={`flex-1 border rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 ${
                                     displayStock === 0
-                                    ? 'border-white/5 text-[#555] bg-transparent cursor-not-allowed'
-                                    : 'border-white/20 hover:border-gold text-white hover:text-gold bg-transparent cursor-pointer'
+                                    ? 'border-black/5 dark:border-white/5 text-[#888] dark:text-[#555] bg-transparent cursor-not-allowed'
+                                    : 'border-black/20 dark:border-white/20 hover:border-gold text-[#121212] dark:text-white hover:text-gold dark:hover:text-gold bg-transparent cursor-pointer'
                                 }`}
                                 onClick={ async () => {
                                     if (!user) {
@@ -354,20 +354,20 @@ const ProductDetail = () => {
                         </div>
                         
                         {/* Value Props */}
-                        <div className="grid grid-cols-2 gap-y-6 gap-x-4 mt-12 pt-8 border-t border-white/5">
-                            <div className="flex items-center gap-3 text-[#777]">
+                        <div className="grid grid-cols-2 gap-y-6 gap-x-4 mt-12 pt-8 border-t border-black/10 dark:border-white/5">
+                            <div className="flex items-center gap-3 text-[#636059] dark:text-[#777]">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                                 <span className="font-inter text-[11px] uppercase tracking-wider">Premium Quality</span>
                             </div>
-                            <div className="flex items-center gap-3 text-[#777]">
+                            <div className="flex items-center gap-3 text-[#636059] dark:text-[#777]">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                 <span className="font-inter text-[11px] uppercase tracking-wider">Secure Checkout</span>
                             </div>
-                            <div className="flex items-center gap-3 text-[#777]">
+                            <div className="flex items-center gap-3 text-[#636059] dark:text-[#777]">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
                                 <span className="font-inter text-[11px] uppercase tracking-wider">Free Returns</span>
                             </div>
-                            <div className="flex items-center gap-3 text-[#777]">
+                            <div className="flex items-center gap-3 text-[#636059] dark:text-[#777]">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                 <span className="font-inter text-[11px] uppercase tracking-wider">24/7 Support</span>
                             </div>

@@ -4,21 +4,21 @@ const ContinueWithGoogle = () => {
       href="/api/auth/google"
       aria-label="Continue with Google"
       className="
-        flex items-center w-full overflow-hidden rounded-lg
-        border border-[#242424] bg-[#161616]
+        group flex items-center w-full overflow-hidden rounded-lg
+        border border-black/10 dark:border-[#242424] bg-[#FBFBF9] dark:bg-[#161616]
         no-underline cursor-pointer
         transition-all duration-200
-        hover:bg-[#1a1a1a] hover:border-[#2e2e2e]
-        active:scale-[0.98] active:bg-[#1c1c1c]
+        hover:bg-[#F3F2EE] dark:hover:bg-[#1a1a1a] hover:border-black/20 dark:hover:border-[#2e2e2e]
+        active:scale-[0.98] active:bg-[#ECEAE4] dark:active:bg-[#1c1c1c]
       "
     >
       {/* Google Logo */}
-      <div className="flex items-center justify-center w-12 h-12 bg-white rounded-l-lg shrink-0">
+      <div className="flex items-center justify-center w-12 h-12 bg-white rounded-l-lg shrink-0 border-r border-black/5 dark:border-transparent">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 48 48"
-          width="22"
-          height="22"
+          width="20"
+          height="20"
         >
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
           <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -32,9 +32,9 @@ const ContinueWithGoogle = () => {
         className="
           flex-1 pr-12 text-center
           font-inter text-[13px] font-medium
-          text-[#c8c8c8]
+          text-[#333333] dark:text-[#c8c8c8]
           transition-colors duration-200
-          hover:text-white
+          group-hover:text-black dark:group-hover:text-white
         "
       >
         Continue with Google

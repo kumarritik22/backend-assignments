@@ -5,12 +5,13 @@ import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'
 import { CheckCircle } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setError } from '../state/auth.slice.js'
+import { useTheme } from '../../shared/context/ThemeContext.jsx'
 
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
   <div className="flex flex-col gap-1.5">
     <label
       htmlFor={id}
-      className={`font-inter text-[10px] font-bold uppercase tracking-widest ${error ? 'text-red-400' : 'text-gold'}`}
+      className={`font-inter text-[10px] font-bold uppercase tracking-widest ${error ? 'text-red-500 dark:text-red-400' : 'text-[#8C703B] dark:text-gold'}`}
     >
       {label}
     </label>
@@ -20,18 +21,18 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
         value={value} onChange={onChange}
         aria-describedby={error ? `${id}-error` : undefined}
         className={[
-          'w-full rounded-lg px-4 py-2.75 text-sm font-light font-inter text-white',
-          'placeholder:text-[#3d3d3d] border outline-none transition-all duration-200',
+          'w-full rounded-lg px-4 py-2.75 text-sm font-light font-inter',
+          'bg-[#FBFBF9] dark:bg-[#1a1a1a] text-[#121212] dark:text-white placeholder-[#9E9B95] dark:placeholder-[#3d3d3d]',
+          'border outline-none transition-all duration-200',
           'focus:border-gold focus:ring-2 focus:ring-gold/10',
-          error ? 'border-red-400/70 ring-2 ring-red-400/10' : 'border-[#252525]',
-          'bg-[#1a1a1a]',
+          error ? 'border-red-400/70 ring-2 ring-red-400/10' : 'border-black/10 dark:border-[#252525]',
           children ? 'pr-11' : '',
         ].join(' ')}
       />
       {children}
     </div>
     {error && (
-      <p id={`${id}-error`} role="alert" className="font-inter text-[11px] text-red-400">{error}</p>
+      <p id={`${id}-error`} role="alert" className="font-inter text-[11px] text-red-500 dark:text-red-400">{error}</p>
     )}
   </div>
 )
@@ -41,6 +42,7 @@ const Register = () => {
   const {handleRegister} = useAuth()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { isDark } = useTheme()
 
   const error = useSelector(state => state.auth.error);
   const loading = useSelector(state => state.auth.loading);
@@ -121,26 +123,26 @@ const Register = () => {
   }, [])
 
   return (
-    <main className="flex flex-col lg:flex-row min-h-screen lg:h-screen lg:overflow-hidden bg-[#0a0a0a]">
+    <main className="flex flex-col lg:flex-row min-h-screen lg:h-screen lg:overflow-hidden bg-[#F6F5F2] dark:bg-[#0a0a0a]">
 
       {/* LEFT — Brand / Model */}
       <section
-        aria-label="Snitch brand panel"
+        aria-label="Velora brand panel"
         className="relative w-full h-64 sm:h-80 md:h-96 lg:w-[48%] lg:h-full shrink-0 overflow-hidden"
       >
         <img
-          src="/model-hero.png"
-          alt="Snitch fashion model"
-          className="absolute inset-0 w-full h-full object-cover object-top"
+          src={isDark ? "/model-hero.png" : "/model-hero-light.png"}
+          alt="Velora fashion model"
+          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500"
         />
 
         {/* ── Lighter overlays so image shines through ── */}
-        <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-[#0a0a0a]/40" />
+        <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-[#F6F5F2]/40 dark:to-[#0a0a0a]/40" />
         <div className="absolute inset-0 bg-linear-to-b from-black/25 via-transparent to-black/75" />
 
         {/* Logo — Velora image */}
-        <Link to="/" className="absolute top-5 left-5 lg:top-7 lg:left-7 z-10 flex items-center gap-3">
-          <img src="/logo.png" alt="Velora Logo" className="h-8 lg:h-12 w-auto object-contain drop-shadow-lg opacity-90" />
+        <Link to="/" className="absolute top-5 left-5 lg:top-7 lg:left-7 z-10 flex items-center gap-3 group">
+          <img src="/logo.png" alt="Velora Logo" className="h-8 lg:h-12 w-auto object-contain drop-shadow-lg opacity-90 group-hover:opacity-100 transition-opacity" />
           <span className="font-bodoni text-[22px] font-bold tracking-[0.2em] text-white uppercase drop-shadow-md">
             Velora
           </span>
@@ -153,14 +155,14 @@ const Register = () => {
             Wear Your<br />
             <span className="text-gold">Identity.</span>
           </h2>
-          <p className="font-inter text-xs sm:text-sm text-white/60 mt-2 font-light leading-relaxed max-w-65">
+          <p className="font-inter text-xs sm:text-sm text-white/70 mt-2 font-light leading-relaxed max-w-65">
             Curated fashion for those who refuse to blend in.
           </p>
           <div className="flex gap-6 mt-4">
             {[['50K+', 'Customers'], ['2K+', 'Styles'], ['4.9★', 'Rating']].map(([n, l]) => (
               <div key={l}>
                 <div className="font-inter text-sm font-bold text-gold">{n}</div>
-                <div className="font-inter text-[9px] text-white/50 tracking-widest uppercase mt-0.5">{l}</div>
+                <div className="font-inter text-[9px] text-white/60 tracking-widest uppercase mt-0.5">{l}</div>
               </div>
             ))}
           </div>
@@ -168,7 +170,7 @@ const Register = () => {
       </section>
 
       {/* RIGHT — Registration Form or Success Message */}
-      <section className="flex-1 flex flex-col bg-[#111] lg:border-l lg:border-white/5 overflow-y-auto px-6 sm:px-10 md:px-14 lg:px-10 xl:px-14">
+      <section className="flex-1 flex flex-col bg-white dark:bg-[#111] lg:border-l border-black/5 dark:border-white/5 overflow-y-auto px-6 sm:px-10 md:px-14 lg:px-10 xl:px-14">
         <div className="w-full max-w-97.5 mx-auto my-auto py-10">
           
           {isRegistered ? (
@@ -177,15 +179,15 @@ const Register = () => {
                 <div className="absolute inset-0 bg-gold blur-xl opacity-20 rounded-full"></div>
                 <CheckCircle className="w-20 h-20 text-gold relative z-10" strokeWidth={1.5} />
               </div>
-              <h2 className="font-bodoni text-[30px] sm:text-[34px] font-bold tracking-tight text-white leading-[1.15]">
+              <h2 className="font-bodoni text-[30px] sm:text-[34px] font-bold tracking-tight text-[#121212] dark:text-white leading-[1.15]">
                 Check your inbox
               </h2>
-              <p className="font-inter text-[14px] text-[#888] max-w-sm">
-                We've sent a verification link to <span className="text-white font-medium">{formData.email}</span>. Please click the link to activate your account.
+              <p className="font-inter text-[14px] text-[#636059] dark:text-[#888] max-w-sm">
+                We've sent a verification link to <span className="text-[#121212] dark:text-white font-medium">{formData.email}</span>. Please click the link to activate your account.
               </p>
               <button
                 onClick={() => navigate('/login')}
-                className="mt-4 px-8 py-3 bg-gold text-black font-inter font-bold text-[11px] tracking-[0.18em] uppercase rounded-sm hover:bg-[#b5955b] transition-colors cursor-pointer transition-[transform, colors] duration-200 active:scale-95"
+                className="mt-4 px-8 py-3 bg-linear-to-r from-gold to-gold-dark text-[#0a0a0a] font-inter font-bold text-[11px] tracking-[0.18em] uppercase rounded-lg hover:from-gold-light hover:to-gold transition-all duration-200 cursor-pointer shadow-md shadow-gold/10 active:scale-95"
               >
                 PROCEED TO LOGIN
               </button>
@@ -198,10 +200,10 @@ const Register = () => {
                   <span className="w-1.25 h-1.25 rounded-full bg-gold shrink-0" />
                   <span className="font-inter text-[9px] font-bold tracking-[0.14em] text-gold uppercase">Join Velora</span>
                 </div>
-                <h1 className="font-bodoni text-[30px] sm:text-[34px] font-bold tracking-tight text-white leading-[1.15]">
+                <h1 className="font-bodoni text-[30px] sm:text-[34px] font-bold tracking-tight text-[#121212] dark:text-white leading-[1.15]">
                   Create Account
                 </h1>
-                <p className="font-inter text-[13px] text-[#777] mt-2 leading-relaxed">
+                <p className="font-inter text-[13px] text-[#636059] dark:text-[#777] mt-2 leading-relaxed">
                   Already have an account?{' '}
                   <Link to="/login" id="sign-in-link" className="text-gold font-medium no-underline hover:underline underline-offset-2 transition-all">
                     Sign in →
@@ -210,8 +212,8 @@ const Register = () => {
               </div>
 
               {error && (
-                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-400/40 text-[11px] font-bold">
+                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-500/20 bg-red-500/10 dark:bg-red-400/5 px-4 py-3 text-sm text-red-600 dark:text-red-300">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-500/40 text-[11px] font-bold">
                         !
                     </span>
                     <p>{error}</p>
@@ -243,7 +245,7 @@ const Register = () => {
                       type="button" id="toggle-password"
                       onClick={() => setShowPassword(v => !v)}
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[#484848] hover:text-gold flex items-center transition-colors duration-150 p-0"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[#888] hover:text-gold dark:text-[#484848] dark:hover:text-gold flex items-center transition-colors duration-150 p-0"
                     >
                       <span className="material-symbols-outlined">{showPassword ? 'visibility' : 'visibility_off'}</span>
                     </button>
@@ -259,22 +261,22 @@ const Register = () => {
                     'flex items-center justify-between rounded-lg px-4 py-3.25 cursor-pointer select-none',
                     'border transition-all duration-200',
                     'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.31s] [animation-fill-mode:both]',
-                    'bg-[#1a1a1a]',
-                    isSeller ? 'border-gold/30' : 'border-[#252525]',
+                    'bg-[#FBFBF9] dark:bg-[#1a1a1a]',
+                    isSeller ? 'border-gold/60 ring-1 ring-gold/20' : 'border-black/10 dark:border-[#252525]',
                   ].join(' ')}
                 >
                   <div>
-                    <p className="font-inter text-[13px] font-medium text-white">Register as Seller</p>
-                    <p className="font-inter text-[11px] text-[#666] mt-0.5">List &amp; manage your own products</p>
+                    <p className="font-inter text-[13px] font-medium text-[#121212] dark:text-white">Register as Seller</p>
+                    <p className="font-inter text-[11px] text-[#636059] dark:text-[#666] mt-0.5">List &amp; manage your own products</p>
                   </div>
-                  <div className={`relative w-10 h-5.5 rounded-full shrink-0 ml-4 transition-colors duration-300 ${isSeller ? 'bg-gold' : 'bg-[#2a2a2a]'}`}>
-                    <div className={`absolute top-0.75 left-0.75 w-4 h-4 rounded-full transition-transform duration-300 ${isSeller ? 'translate-x-4.5 bg-[#0a0a0a]' : 'translate-x-0 bg-[#666]'}`} />
+                  <div className={`relative w-10 h-5.5 rounded-full shrink-0 ml-4 transition-colors duration-300 ${isSeller ? 'bg-gold' : 'bg-black/15 dark:bg-[#2a2a2a]'}`}>
+                    <div className={`absolute top-0.75 left-0.75 w-4 h-4 rounded-full transition-transform duration-300 ${isSeller ? 'translate-x-4.5 bg-[#0a0a0a]' : 'translate-x-0 bg-[#888] dark:bg-[#666]'}`} />
                   </div>
                   <input type="checkbox" id="isSeller" name="isSeller" checked={isSeller}
                     onChange={e => setIsSeller(e.target.checked)} className="sr-only" aria-label="Register as seller" />
                 </div>
 
-                <hr className="border-t border-white/5 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.35s] [animation-fill-mode:both]" />
+                <hr className="border-t border-black/10 dark:border-white/5 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.35s] [animation-fill-mode:both]" />
 
                 <button
                   type="submit" 
@@ -283,23 +285,23 @@ const Register = () => {
                   className={[
                     'w-full rounded-lg py-3.25 font-inter font-bold text-[11px] tracking-[0.18em] uppercase text-[#0a0a0a]',
                     'bg-linear-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold',
-                    'transition-all duration-200',
+                    'transition-all duration-200 shadow-md shadow-gold/10',
                     'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.39s] [animation-fill-mode:both] ', loading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
                   ].join(' ')}
                 >
                   {loading ? "Creating Account..." : "Create Account"}
                 </button>
 
-                <div className="flex-1 border-t border-[#1e1e1e]" />
+                <div className="flex-1 border-t border-black/10 dark:border-[#1e1e1e]" />
 
                 {/* Continue with Google button */}
                 <ContinueWithGoogle />
 
-                <p className="font-inter text-center text-[10px] text-[#444] leading-relaxed animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.43s] [animation-fill-mode:both]">
+                <p className="font-inter text-center text-[10px] text-[#888] dark:text-[#444] leading-relaxed animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.43s] [animation-fill-mode:both]">
                   By continuing you agree to our{' '}
-                  <a href="#" className="text-[#666] underline hover:text-[#999] transition-colors">Terms</a>
+                  <a href="#" className="text-[#555] dark:text-[#666] underline hover:text-[#111] dark:hover:text-[#999] transition-colors">Terms</a>
                   {' '}&amp;{' '}
-                  <a href="#" className="text-[#666] underline hover:text-[#999] transition-colors">Privacy Policy</a>
+                  <a href="#" className="text-[#555] dark:text-[#666] underline hover:text-[#111] dark:hover:text-[#999] transition-colors">Privacy Policy</a>
                 </p>
               </form>
             </>

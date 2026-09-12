@@ -393,12 +393,12 @@ const SellerProductDetails = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30 pb-20">
+        <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0c0c0c] text-[#121212] dark:text-white selection:bg-gold/30 pb-20">
 
             <main className="max-w-350 mx-auto px-5 sm:px-8 py-6 sm:py-8 animate-[fadeInUp_0.5s_ease_both]">
                 
                 {/* ── 1. Buyer View (Product Preview) ── */}
-                <div className="mb-12 pb-10 border-b border-white/10">
+                <div className="mb-12 pb-10 border-b border-black/10 dark:border-white/10">
                     <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
                         {/* Left: Image Gallery */}
                         <div className="w-full lg:w-[45%] xl:w-[42%] flex flex-col sm:flex-row gap-3 sm:gap-4 h-110 sm:h-120 lg:h-125">
@@ -413,7 +413,7 @@ const SellerProductDetails = () => {
                                             className={`w-full flex-1 min-h-0 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
                                                 activeImage === idx 
                                                 ? 'border-gold opacity-100 shadow-[0_0_10px_rgba(201,169,110,0.2)]' 
-                                                : 'border-transparent opacity-50 hover:opacity-100 hover:border-white/20'
+                                                : 'border-transparent opacity-50 hover:opacity-100 hover:border-black/20 dark:hover:border-white/20'
                                             }`}
                                         >
                                             <img src={img.url} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
@@ -423,7 +423,7 @@ const SellerProductDetails = () => {
                             )}
 
                             {/* Main Image Viewer */}
-                            <div className="w-full h-full flex-1 bg-[#141414] rounded-2xl overflow-hidden border border-white/5 relative group">
+                            <div className="w-full h-full flex-1 bg-white dark:bg-[#141414] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 relative group shadow-sm dark:shadow-none">
                                 {product?.images && product?.images.length > 0 ? (
                                     <>
                                         <img 
@@ -455,7 +455,7 @@ const SellerProductDetails = () => {
                                                         <button 
                                                             key={idx}
                                                             onClick={() => setActiveImage(idx)}
-                                                            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${activeImage === idx ? 'bg-gold w-4' : 'bg-white/40 hover:bg-white/80'}`}
+                                                            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${activeImage === idx ? 'bg-gold w-4' : 'bg-black/40 dark:bg-white/40 hover:bg-black/80 dark:hover:bg-white/80'}`}
                                                         />
                                                     ))}
                                                 </div>
@@ -463,7 +463,7 @@ const SellerProductDetails = () => {
                                         )}
                                     </>
                                 ) : (
-                                    <div className="absolute inset-0 flex items-center justify-center text-[#333] font-inter text-sm">No Image Available</div>
+                                    <div className="absolute inset-0 flex items-center justify-center text-[#888] dark:text-[#333] font-inter text-sm">No Image Available</div>
                                 )}
                             </div>
                         </div>
@@ -476,7 +476,7 @@ const SellerProductDetails = () => {
                                 <span className="font-inter text-[9px] font-bold tracking-[0.15em] text-gold uppercase">Preview Mode</span>
                             </div>
                             
-                            <h1 className="font-bodoni text-[32px] sm:text-[42px] lg:text-[48px] font-bold text-white leading-[1.1] tracking-tight mb-4 drop-shadow-md">
+                            <h1 className="font-bodoni text-[32px] sm:text-[42px] lg:text-[48px] font-bold text-[#121212] dark:text-white leading-[1.1] tracking-tight mb-4 drop-shadow-xs dark:drop-shadow-md">
                                 {product?.title}
                             </h1>
                             
@@ -484,11 +484,11 @@ const SellerProductDetails = () => {
                                 {formatPrice(product?.price?.amount, product?.price?.currency)}
                             </div>
                             
-                            <div className="w-full h-px bg-white/10 mb-8" />
+                            <div className="w-full h-px bg-black/10 dark:bg-white/10 mb-8" />
                             
                             <div className="mb-6">
-                                <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#888] uppercase mb-4">Details</h3>
-                                <p className="font-inter text-sm sm:text-base text-[#ccc] leading-relaxed font-light">
+                                <h3 className="font-inter text-[11px] font-bold tracking-[0.2em] text-[#636059] dark:text-[#888] uppercase mb-4">Details</h3>
+                                <p className="font-inter text-sm sm:text-base text-[#636059] dark:text-[#ccc] leading-relaxed font-light">
                                     {product?.description}
                                 </p>
                             </div>
@@ -497,14 +497,14 @@ const SellerProductDetails = () => {
                             <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                                 <button 
                                     onClick={handleStartEditing}
-                                    className="flex-1 flex items-center justify-center gap-2.5 bg-white hover:bg-gold text-[#0a0a0a] font-inter font-bold text-[11px] tracking-[0.2em] uppercase rounded-xl py-4 px-6 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(201,169,110,0.3)] cursor-pointer active:scale-[0.98]"
+                                    className="flex-1 flex items-center justify-center gap-2.5 bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] font-inter font-bold text-[11px] tracking-[0.2em] uppercase rounded-xl py-4 px-6 transition-all duration-300 shadow-md cursor-pointer active:scale-[0.98]"
                                 >
                                     <Pencil className="w-3.5 h-3.5" />
                                     <span>Edit Product</span>
                                 </button>
                                 <button 
                                     onClick={() => setShowDeleteModal(true)}
-                                    className="flex-1 flex items-center justify-center gap-2.5 bg-transparent border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500 font-inter font-bold text-[11px] tracking-[0.2em] uppercase rounded-xl py-4 px-6 transition-all duration-300 cursor-pointer active:scale-[0.98]"
+                                    className="flex-1 flex items-center justify-center gap-2.5 bg-transparent border border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/10 hover:border-red-500 font-inter font-bold text-[11px] tracking-[0.2em] uppercase rounded-xl py-4 px-6 transition-all duration-300 cursor-pointer active:scale-[0.98]"
                                 >
                                     <Trash2 className="w-3.5 h-3.5" />
                                     <span>Delete Product</span>
@@ -517,15 +517,15 @@ const SellerProductDetails = () => {
                 {/* ── 2. Variant Management Section ── */}
                 <div className="max-w-250 mx-auto">
                     <div className="mb-10">
-                        <h2 className="font-bodoni text-[36px] font-bold text-white mb-2">Variant Management</h2>
-                        <p className="font-inter text-sm text-[#777]">Add, edit, or remove product variants and control their stock levels.</p>
+                        <h2 className="font-bodoni text-[36px] font-bold text-[#121212] dark:text-white mb-2">Variant Management</h2>
+                        <p className="font-inter text-sm text-[#636059] dark:text-[#777]">Add, edit, or remove product variants and control their stock levels.</p>
                     </div>
 
                     {/* ── Add Variant Button ── */}
                     {!isAddingVariant && (
                         <button 
                             onClick={handleStartAddingVariant}
-                            className="w-full flex items-center justify-center gap-2 border border-dashed border-gold/30 rounded-xl py-6 hover:bg-gold/5 hover:border-gold/60 transition-colors duration-300 group mb-12 cursor-pointer"
+                            className="w-full flex items-center justify-center gap-2 border border-dashed border-gold/40 rounded-xl py-6 hover:bg-gold/5 hover:border-gold/60 transition-colors duration-300 group mb-12 cursor-pointer"
                         >
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gold group-hover:scale-110 transition-transform"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                             <span className="font-inter text-sm font-medium text-gold uppercase tracking-widest">Create New Variant</span>
@@ -534,10 +534,10 @@ const SellerProductDetails = () => {
 
                     {/* ── Add Variant Form ── */}
                     {isAddingVariant && (
-                        <div className="bg-[#111] border border-white/10 rounded-2xl p-6 sm:p-8 mb-12 animate-[fadeIn_0.3s_ease_both]">
+                        <div className="bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 rounded-2xl p-6 sm:p-8 mb-12 animate-[fadeIn_0.3s_ease_both] shadow-md dark:shadow-none">
                             <div className="flex items-center justify-between mb-8">
-                                <h2 className="font-bodoni text-[24px] font-bold text-white">New Variant Details</h2>
-                                <button onClick={() => setIsAddingVariant(false)} className="text-[#555] hover:text-white transition-colors cursor-pointer">
+                                <h2 className="font-bodoni text-[24px] font-bold text-[#121212] dark:text-white">New Variant Details</h2>
+                                <button onClick={() => setIsAddingVariant(false)} className="text-[#888] dark:text-[#555] hover:text-[#121212] dark:hover:text-white transition-colors cursor-pointer">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 </button>
                             </div>
@@ -555,23 +555,23 @@ const SellerProductDetails = () => {
                                                     placeholder="e.g. Size, Color, Storage"
                                                     value={attr.key}
                                                     onChange={(e) => handleAttributeChange(idx, 'key', e.target.value)}
-                                                    className="flex-1 bg-[#1a1a1a] border border-white/5 rounded-lg px-4 py-2.5 text-sm text-white placeholder-[#444] focus:border-gold focus:outline-none"
+                                                    className="flex-1 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/5 rounded-lg px-4 py-2.5 text-sm text-[#121212] dark:text-white placeholder-[#888] dark:placeholder-[#444] focus:border-gold focus:outline-none"
                                                 />
                                                 <input 
                                                     type="text" 
                                                     placeholder="e.g. XL, Red, 256GB"
                                                     value={attr.value}
                                                     onChange={(e) => handleAttributeChange(idx, 'value', e.target.value)}
-                                                    className="flex-1 bg-[#1a1a1a] border border-white/5 rounded-lg px-4 py-2.5 text-sm text-white placeholder-[#444] focus:border-gold focus:outline-none"
+                                                    className="flex-1 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/5 rounded-lg px-4 py-2.5 text-sm text-[#121212] dark:text-white placeholder-[#888] dark:placeholder-[#444] focus:border-gold focus:outline-none"
                                                 />
                                                 {newAttributes.length > 1 && (
-                                                    <button type="button" onClick={() => handleRemoveAttributeField(idx)} className="p-3 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors cursor-pointer">
+                                                    <button type="button" onClick={() => handleRemoveAttributeField(idx)} className="p-3 text-red-500 dark:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer">
                                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
                                                     </button>
                                                 )}
                                             </div>
                                         ))}
-                                        <button type="button" onClick={handleAddAttributeField} className="self-start text-xs font-inter font-bold tracking-widest text-[#888] hover:text-white uppercase flex items-center gap-1 mt-2 cursor-pointer">
+                                        <button type="button" onClick={handleAddAttributeField} className="self-start text-xs font-inter font-bold tracking-widest text-[#636059] dark:text-[#888] hover:text-[#121212] dark:hover:text-white uppercase flex items-center gap-1 mt-2 cursor-pointer">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                             Add Another Attribute
                                         </button>
@@ -581,29 +581,29 @@ const SellerProductDetails = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     {/* Stock */}
                                     <div>
-                                        <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#888] mb-3">Stock Quantity</label>
+                                        <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#636059] dark:text-[#888] mb-3">Stock Quantity</label>
                                         <input 
                                             type="number" min="0"
                                             value={newStock}
                                             onChange={(e) => setNewStock(e.target.value)}
-                                            className="w-full bg-[#1a1a1a] border border-white/5 rounded-lg px-4 py-2.5 text-sm text-white focus:border-gold focus:outline-none"
+                                            className="w-full bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/5 rounded-lg px-4 py-2.5 text-sm text-[#121212] dark:text-white focus:border-gold focus:outline-none"
                                         />
                                     </div>
                                     
                                     {/* Price Override */}
                                     <div>
-                                        <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#888] mb-3">Price Override (Optional)</label>
+                                        <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#636059] dark:text-[#888] mb-3">Price Override (Optional)</label>
                                         <div className="flex gap-2">
                                             <input 
                                                 type="number" min="0" placeholder="Amount"
                                                 value={newPriceAmount}
                                                 onChange={(e) => setNewPriceAmount(e.target.value)}
-                                                className="flex-1 bg-[#1a1a1a] border border-white/5 rounded-lg px-4 py-2.5 text-sm text-white focus:border-gold focus:outline-none"
+                                                className="flex-1 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/5 rounded-lg px-4 py-2.5 text-sm text-[#121212] dark:text-white focus:border-gold focus:outline-none"
                                             />
                                             <select 
                                                 value={newPriceCurrency}
                                                 onChange={(e) => setNewPriceCurrency(e.target.value)}
-                                                className="w-24 bg-[#1a1a1a] border border-white/5 rounded-lg px-2 text-sm text-white focus:border-gold focus:outline-none"
+                                                className="w-24 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/5 rounded-lg px-2 text-sm text-[#121212] dark:text-white focus:border-gold focus:outline-none"
                                             >
                                                 <option value="USD">USD</option>
                                                 <option value="INR">INR</option>
@@ -617,11 +617,11 @@ const SellerProductDetails = () => {
 
                                 {/* Images Upload */}
                                 <div>
-                                    <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#888] mb-3">Images (Max 7)</label>
+                                    <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#636059] dark:text-[#888] mb-3">Images (Max 7)</label>
                                     
                                     <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                                         {newImages.map((file, idx) => (
-                                            <div key={idx} className="relative shrink-0 w-24 h-24 rounded-lg bg-[#1a1a1a] border border-white/10 overflow-hidden group">
+                                            <div key={idx} className="relative shrink-0 w-24 h-24 rounded-lg bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 overflow-hidden group">
                                                 <img src={URL.createObjectURL(file)} alt="preview" className="w-full h-full object-cover" />
                                                 <button 
                                                     type="button" 
@@ -634,9 +634,9 @@ const SellerProductDetails = () => {
                                         ))}
                                         
                                         {newImages.length < 7 && (
-                                            <label className="shrink-0 w-24 h-24 rounded-lg border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#666]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                                <span className="font-inter text-[9px] text-[#666] uppercase">Upload</span>
+                                            <label className="shrink-0 w-24 h-24 rounded-lg border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#888] dark:text-[#666]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                                <span className="font-inter text-[9px] text-[#888] dark:text-[#666] uppercase">Upload</span>
                                                 <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
                                             </label>
                                         )}
@@ -646,7 +646,7 @@ const SellerProductDetails = () => {
                                 <button 
                                     type="submit" 
                                     disabled={isSavingVariant}
-                                    className="w-full rounded-lg py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-linear-to-tr from-gold to-gold-dark hover:from-gold-light hover:to-gold transition-all duration-300 mt-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full rounded-lg py-4 font-inter font-bold text-[11px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-linear-to-tr from-gold to-gold-dark hover:from-gold-light hover:to-gold transition-all duration-300 mt-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                                 >
                                     { isSavingVariant ? "Saving..." : "Save Variant" }
                                 </button>
@@ -656,21 +656,21 @@ const SellerProductDetails = () => {
 
                     {/* ── Existing Variants List ── */}
                     <div>
-                        <h2 className="font-bodoni text-[24px] font-bold text-white mb-6">Existing Variants</h2>
+                        <h2 className="font-bodoni text-[24px] font-bold text-[#121212] dark:text-white mb-6">Existing Variants</h2>
                         
                         {!product?.variants || product.variants.length === 0 ? (
-                            <p className="font-inter text-sm text-[#555]">No variants created yet.</p>
+                            <p className="font-inter text-sm text-[#888] dark:text-[#555]">No variants created yet.</p>
                         ) : (
                             <div className="flex flex-col gap-4">
                                 {product.variants.map((v, i) => (
-                                    <div key={i} className="flex flex-col sm:flex-row gap-6 p-5 bg-[#141414] border border-white/5 rounded-xl hover:border-white/10 transition-colors">
+                                    <div key={i} className="flex flex-col sm:flex-row gap-6 p-5 bg-white dark:bg-[#141414] border border-black/5 dark:border-white/5 rounded-xl hover:border-gold/30 dark:hover:border-white/10 transition-colors shadow-xs dark:shadow-none">
                                         
                                         {/* Variant Image */}
-                                        <div className="w-full sm:w-24 h-32 sm:h-24 shrink-0 bg-[#0a0a0a] rounded-lg overflow-hidden border border-white/5">
+                                        <div className="w-full sm:w-24 h-32 sm:h-24 shrink-0 bg-[#F6F5F2] dark:bg-[#0a0a0a] rounded-lg overflow-hidden border border-black/5 dark:border-white/5">
                                             {v.images?.length > 0 ? (
                                                 <img src={v.images[0]?.url} className="w-full h-full object-cover" alt="Variant" />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-[10px] text-[#444] uppercase tracking-widest">No Img</div>
+                                                <div className="w-full h-full flex items-center justify-center text-[10px] text-[#888] dark:text-[#444] uppercase tracking-widest">No Img</div>
                                             )}
                                         </div>
                                         
@@ -678,18 +678,18 @@ const SellerProductDetails = () => {
                                         <div className="flex-1 flex flex-col justify-center">
                                             <div className="flex flex-wrap gap-2 mb-3">
                                                 {Object.entries(v.attributes).map(([key, val]) => (
-                                                    <span key={key} className="bg-white/5 border border-white/10 rounded-md px-2 py-1 font-inter text-[11px] text-[#ccc]">
-                                                        <span className="text-[#777] mr-1">{key}:</span>{val}
+                                                    <span key={key} className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-md px-2 py-1 font-inter text-[11px] text-[#636059] dark:text-[#ccc]">
+                                                        <span className="text-[#888] dark:text-[#777] mr-1">{key}:</span>{val}
                                                     </span>
                                                 ))}
                                             </div>
                                             <div className="flex items-center gap-6 font-inter text-sm">
                                                 <div className="flex flex-col">
-                                                    <span className="text-[10px] uppercase tracking-widest text-[#666]">Stock</span>
-                                                    <span className="text-white font-medium">{v.stock}</span>
+                                                    <span className="text-[10px] uppercase tracking-widest text-[#888] dark:text-[#666]">Stock</span>
+                                                    <span className="text-[#121212] dark:text-white font-medium">{v.stock}</span>
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="text-[10px] uppercase tracking-widest text-[#666]">Price</span>
+                                                    <span className="text-[10px] uppercase tracking-widest text-[#888] dark:text-[#666]">Price</span>
                                                     <span className="text-gold font-medium">
                                                         {v.price ? formatPrice(v.price.amount, v.price.currency) : 'Base Price'}
                                                     </span>
@@ -701,7 +701,7 @@ const SellerProductDetails = () => {
                                         <div className="flex sm:flex-col justify-end gap-2 shrink-0">
                                             <button 
                                                 onClick={() => handleStartEditingVariant(v)}
-                                                className="px-4 py-2 border border-white/10 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:border-gold hover:text-gold transition-colors cursor-pointer"
+                                                className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg font-inter text-[11px] uppercase tracking-widest text-[#121212] dark:text-white hover:border-gold hover:text-gold transition-colors cursor-pointer"
                                             >
                                                 Edit
                                             </button>
@@ -709,7 +709,7 @@ const SellerProductDetails = () => {
                                             <button 
                                                 type='button'
                                                 onClick={() => setVariantToDelete(v)}
-                                                className="px-4 py-2 border border-red-500/20 text-red-400 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:bg-red-500/10 transition-colors cursor-pointer"
+                                                className="px-4 py-2 border border-red-500/20 text-red-600 dark:text-red-400 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:bg-red-500/10 transition-colors cursor-pointer"
                                             >
                                                 Delete
                                             </button>
@@ -724,21 +724,21 @@ const SellerProductDetails = () => {
 
             {/* Delete Confirmation Modal */}
             {showDeleteModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
-                    <div className="relative w-full max-w-md bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-[fadeInUp_0.3s_ease_both] text-center">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                    <div className="relative w-full max-w-md bg-white dark:bg-[#121212] border border-black/5 dark:border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl animate-[fadeInUp_0.3s_ease_both] text-center">
 
-                        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 dark:text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
                             <Trash2 className="w-6 h-6" />
                         </div>
 
-                        <h3 className="font-bodoni text-2xl font-bold text-white mb-2 tracking-tight">Delete Product?</h3>
-                        <p className="font-inter text-xs sm:text-sm text-[#888] leading-relaxed mb-8">Are you sure you want to permanently delete this product and all its variants? This action cannot be undone.</p>
+                        <h3 className="font-bodoni text-2xl font-bold text-[#121212] dark:text-white mb-2 tracking-tight">Delete Product?</h3>
+                        <p className="font-inter text-xs sm:text-sm text-[#636059] dark:text-[#888] leading-relaxed mb-8">Are you sure you want to permanently delete this product and all its variants? This action cannot be undone.</p>
                         
                         <div className="flex flex-col sm:flex-row gap-3 w-full">
                             <button 
                                 type="button"
                                 onClick={() => setShowDeleteModal(false)}
-                                className="flex-1 py-3.5 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                                className="flex-1 py-3.5 px-5 rounded-xl border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 hover:bg-black/5 dark:hover:bg-white/5 text-[#636059] dark:text-[#ccc] hover:text-[#121212] dark:hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
                             >
                                 Cancel
                             </button>
@@ -758,15 +758,15 @@ const SellerProductDetails = () => {
 
             {/* Variant Delete Confirmation Modal */}
             {variantToDelete && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
-                    <div className="relative w-full max-w-md bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-[fadeInUp_0.3s_ease_both] text-center">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                    <div className="relative w-full max-w-md bg-white dark:bg-[#121212] border border-black/5 dark:border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl animate-[fadeInUp_0.3s_ease_both] text-center">
 
-                        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                        <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 dark:text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
                             <Trash2 className="w-6 h-6" />
                         </div>
 
-                        <h3 className="font-bodoni text-2xl font-bold text-white mb-2 tracking-tight">Delete Variant?</h3>
-                        <p className="font-inter text-xs sm:text-sm text-[#888] leading-relaxed mb-8">
+                        <h3 className="font-bodoni text-2xl font-bold text-[#121212] dark:text-white mb-2 tracking-tight">Delete Variant?</h3>
+                        <p className="font-inter text-xs sm:text-sm text-[#636059] dark:text-[#888] leading-relaxed mb-8">
                             Are you sure you want to permanently delete this variant? This action cannot be undone.
                         </p>
                         
@@ -774,7 +774,7 @@ const SellerProductDetails = () => {
                             <button 
                                 type="button"
                                 onClick={() => setVariantToDelete(null)}
-                                className="flex-1 py-3.5 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                                className="flex-1 py-3.5 px-5 rounded-xl border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 hover:bg-black/5 dark:hover:bg-white/5 text-[#636059] dark:text-[#ccc] hover:text-[#121212] dark:hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
                             >
                                 Cancel
                             </button>
@@ -794,20 +794,20 @@ const SellerProductDetails = () => {
 
             {/* Edit Product Modal */}
             {isEditing && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
-                    <div className="relative w-full max-w-2xl bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                    <div className="relative w-full max-w-2xl bg-white dark:bg-[#121212] border border-black/5 dark:border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl">
                         <form onSubmit={handleSaveProductEdit} className="flex flex-col gap-6">
                             
                             {/* Header */}
-                            <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                                <h2 className="font-bodoni text-2xl font-bold text-white">Edit Product</h2>
+                            <div className="flex justify-between items-center pb-4 border-b border-black/10 dark:border-white/10">
+                                <h2 className="font-bodoni text-2xl font-bold text-[#121212] dark:text-white">Edit Product</h2>
                                 <button 
                                     type="button" 
                                     onClick={() => {
                                         setIsEditing(false);
                                         setEditNewImages([]);
                                     }}
-                                    className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                                    className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] hover:text-[#121212] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -822,7 +822,7 @@ const SellerProductDetails = () => {
                                     value={editFormData.title} 
                                     onChange={handleEditInputChange} 
                                     required
-                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors" 
+                                    className="w-full bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none transition-colors" 
                                 />
                             </div>
 
@@ -835,7 +835,7 @@ const SellerProductDetails = () => {
                                     value={editFormData.description} 
                                     onChange={handleEditInputChange} 
                                     required
-                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none resize-none transition-colors"
+                                    className="w-full bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none resize-none transition-colors"
                                 />
                             </div>
 
@@ -850,14 +850,14 @@ const SellerProductDetails = () => {
                                         value={editFormData.priceAmount} 
                                         onChange={handleEditInputChange} 
                                         required
-                                        className="sm:col-span-2 w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none"
+                                        className="sm:col-span-2 w-full bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none"
                                     />
 
                                     <select 
                                         name="priceCurrency" 
                                         value={editFormData.priceCurrency} 
                                         onChange={handleEditInputChange}
-                                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
+                                        className="w-full bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
                                     >
                                         <option value="USD">USD</option>
                                         <option value="INR">INR</option>
@@ -871,7 +871,7 @@ const SellerProductDetails = () => {
                             {/* Images Section */}
                             <div>
                                 <div className="flex justify-between items-center mb-3">
-                                    <label className="font-inter text-[11px] font-bold uppercase tracking-widest text-[#888]">
+                                    <label className="font-inter text-[11px] font-bold uppercase tracking-widest text-[#636059] dark:text-[#888]">
                                         Product Images (Max 7 Total)
                                     </label>
                                     <span className="font-inter text-[10px] text-gold">
@@ -882,13 +882,13 @@ const SellerProductDetails = () => {
                                 <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                                 {/* Existing Saved Images */}
                                 {editExistingImages.map((img, idx) => (
-                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden group">
+                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 overflow-hidden group">
                                         <img 
                                             src={img.url} 
                                             alt="existing" 
                                             className="w-full h-full object-cover" 
                                         />
-                                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-[#aaa] uppercase group-hover:opacity-0 transition-opacity">
+                                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-white uppercase group-hover:opacity-0 transition-opacity">
                                             Saved
                                         </span>
                                         <button 
@@ -905,7 +905,7 @@ const SellerProductDetails = () => {
 
                                 {/* Newly Selected Images */}
                                 {editNewImages.map((file, idx) => (
-                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
+                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
                                         <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
                                         <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase group-hover:opacity-0 transition-opacity">
                                             New
@@ -922,8 +922,8 @@ const SellerProductDetails = () => {
                                     </div>
                                 ))}
                                 
-                                {/* Add Photo Button (ALWAYS visible so you can upload to replace anytime!) */}
-                                <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
+                                {/* Add Photo Button */}
+                                <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
                                     <Plus className="w-5 h-5" />
                                     <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
                                     <input 
@@ -938,14 +938,14 @@ const SellerProductDetails = () => {
                         </div>
 
                             {/* Action Buttons */}
-                            <div className="flex items-center justify-end gap-3 pt-6 border-t border-white/10">
+                            <div className="flex items-center justify-end gap-3 pt-6 border-t border-black/10 dark:border-white/10">
                                 <button 
                                     type="button" 
                                     onClick={() => {
                                         setIsEditing(false);
                                         setEditNewImages([]);
                                     }}
-                                    className="py-3 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                                    className="py-3 px-5 rounded-xl border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 hover:bg-black/5 dark:hover:bg-white/5 text-[#636059] dark:text-[#ccc] hover:text-[#121212] dark:hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
                                 >
                                     Cancel
                                 </button>
@@ -965,20 +965,20 @@ const SellerProductDetails = () => {
 
             {/* Edit Variant Modal */}
             {variantToEdit && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
-                    <div className="relative w-full max-w-2xl bg-[#121212] border border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
+                    <div className="relative w-full max-w-2xl bg-white dark:bg-[#121212] border border-black/5 dark:border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl">
                         <form onSubmit={handleSaveVariantEdit} className="flex flex-col gap-6">
                             
                             {/* Header */}
-                            <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                                <h2 className="font-bodoni text-2xl font-bold text-white">Edit Variant</h2>
+                            <div className="flex justify-between items-center pb-4 border-b border-black/10 dark:border-white/10">
+                                <h2 className="font-bodoni text-2xl font-bold text-[#121212] dark:text-white">Edit Variant</h2>
                                 <button 
                                     type="button" 
                                     onClick={() => {
                                         setVariantToEdit(null)
                                         setEditVariantNewImages([]);
                                     }}
-                                    className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                                    className="w-8 h-8 rounded-full flex items-center justify-center text-[#888] hover:text-[#121212] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -997,20 +997,20 @@ const SellerProductDetails = () => {
                                                 placeholder="Attribute (e.g. Size)"
                                                 value={attr.key}
                                                 onChange={(e) => handleVariantAttributeChange(idx, 'key', e.target.value)}
-                                                className="flex-1 bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors"
+                                                className="flex-1 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none transition-colors"
                                             />
                                             <input 
                                                 type="text" 
                                                 placeholder="Value (e.g. XL, Crimson Red)"
                                                 value={attr.value}
                                                 onChange={(e) => handleVariantAttributeChange(idx, 'value', e.target.value)}
-                                                className="flex-1 bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors"
+                                                className="flex-1 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none transition-colors"
                                             />
                                             {editVariantFormData.attributes.length > 1 && (
                                                 <button 
                                                     type="button" 
                                                     onClick={() => handleRemoveVariantAttributeField(idx)}
-                                                    className="p-3 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-red-400/20"
+                                                    className="p-3 text-red-500 dark:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-red-400/20"
                                                 >
                                                     <X className="w-4 h-4" />
                                                 </button>
@@ -1021,7 +1021,7 @@ const SellerProductDetails = () => {
                                     <button 
                                         type="button" 
                                         onClick={handleAddVariantAttributeField}
-                                        className="self-start text-xs font-inter font-bold tracking-widest text-[#888] hover:text-gold uppercase flex items-center gap-1.5 mt-1 cursor-pointer transition-colors"
+                                        className="self-start text-xs font-inter font-bold tracking-widest text-[#636059] dark:text-[#888] hover:text-gold uppercase flex items-center gap-1.5 mt-1 cursor-pointer transition-colors"
                                     >
                                         <Plus className="w-3.5 h-3.5" />
                                         Add Another Attribute
@@ -1039,7 +1039,7 @@ const SellerProductDetails = () => {
                                     value={editVariantFormData.stock} 
                                     onChange={handleEditVariantInputChange} 
                                     required
-                                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none transition-colors" 
+                                    className="w-full bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none transition-colors" 
                                 />
                             </div>
 
@@ -1053,14 +1053,14 @@ const SellerProductDetails = () => {
                                         min="0"
                                         value={editVariantFormData.priceAmount} 
                                         onChange={handleEditVariantInputChange}
-                                        className="sm:col-span-2 w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none"
+                                        className="sm:col-span-2 w-full bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none"
                                     />
 
                                     <select 
                                         name="priceCurrency" 
                                         value={editVariantFormData.priceCurrency} 
                                         onChange={handleEditVariantInputChange}
-                                        className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
+                                        className="w-full bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none cursor-pointer"
                                     >
                                         <option value="USD">USD</option>
                                         <option value="INR">INR</option>
@@ -1074,7 +1074,7 @@ const SellerProductDetails = () => {
                             {/* Images Section */}
                             <div>
                                 <div className="flex justify-between items-center mb-3">
-                                    <label className="font-inter text-[11px] font-bold uppercase tracking-widest text-[#888]">
+                                    <label className="font-inter text-[11px] font-bold uppercase tracking-widest text-[#636059] dark:text-[#888]">
                                         Variant Images (Max 7 Total)
                                     </label>
                                     <span className="font-inter text-[10px] text-gold">
@@ -1085,13 +1085,13 @@ const SellerProductDetails = () => {
                                 <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                                 {/* Existing Saved Images */}
                                 {editVariantExistingImages.map((img, idx) => (
-                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-white/10 overflow-hidden group">
+                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 overflow-hidden group">
                                         <img 
                                             src={img.url} 
                                             alt="existing" 
                                             className="w-full h-full object-cover" 
                                         />
-                                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-[#aaa] uppercase group-hover:opacity-0 transition-opacity">
+                                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-white uppercase group-hover:opacity-0 transition-opacity">
                                             Saved
                                         </span>
                                         <button 
@@ -1108,7 +1108,7 @@ const SellerProductDetails = () => {
 
                                 {/* Newly Selected Images */}
                                 {editVariantNewImages.map((file, idx) => (
-                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
+                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
                                         <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
                                         <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase group-hover:opacity-0 transition-opacity">
                                             New
@@ -1125,8 +1125,8 @@ const SellerProductDetails = () => {
                                     </div>
                                 ))}
                                 
-                                {/* Add Photo Button (ALWAYS visible so you can upload to replace anytime!) */}
-                                <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
+                                {/* Add Photo Button */}
+                                <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
                                     <Plus className="w-5 h-5" />
                                     <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
                                     <input 
@@ -1141,14 +1141,14 @@ const SellerProductDetails = () => {
                         </div>
 
                             {/* Action Buttons */}
-                            <div className="flex items-center justify-end gap-3 pt-6 border-t border-white/10">
+                            <div className="flex items-center justify-end gap-3 pt-6 border-t border-black/10 dark:border-white/10">
                                 <button 
                                     type="button" 
                                     onClick={() => {
                                         setVariantToEdit(null)
                                         setEditVariantNewImages([])
                                     }}
-                                    className="py-3 px-5 rounded-xl border border-white/10 hover:border-white/30 hover:bg-white/5 text-[#ccc] hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
+                                    className="py-3 px-5 rounded-xl border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 hover:bg-black/5 dark:hover:bg-white/5 text-[#636059] dark:text-[#ccc] hover:text-[#121212] dark:hover:text-white font-inter text-[11px] font-semibold uppercase tracking-widest transition-all cursor-pointer"
                                 >
                                     Cancel
                                 </button>

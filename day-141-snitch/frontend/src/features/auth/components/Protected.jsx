@@ -8,11 +8,11 @@ const Protected = ({children, role="buyer"}) => {
     const loading = useSelector(state => state.auth.loading)
 
     if (loading) {
-        return <div className="min-h-screen flex items-center flex-col justify-center bg-[#0a0a0a]">
+        return <div className="min-h-screen flex items-center flex-col justify-center bg-[#F6F5F2] dark:bg-[#0a0a0a] transition-colors">
                 <div className="bg-gold/10 rounded-full inline-flex items-center justify-center shadow-[0_4px_20px_rgba(201,169,110,0.15)] mb-5">
                 <Loader2 className="w-16 h-16 text-gold animate-spin" />
                 </div>
-                <h2 className="text-sm font-medium tracking-widest text-center mb-2 text-[#B8A47A] animate-pulse">LOADING...</h2>
+                <h2 className="text-sm font-medium tracking-widest text-center mb-2 text-[#8C703B] dark:text-[#B8A47A] animate-pulse">LOADING...</h2>
             </div>
     }
 

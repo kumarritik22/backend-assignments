@@ -19,7 +19,7 @@ const OrderSuccess = () => {
     if (!orderId) return null;
 
     return (
-        <div className="min-h-[80vh] flex items-center justify-center bg-[#0c0c0c] px-4 py-12">
+        <div className="min-h-[80vh] flex items-center justify-center bg-[#F6F5F2] dark:bg-[#0c0c0c] text-[#121212] dark:text-white px-4 py-12 transition-colors duration-300">
             <div className="max-w-2xl w-full text-center space-y-8 animate-fade-in-up">
                 
                 {/* Success Icon */}
@@ -32,33 +32,33 @@ const OrderSuccess = () => {
 
                 {/* Header */}
                 <div className="space-y-4">
-                    <h1 className="text-4xl md:text-5xl font-['Bodoni_Moda'] text-white">
+                    <h1 className="text-4xl md:text-5xl font-bodoni font-bold text-[#121212] dark:text-white">
                         Thank You For Your Order
                     </h1>
-                    <p className="text-[#888888] font-['Inter'] text-lg">
+                    <p className="text-[#636059] dark:text-[#888888] font-inter text-lg">
                         Your payment was successful and your luxury pieces are being prepared.
                     </p>
                 </div>
 
                 {/* Order Details Card */}
-                <div className="bg-[#111111] border border-[#2A2A2A] rounded-xl p-8 max-w-md mx-auto relative overflow-hidden">
+                <div className="bg-white dark:bg-[#111111] border border-black/5 dark:border-[#2A2A2A] rounded-xl p-8 max-w-md mx-auto relative overflow-hidden shadow-sm dark:shadow-none">
                     <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-gold to-transparent opacity-50"></div>
                     
                     <div className="flex flex-col items-center space-y-2">
-                        <span className="text-[#888888] text-sm uppercase tracking-widest font-semibold">Order Reference</span>
-                        <span className="text-white font-mono text-xl tracking-wider bg-[#1A1A1A] px-4 py-2 rounded-lg border border-[#333333]">
+                        <span className="text-[#636059] dark:text-[#888888] text-sm uppercase tracking-widest font-semibold">Order Reference</span>
+                        <span className="text-[#121212] dark:text-white font-mono text-xl tracking-wider bg-[#F6F5F2] dark:bg-[#1A1A1A] px-4 py-2 rounded-lg border border-black/10 dark:border-[#333333]">
                             {orderId}
                         </span>
                     </div>
 
-                    <div className="mt-8 pt-8 border-t border-[#2A2A2A] text-left space-y-4">
+                    <div className="mt-8 pt-8 border-t border-black/10 dark:border-[#2A2A2A] text-left space-y-4">
                         <div className="flex items-start gap-4">
-                            <div className="bg-[#1A1A1A] p-2 rounded-lg text-gold">
+                            <div className="bg-gold/10 p-2 rounded-lg text-gold">
                                 <Package className="w-5 h-5" />
                             </div>
                             <div>
-                                <h3 className="text-white font-medium mb-1">What happens next?</h3>
-                                <p className="text-[#888888] text-sm leading-relaxed">
+                                <h3 className="text-[#121212] dark:text-white font-medium mb-1">What happens next?</h3>
+                                <p className="text-[#636059] dark:text-[#888888] text-sm leading-relaxed">
                                     You will receive an email confirmation with your order details shortly. We will notify you again once your package has been dispatched.
                                 </p>
                             </div>
@@ -77,14 +77,14 @@ const OrderSuccess = () => {
                     </Link>
                     <Link 
                         to="/"
-                        className="w-full sm:w-auto px-9 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gold/40 text-white hover:text-gold font-inter font-bold text-[11px] sm:text-[12px] tracking-[0.2em] uppercase rounded-full backdrop-blur-md transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-9 py-4 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 hover:border-gold/40 text-[#121212] dark:text-white hover:text-gold font-inter font-bold text-[11px] sm:text-[12px] tracking-[0.2em] uppercase rounded-full backdrop-blur-md transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
                     >
                         CONTINUE SHOPPING <ArrowRight className="w-4 h-4" />
                     </Link>
                 </div>
 
                 <div className="pt-8">
-                    <p className="text-[#555555] text-sm">
+                    <p className="text-[#888] dark:text-[#555555] text-sm">
                         Need assistance? <Link to="/contact" className="text-gold hover:underline">Contact our concierge</Link>
                     </p>
                 </div>
