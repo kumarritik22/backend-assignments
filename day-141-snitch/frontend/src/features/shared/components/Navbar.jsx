@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useCart } from '../../cart/hooks/useCart.js'
 import { useAuth } from '../../auth/hook/useAuth.js'
+import { useTheme } from '../context/ThemeContext.jsx'
+import { Moon, Sun } from 'lucide-react'
 
 const Navbar = () => {
   const { user } = useSelector(state => state.auth)
@@ -17,6 +19,9 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const location = useLocation()
+
+
+  const { toggleTheme, isDark } = useTheme()
   
 
   const navigate = useNavigate()
@@ -199,6 +204,20 @@ const Navbar = () => {
                 </div>
               )}
             </form>
+            
+            {/* Desktop Toggle Theme Button (Light/Dark Mode) */}
+            <button
+              type='button'
+              onClick={toggleTheme}
+              className='w-8 h-8 rounded-full flex items-center justify-center bg-white/5 border border-white/10 hover:border-gold/50 hover:bg-gold/5 transition-all duration-300 group cursor-pointer'
+              title={isDark ? "Switch to Ivory Light Mode" : "Switch to Noir Dark Mode"}
+            >
+              {isDark ? (
+                <Sun className='w-4 h-4 text-gold group-hover:rotate-45 transition-transform duration-500' />
+              ) : (
+                <Moon className='w-4 h-4 text-white group-hover:-rotate-12 transition-transform duration-500' />
+              )}
+            </button>
 
             {user ? (
               <>
@@ -350,6 +369,27 @@ const Navbar = () => {
               My Orders
             </Link>
           )}
+
+          {/* Mobile Theme Toggle Button (Light/Dark Mode) */}
+          <div className='flex justify-center my-2'>
+            <button 
+              type="button"
+              onClick={toggleTheme}
+              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-white hover:text-gold hover:border-gold/50 transition-all text-[11px] font-inter uppercase tracking-widest cursor-pointer"
+            >
+              {isDark ? (
+                <>
+                  <Sun className='w-4 h-4 text-gold' />
+                  <span>Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className='w-4 h-4 text-white' />
+                  <span>Dark Mode</span>
+                </>
+              )}
+            </button>
+          </div>
 
           {!user && (
             <div className="flex flex-col gap-4 mt-8 pt-8 border-t border-white/5">
