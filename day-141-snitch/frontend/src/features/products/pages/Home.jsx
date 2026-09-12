@@ -80,26 +80,29 @@ const Home = () => {
           <div className="absolute inset-0 hidden dark:block bg-linear-to-r from-[#0c0c0c]/80 via-[#0c0c0c]/20 to-transparent" />
         </div>
 
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-[#F6F5F2] dark:from-[#0c0c0c] to-transparent pointer-events-none" />
+
         {/* Hero Content */}
         <div className="relative z-10 max-w-350 w-full mx-auto px-6 sm:px-12 lg:px-16 flex flex-col items-start text-left animate-[fadeInUp_1s_ease_both]">
-          <div className="max-w-lg lg:max-w-xl">
+          <div className="max-w-95 sm:max-w-110 lg:max-w-120">
             
             <div className="inline-flex items-center gap-3 mb-5">
               <span className="w-8 h-px bg-gold" />
-              <span className="font-inter text-[10px] font-bold tracking-[0.25em] text-gold uppercase">New Arrivals</span>
+              <span className="font-inter text-[10px] font-bold tracking-[0.25em] text-gold-dark uppercase">New Arrivals</span>
+              <span className="w-8 h-px bg-gold" />
             </div>
 
-            <h1 className="font-bodoni text-[40px] sm:text-[54px] lg:text-[64px] font-bold text-[#121212] dark:text-white leading-[1.08] tracking-tight mb-5 drop-shadow-sm dark:drop-shadow-2xl">
+            <h1 className="font-bodoni text-[36px] sm:text-[46px] lg:text-[54px] font-bold text-[#121212] dark:text-white leading-[1.08] tracking-tight mb-5 drop-shadow-[0_2px_15px_rgba(255,255,255,0.85)] dark:drop-shadow-[0_4px_25px_rgba(0,0,0,0.9)]">
               Redefining<br />Modern Luxury.
             </h1>
 
-            <p className="font-inter text-sm sm:text-base text-[#444] dark:text-white/80 max-w-md leading-relaxed mb-8 font-light">
+            <p className="font-inter text-xs sm:text-sm text-[#222] dark:text-white/80 max-w-sm leading-relaxed mb-8 font-normal drop-shadow-[0_1px_8px_rgba(255,255,255,0.7)] dark:drop-shadow-none">
               Discover curated fashion for those who refuse to blend in. The new season collection is here.
             </p>
 
             <button 
               onClick={() => document.getElementById('collection').scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-3 rounded-full border border-black/25 dark:border-white/25 px-8 py-3.5 font-inter text-[11px] font-bold tracking-[0.2em] uppercase text-[#121212] dark:text-white hover:border-gold hover:bg-gold hover:text-black transition-all duration-300 cursor-pointer shadow-sm dark:shadow-none"
+              className="inline-flex items-center gap-3 rounded-full border border-black/30 dark:border-white/25 bg-white/40 dark:bg-transparent backdrop-blur-xs px-8 py-3.5 font-inter text-[11px] font-bold tracking-[0.2em] uppercase text-[#121212] dark:text-white hover:border-gold hover:bg-gold hover:text-black transition-all duration-300 cursor-pointer shadow-sm"
             >
               Explore Collection
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
