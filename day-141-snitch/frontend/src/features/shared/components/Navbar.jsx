@@ -94,8 +94,8 @@ const Navbar = () => {
       <header 
         className={`${location.pathname === '/' ? 'fixed' : 'sticky'} top-0 inset-x-0 z-50 transition-all duration-300 print:hidden ${
           scrolled || location.pathname !== '/'
-            ? 'bg-[#0c0c0c]/90 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl' 
-            : 'bg-transparent py-6'
+            ? 'bg-[#F6F5F2]/90 dark:bg-[#0c0c0c]/90 border-b border-black/5 dark:border-white/5 backdrop-blur-xl py-4 shadow-2xl' 
+            : 'bg-[#F6F5F2]/80 dark:bg-transparent backdrop-blur-md dark:backdrop-blur-none border-b border-black/5 dark:border-transparent py-5'
         }`}
       >
         <div className="max-w-350 mx-auto px-5 sm:px-8 flex items-center justify-between">
@@ -108,7 +108,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`font-inter text-[11px] font-medium tracking-[0.15em] uppercase hover:text-white transition-colors duration-300 relative group ${isActive ? "text-white" : "text-[#888]"}`} 
+                  className={`font-inter text-[11px] font-medium tracking-[0.15em] uppercase transition-colors duration-300 relative group hover:text-black dark:hover:text-white ${isActive ? "text-black dark:text-white" : "text-[#636059] dark:text-[#888]"}`}
                 >
                   {link.name}
                   {/* Hover Indicator */}
@@ -120,8 +120,12 @@ const Navbar = () => {
 
           {/* ── Center: Logo ── */}
           <Link to="/" className="flex items-center justify-center gap-2.5 z-50 flex-1 md:flex-none">
-            <img src="/logo.png" alt="Velora" className="h-6 sm:h-7 w-auto object-contain opacity-90 drop-shadow-md" />
-            <span className="font-bodoni text-[18px] sm:text-[22px] font-bold tracking-[0.2em] text-white uppercase mt-0.5">Velora</span>
+            <img 
+              src={isDark ? "/logo.png" : "/logo-light.png"} 
+              alt="Velora" 
+              className="h-6 sm:h-7 w-auto object-contain opacity-100 drop-shadow-sm" 
+            />
+            <span className="font-bodoni text-[18px] sm:text-[22px] font-bold tracking-[0.2em] text-[#121212] dark:text-white uppercase mt-0.5">Velora</span>
           </Link>
 
           {/* ── Right: Actions (Search, Cart & Profile) ── */}
@@ -140,10 +144,10 @@ const Navbar = () => {
                   setIsSearchOpen(true)
                 }}
                 onFocus={() => setIsSearchOpen(true)}
-                className="bg-white/5 border border-white/10 rounded-full py-1.5 pl-4 pr-10 text-[11px] font-inter text-white placeholder:text-[#555] focus:outline-none focus:border-gold/50 focus:bg-[#111] transition-all duration-300 w-48 focus:w-64"
+                className="bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/15 text-[#121212] dark:text-white placeholder:text-[#444] dark:placeholder:text-[#888] focus:bg-white dark:focus:bg-[#111] rounded-full py-1.5 pl-4 pr-10 text-[11px] font-inter focus:outline-none focus:border-gold/50 transition-all duration-300 w-48 focus:w-64"
               />
               <button className="absolute right-3 text-[#555] group-focus-within:text-gold transition-colors">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <svg className='text-[#333] dark:text-[#888]' width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               </button>
 
               {isSearchOpen && searchTerm.trim() && (
@@ -154,7 +158,7 @@ const Navbar = () => {
               )}
 
               {isSearchOpen && searchTerm.trim() && (
-                <div className="absolute top-full right-0 mt-3 w-80 sm:w-96 bg-[#111] border border-white/10 rounded-2xl p-4 shadow-2xl z-50">
+                <div className="absolute top-full right-0 mt-3 w-80 sm:w-96 bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-2xl p-4 shadow-2xl z-50">
                   {matchingProducts.length > 0 ? (
                     <>
                       {matchingProducts.map((product) => (
@@ -174,7 +178,7 @@ const Navbar = () => {
                           />
 
                           <div className="flex flex-col">
-                            <span className="font-inter text-sm text-white">
+                            <span className="font-inter text-sm text-[#121212] dark:text-white">
                               {product.title}
                             </span>
 
@@ -215,7 +219,7 @@ const Navbar = () => {
               {isDark ? (
                 <Sun className='w-4 h-4 text-gold group-hover:rotate-45 transition-transform duration-500' />
               ) : (
-                <Moon className='w-4 h-4 text-white group-hover:-rotate-12 transition-transform duration-500' />
+                <Moon className='w-4 h-4 text-[#121212] dark:text-white group-hover:-rotate-12 transition-transform duration-500' />
               )}
             </button>
 
@@ -226,7 +230,7 @@ const Navbar = () => {
                   to="/cart" 
                   className="relative flex items-center justify-center p-2 text-[#ccc] hover:text-white transition-colors duration-200 cursor-pointer"
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <svg className='text-[#444] dark:text-[#ccc] hover:text-black dark:hover:text-white' width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                     <line x1="3" y1="6" x2="21" y2="6" />
                     <path d="M16 10a4 4 0 0 1-8 0" />
@@ -256,23 +260,23 @@ const Navbar = () => {
                         className="fixed inset-0 z-40" 
                         onClick={() => setIsProfileOpen(false)} 
                       />
-                      <div className="absolute top-12 right-0 w-64 bg-[#111] border border-white/10 rounded-2xl shadow-2xl p-5 z-50 animate-[fadeIn_0.2s_ease_both]">
+                      <div className="absolute top-12 right-0 w-64 bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl p-5 z-50 animate-[fadeIn_0.2s_ease_both]">
                         <div className="flex flex-col items-center mb-4 pb-4 border-b border-white/5">
                           <div className="w-12 h-12 rounded-full bg-linear-to-tr from-gold to-[#a88a53] flex items-center justify-center text-[#0a0a0a] font-bold font-inter text-[20px] mb-3">
                             {((user.fullname || 'U')[0]).toUpperCase()}
                           </div>
-                          <h4 className="font-inter font-bold text-white text-[14px] text-center">{user.fullname}</h4>
+                          <h4 className="font-inter font-bold text-[#121212] dark:text-white text-[14px] text-center">{user.fullname}</h4>
                           <p className="font-inter text-[11px] text-gold uppercase tracking-widest mt-1">{user.role}</p>
                         </div>
                         <div className="flex flex-col gap-3 font-inter text-[12px] mb-4 pb-4 border-b border-white/5">
                           <div>
                             <span className="text-[#555] block text-[10px] uppercase tracking-wider mb-0.5">Email</span>
-                            <span className="text-[#ccc] truncate block">{user.email}</span>
+                            <span className="text-[#444] dark:text-[#ccc] truncate block">{user.email}</span>
                           </div>
                           {user.contact && (
                             <div>
                               <span className="text-[#555] block text-[10px] uppercase tracking-wider mb-0.5">Contact</span>
-                              <span className="text-[#ccc] truncate block">{user.contact}</span>
+                              <span className="text-[#444] dark:text-[#ccc] truncate block">{user.contact}</span>
                             </div>
                           )}
                         </div>
@@ -282,7 +286,7 @@ const Navbar = () => {
                           <Link 
                             to="/profile/orders"
                             onClick={() => setIsProfileOpen(false)}
-                            className="w-full font-inter text-[11px] font-semibold uppercase tracking-wider text-[#ccc] hover:text-gold hover:bg-white/5 px-3 py-2.5 rounded-xl flex items-center justify-between transition-all duration-200 cursor-pointer group"
+                            className="w-full font-inter text-[11px] font-semibold uppercase tracking-wider text-[#444] dark:text-[#ccc] hover:text-gold hover:bg-black/5 dark:hover:bg-white/5 px-3 py-2.5 rounded-xl flex items-center justify-between transition-all duration-200 cursor-pointer group"
                           >
                             <div className="flex items-center gap-2.5">
                               <svg className="w-3.5 h-3.5 text-gold/80 group-hover:text-gold transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -325,7 +329,7 @@ const Navbar = () => {
 
             {/* Mobile Menu Toggle */}
             <button 
-              className="md:hidden text-white ml-2 focus:outline-none"
+              className="md:hidden text-[#121212] dark:text-white ml-2 focus:outline-none"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -342,7 +346,7 @@ const Navbar = () => {
 
       {/* ── Mobile Navigation Drawer ── */}
       <div 
-        className={`fixed inset-0 z-40 bg-[#0c0c0c] transition-transform duration-500 ease-in-out md:hidden flex flex-col justify-center px-8 ${
+        className={`fixed inset-0 z-40 bg-[#F6F5F2] dark:bg-[#0c0c0c] transition-transform duration-500 ease-in-out md:hidden flex flex-col justify-center px-8 ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -353,7 +357,7 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`font-bodoni text-[28px] hover:text-gold transition-colors ${isActive ? "text-gold font-bold" : "text-white"}`}
+                className={`font-bodoni text-[28px] hover:text-gold transition-colors ${isActive ? "text-gold font-bold" : "text-[#121212] dark:text-white"}`}
               >
                 {link.name}
               </Link>
@@ -375,7 +379,7 @@ const Navbar = () => {
             <button 
               type="button"
               onClick={toggleTheme}
-              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-white hover:text-gold hover:border-gold/50 transition-all text-[11px] font-inter uppercase tracking-widest cursor-pointer"
+              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#121212] dark:text-white hover:text-gold hover:border-gold/50 transition-all text-[11px] font-inter uppercase tracking-widest cursor-pointer"
             >
               {isDark ? (
                 <>
@@ -384,7 +388,7 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <Moon className='w-4 h-4 text-white' />
+                  <Moon className='w-4 h-4 text-[#121212] dark:text-white' />
                   <span>Dark Mode</span>
                 </>
               )}

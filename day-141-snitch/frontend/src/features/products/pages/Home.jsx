@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useProduct } from '../hooks/useProduct.js'
+import { useTheme } from '../../shared/context/ThemeContext.jsx'
 
 const Home = () => {
   const { products } = useSelector(state => state.product)
@@ -10,6 +11,8 @@ const Home = () => {
   const [error, setError] = useState('')
 
   const navigate = useNavigate()
+
+  const { toggleTheme, isDark } = useTheme()
 
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get("search") || ""
@@ -59,60 +62,62 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-gold/30">
+    <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0c0c0c] text-[#121212] dark:text-white selection:bg-gold/30 transition-colors duration-300">
 
       {/* ── Hero Section ── */}
-      <section className="relative w-full min-h-[85vh] sm:min-h-[90vh] pt-28 pb-20 sm:pt-32 sm:pb-24 flex items-center justify-center overflow-hidden border-b border-white/5">
+      <section className="relative w-full min-h-[85vh] sm:min-h-[90vh] pt-28 pb-20 sm:pt-32 sm:pb-24 flex items-center justify-center overflow-hidden border-b border-black/5 dark:border-white/5 bg-[#F6F5F2] dark:bg-[#0c0c0c] transition-colors duration-300">
         
         {/* Background Image & Overlays */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[#0c0c0c]">
           <img 
-            src="/model-hero.png" 
+            src={isDark ? "/model-hero.png" : "/model-hero-light.png"}
             alt="Velora Collection" 
-            className="w-full h-full object-cover object-top opacity-70 scale-105 animate-[kenBurns_20s_ease-out_forwards]"
-            onError={(e) => { e.target.src = '/login-model.png' }} // Fallback if model-hero missing
+            className="w-full h-full object-cover object-top opacity-100 dark:opacity-85 scale-105 animate-[kenBurns_20s_ease-out_forwards] transition-opacity duration-500"
+            onError={(e) => { e.target.src = '/login-model.png' }}
           />
-          <div className="absolute inset-0 bg-linear-to-b from-[#0c0c0c]/60 via-transparent to-[#0c0c0c]" />
-          <div className="absolute inset-0 bg-linear-to-r from-[#0c0c0c]/80 via-[#0c0c0c]/20 to-transparent" />
+          {/* Gradients only active in dark mode — zero white fog in light mode */}
+          <div className="absolute inset-0 hidden dark:block bg-linear-to-b from-[#0c0c0c]/60 via-transparent to-[#0c0c0c]" />
+          <div className="absolute inset-0 hidden dark:block bg-linear-to-r from-[#0c0c0c]/80 via-[#0c0c0c]/20 to-transparent" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 text-center px-5 max-w-3xl mx-auto animate-[fadeInUp_1s_ease_both]">
-          {/* Subtle gold glow behind hero text */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gold/10 rounded-full blur-[100px] pointer-events-none" />
-          
-          <div className="relative">
-            <div className="inline-flex items-center gap-3 mb-6">
-            <span className="w-8 h-px bg-gold/50" />
-            <span className="font-inter text-[10px] font-bold tracking-[0.2em] text-gold uppercase">New Arrivals</span>
-            <span className="w-8 h-px bg-gold/50" />
-          </div>
-          <h1 className="font-bodoni text-[50px] sm:text-[70px] lg:text-[85px] font-bold text-white leading-[1.05] tracking-tight mb-6 drop-shadow-2xl">
-            Redefining<br className="hidden sm:block" /> Modern Luxury.
-          </h1>
-          <p className="font-inter text-sm sm:text-base text-white/70 max-w-lg mx-auto leading-relaxed mb-10 font-light">
-            Discover curated fashion for those who refuse to blend in. The new season collection is here.
-          </p>
-          <button 
-            onClick={() => document.getElementById('collection').scrollIntoView({ behavior: 'smooth' })}
-            className="inline-flex items-center gap-3 rounded-full border border-white/20 px-8 py-4 font-inter text-[11px] font-bold tracking-[0.2em] uppercase text-white hover:border-gold hover:bg-gold/10 hover:text-gold transition-all duration-300"
-          >
-            Explore Collection
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
-              <path d="M12 5v14M19 12l-7 7-7-7"/>
-            </svg>
-          </button>
+        <div className="relative z-10 max-w-350 w-full mx-auto px-6 sm:px-12 lg:px-16 flex flex-col items-start text-left animate-[fadeInUp_1s_ease_both]">
+          <div className="max-w-lg lg:max-w-xl">
+            
+            <div className="inline-flex items-center gap-3 mb-5">
+              <span className="w-8 h-px bg-gold" />
+              <span className="font-inter text-[10px] font-bold tracking-[0.25em] text-gold uppercase">New Arrivals</span>
+            </div>
+
+            <h1 className="font-bodoni text-[40px] sm:text-[54px] lg:text-[64px] font-bold text-[#121212] dark:text-white leading-[1.08] tracking-tight mb-5 drop-shadow-sm dark:drop-shadow-2xl">
+              Redefining<br />Modern Luxury.
+            </h1>
+
+            <p className="font-inter text-sm sm:text-base text-[#444] dark:text-white/80 max-w-md leading-relaxed mb-8 font-light">
+              Discover curated fashion for those who refuse to blend in. The new season collection is here.
+            </p>
+
+            <button 
+              onClick={() => document.getElementById('collection').scrollIntoView({ behavior: 'smooth' })}
+              className="inline-flex items-center gap-3 rounded-full border border-black/25 dark:border-white/25 px-8 py-3.5 font-inter text-[11px] font-bold tracking-[0.2em] uppercase text-[#121212] dark:text-white hover:border-gold hover:bg-gold hover:text-black transition-all duration-300 cursor-pointer shadow-sm dark:shadow-none"
+            >
+              Explore Collection
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+              </svg>
+            </button>
+
           </div>
         </div>
       </section>
-
+      
       {/* ── Featured Collection Grid ── */}
-      <section id="collection" className="py-20 sm:py-32 px-5 sm:px-10 max-w-350 mx-auto bg-[#0c0c0c]">
+      <section id="collection" className="py-20 sm:py-32 px-5 sm:px-10 max-w-350 mx-auto bg-[#F6F5F2] dark:bg-[#0c0c0c] transition-colors duration-300">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
-            <h2 className="font-bodoni text-[32px] sm:text-[40px] font-bold text-white leading-tight mb-3">
+            <h2 className="font-bodoni text-[32px] sm:text-[40px] font-bold text-[#121212] dark:text-white leading-tight mb-3">
               {searchQuery ? `Search results for "${searchQuery}"` : "Curated Selection"}
             </h2>
             {searchQuery ? (
@@ -123,7 +128,7 @@ const Home = () => {
               </>
             ) : (
               <>
-                <p className="font-inter text-sm text-[#777] max-w-md leading-relaxed">
+                <p className="font-inter text-sm text-[#636059] dark:text-[#777] max-w-md leading-relaxed">
                   Hand-picked pieces designed to elevate your everyday aesthetic.
                 </p>
               </>
@@ -131,7 +136,7 @@ const Home = () => {
           </div>
           
           <div className="flex gap-4">
-            <span className="font-inter text-[11px] tracking-widest text-[#555] uppercase border-b border-gold/30 pb-1 pb">
+            <span className="font-inter text-[11px] tracking-widest text-[#7A766F] dark:text-[#555] uppercase border-b border-gold/30 pb-1">
               {searchQuery
                 ? `${filteredProducts.length} RESULTS FOUND`
                 : `All Products (${filteredProducts.length})`
@@ -203,10 +208,10 @@ const Home = () => {
             {filteredProducts.map((product) => {
               const coverImg = product.images?.[0]?.url
               return (
-                <div key={product._id} className="group relative flex flex-col bg-[#141414] border border-white/5 rounded-xl p-3 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(201,169,110,0.05)] transition-all duration-300">
+                <div key={product._id} className="group relative flex flex-col bg-white dark:bg-[#141414] border border-black/5 dark:border-white/5 rounded-xl p-3 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(201,169,110,0.08)] shadow-sm dark:shadow-none transition-all duration-300">
                   
                   {/* Image Container */}
-                  <div className="relative aspect-3/4 w-full bg-[#0e0e0e] rounded-lg overflow-hidden mb-5">
+                  <div className="relative aspect-3/4 w-full bg-white dark:bg-[#0e0e0e] rounded-lg overflow-hidden mb-5">
                     {coverImg ? (
                       <img 
                         src={coverImg} 
@@ -238,7 +243,7 @@ const Home = () => {
 
                   {/* Product Details */}
                   <div className="flex flex-col text-center px-2">
-                    <h3 className="font-bodoni text-[17px] sm:text-[18px] font-bold text-white mb-1.5 line-clamp-2 leading-snug transition-colors group-hover:text-gold">
+                    <h3 className="font-bodoni text-[17px] sm:text-[18px] font-bold text-[#121212] dark:text-white mb-1.5 line-clamp-2 leading-snug transition-colors group-hover:text-gold">
                       {product.title}
                     </h3>
                     <p className="font-inter text-[15px] font-semibold text-gold">
