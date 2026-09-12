@@ -229,19 +229,19 @@ const Home = () => {
                     </div>
 
                     {/* Badge */}
-                    <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded">
-                      <span className="font-inter text-[9px] font-bold text-gold uppercase tracking-[0.2em]">
-                        New
+                    <div className="absolute top-3.5 left-3.5 inline-flex items-center justify-center bg-black/70 backdrop-blur-md px-2 py-1.25 rounded-[3px] border border-gold/35">
+                      <span className="font-inter text-[8.5px] font-bold text-gold uppercase tracking-[0.18em] leading-none pl-[0.18em]">
+                        NEW
                       </span>
                     </div>
                   </div>
 
                   {/* Product Details */}
                   <div className="flex flex-col text-center px-2">
-                    <h3 className="font-bodoni text-[18px] font-bold text-white mb-1.5 line-clamp-1 transition-colors group-hover:text-gold">
+                    <h3 className="font-bodoni text-[17px] sm:text-[18px] font-bold text-white mb-1.5 line-clamp-2 leading-snug transition-colors group-hover:text-gold">
                       {product.title}
                     </h3>
-                    <p className="font-inter text-[14px] font-medium text-[#888]">
+                    <p className="font-inter text-[15px] font-semibold text-gold">
                       {formatPrice(product.price?.amount, product.price?.currency)}
                     </p>
                   </div>
