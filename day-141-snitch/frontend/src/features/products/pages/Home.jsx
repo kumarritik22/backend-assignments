@@ -75,12 +75,12 @@ const Home = () => {
             className="w-full h-full object-cover object-top opacity-100 dark:opacity-85 scale-105 animate-[kenBurns_20s_ease-out_forwards] transition-opacity duration-500"
             onError={(e) => { e.target.src = '/login-model.png' }}
           />
-          {/* Gradients only active in dark mode — zero white fog in light mode */}
-          <div className="absolute inset-0 hidden dark:block bg-linear-to-b from-[#0c0c0c]/60 via-transparent to-[#0c0c0c]" />
+
+          <div className="absolute inset-0 hidden dark:block bg-linear-to-b from-[#0c0c0c]/50 via-transparent to-transparent" />
           <div className="absolute inset-0 hidden dark:block bg-linear-to-r from-[#0c0c0c]/80 via-[#0c0c0c]/20 to-transparent" />
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-[#F6F5F2] dark:from-[#0c0c0c] to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-10 sm:h-12 bg-linear-to-t from-[#F6F5F2] dark:from-[#0c0c0c] to-transparent pointer-events-none opacity-80" />
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-350 w-full mx-auto px-6 sm:px-12 lg:px-16 flex flex-col items-start text-left animate-[fadeInUp_1s_ease_both]">
@@ -96,7 +96,7 @@ const Home = () => {
               Redefining<br />Modern Luxury.
             </h1>
 
-            <p className="font-inter text-xs sm:text-sm text-[#222] dark:text-white/80 max-w-sm leading-relaxed mb-8 font-normal drop-shadow-[0_1px_8px_rgba(255,255,255,0.7)] dark:drop-shadow-none">
+            <p className="font-inter text-xs sm:text-sm text-[#121212] dark:text-white/90 max-w-sm leading-relaxed mb-8 font-medium drop-shadow-[0_1px_12px_rgba(255,255,255,0.9)] dark:drop-shadow-none">
               Discover curated fashion for those who refuse to blend in. The new season collection is here.
             </p>
 

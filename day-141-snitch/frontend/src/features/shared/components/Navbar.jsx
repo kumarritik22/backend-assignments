@@ -94,8 +94,8 @@ const Navbar = () => {
       <header 
         className={`${location.pathname === '/' ? 'fixed' : 'sticky'} top-0 inset-x-0 z-50 transition-all duration-300 print:hidden ${
           scrolled || location.pathname !== '/'
-            ? 'bg-[#F6F5F2]/90 dark:bg-[#0c0c0c]/90 border-b border-black/5 dark:border-white/5 backdrop-blur-xl py-4 shadow-2xl' 
-            : 'bg-[#F6F5F2]/80 dark:bg-transparent backdrop-blur-md dark:backdrop-blur-none border-b border-black/5 dark:border-transparent py-5'
+            ? 'bg-[#F6F5F2]/90 dark:bg-[#0c0c0c]/90 border-b border-black/5 dark:border-white/5 backdrop-blur-xl py-4 shadow-sm' 
+            : 'bg-transparent border-transparent py-5'
         }`}
       >
         <div className="max-w-350 mx-auto px-5 sm:px-8 flex items-center justify-between">
