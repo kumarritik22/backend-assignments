@@ -1,7 +1,9 @@
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 const ContinueWithGoogle = () => {
   return (
     <a
-      href="/api/auth/google"
+      href={`${API_URL}/api/auth/google`}
       aria-label="Continue with Google"
       className="
         group flex items-center w-full overflow-hidden rounded-lg
