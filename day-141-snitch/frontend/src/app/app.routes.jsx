@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router";
+import { createBrowserRouter } from "react-router";
 import Register from "../features/auth/pages/Register.jsx";
 import Login from "../features/auth/pages/Login.jsx";
 import CreateProduct from "../features/products/pages/CreateProduct.jsx";
@@ -19,6 +19,7 @@ import ForgotPassword from "../features/auth/pages/ForgotPassword.jsx";
 import ResetPassword from "../features/auth/pages/ResetPassword.jsx";
 import MyOrders from "../features/cart/pages/MyOrders.jsx";
 import Contact from "../features/products/pages/Contact.jsx";
+import NotFound from "../features/products/pages/NotFound.jsx";
 
 
 export const routes = createBrowserRouter([
@@ -113,11 +114,11 @@ export const routes = createBrowserRouter([
                         </Protected>
                     }
                 ]
+            },
+            {
+                path: "*",
+                element: <NotFound />
             }
         ]
-    },
-    {
-        path: "*",
-        element: <Navigate to="/" replace />
     }
 ])
