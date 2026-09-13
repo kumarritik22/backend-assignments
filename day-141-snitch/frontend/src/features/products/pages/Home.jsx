@@ -166,18 +166,18 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
             {[1, 2, 3, 4].map((n) => (
               <div key={n} className="animate-pulse">
-                <div className="aspect-3/4 bg-[#111] rounded-lg mb-4" />
-                <div className="h-5 bg-[#111] rounded w-3/4 mb-2" />
-                <div className="h-4 bg-[#111] rounded w-1/4" />
+                <div className="aspect-3/4 bg-[#ECEAE4] dark:bg-[#111] rounded-lg mb-4" />
+                <div className="h-5 bg-[#ECEAE4] dark:bg-[#111] rounded w-3/4 mb-2" />
+                <div className="h-4 bg-[#ECEAE4] dark:bg-[#111] rounded w-1/4" />
               </div>
             ))}
           </div>
         ) : filteredProducts.length === 0 ? (
           /* Empty State */
-          <div className="text-center py-32 border border-white/5 rounded-2xl bg-[#0e0e0e]">
+          <div className="text-center py-32 border border-black/5 dark:border-white/5 bg-white dark:bg-[#0e0e0e] shadow-sm dark:shadow-none">
             {searchQuery ? (
               <>
-                <h3 className="font-bodoni text-[28px] font-bold text-white mb-2">
+                <h3 className="font-bodoni text-[28px] font-bold text-[#121212] dark:text-white mb-2">
                   No Pieces Found
                 </h3>
 
@@ -195,7 +195,7 @@ const Home = () => {
               </>
             ) : (
               <>
-                <h3 className="font-bodoni text-[28px] font-bold text-white mb-2">
+                <h3 className="font-bodoni text-[28px] font-bold text-[#121212] dark:text-white mb-2">
                   Coming Soon
                 </h3>
 

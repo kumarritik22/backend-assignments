@@ -169,7 +169,7 @@ const Navbar = () => {
                             setIsSearchOpen(false)
                             setSearchTerm("")
                           }}
-                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors"
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                         >
                           <img
                             src={product.images?.[0]?.url}
@@ -195,7 +195,7 @@ const Navbar = () => {
                         onClick={() => {
                           setIsSearchOpen(false)
                         }}
-                        className="block mt-3 pt-3 border-t border-white/10 text-center font-inter text-xs text-[#B8A47A] hover:text-white transition-colors"
+                        className="block mt-3 pt-3 border-t text-center font-inter text-xs text-[#B8A47A] transition-colors border-black/10 dark:border-white/10 hover:text-[#121212] dark:hover:text-white"
                       >
                         View all results
                       </Link>
@@ -213,7 +213,7 @@ const Navbar = () => {
             <button
               type='button'
               onClick={toggleTheme}
-              className='w-8 h-8 rounded-full flex items-center justify-center bg-white/5 border border-white/10 hover:border-gold/50 hover:bg-gold/5 transition-all duration-300 group cursor-pointer'
+              className='w-8 h-8 rounded-full flex items-center justify-center bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:border-gold/50 hover:bg-gold/5 transition-all duration-300 group cursor-pointer'
               title={isDark ? "Switch to Ivory Light Mode" : "Switch to Noir Dark Mode"}
             >
               {isDark ? (
@@ -318,7 +318,7 @@ const Navbar = () => {
               </>
             ) : (
               <div className="hidden sm:flex items-center gap-6">
-                <Link to="/login" className="font-inter text-[11px] font-medium tracking-widest uppercase text-[#888] hover:text-white transition-colors">
+                <Link to="/login" className="font-inter text-[11px] font-medium tracking-widest uppercase text-[#888] hover:text-[#121212] dark:hover:text-white transition-colors">
                   Sign In
                 </Link>
                 <Link to="/register" className="inline-flex rounded-md px-5 py-2.5 font-inter font-bold text-[10px] tracking-[0.2em] uppercase text-[#0a0a0a] bg-gold hover:bg-[#b5955a] shadow-[0_0_15px_rgba(201,169,110,0.2)] transition-all transform hover:-translate-y-0.5">
@@ -368,7 +368,7 @@ const Navbar = () => {
             <Link
               to="/profile/orders"
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`font-bodoni text-[28px] hover:text-gold transition-colors ${location.pathname === '/profile/orders' ? "text-gold font-bold" : "text-white"}`}
+              className={`font-bodoni text-[28px] hover:text-gold transition-colors ${location.pathname === '/profile/orders' ? "text-gold font-bold" : "text-[#121212] dark:text-white"}`}
             >
               My Orders
             </Link>
@@ -397,7 +397,7 @@ const Navbar = () => {
 
           {!user && (
             <div className="flex flex-col gap-4 mt-8 pt-8 border-t border-white/5">
-              <Link to="/login" className="font-inter text-[14px] font-medium tracking-widest uppercase text-[#888] hover:text-white">
+              <Link to="/login" className="font-inter text-[14px] font-medium tracking-widest uppercase text-[#888] hover:text-[#121212] dark:hover:text-white">
                 Sign In
               </Link>
               <Link to="/register" className="font-inter text-[14px] font-bold tracking-widest uppercase text-gold">
