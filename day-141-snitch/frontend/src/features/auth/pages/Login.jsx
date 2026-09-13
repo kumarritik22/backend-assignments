@@ -207,9 +207,8 @@ const Login = () => {
                 id="sign-in-btn"
                 disabled={loading}
                 className={[
-                  'w-full rounded-lg py-3.5 px-6 font-inter font-bold text-[11px] tracking-[0.16em] uppercase',
-                  'bg-linear-to-r from-gold to-gold-dark text-[#0a0a0a]',
-                  'hover:from-gold-light hover:to-gold transition-all duration-220 shadow-md shadow-gold/10',
+                  'w-full rounded-lg py-3.5 px-6 font-inter font-bold text-[11px] tracking-[0.16em] uppercase text-[#0a0a0a]',
+                  'bg-gold hover:bg-gold-light transition-all duration-220 shadow-md shadow-gold/20 hover:shadow-gold/35',
                   'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.26s] [animation-fill-mode:both]', loading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
                 ].join(' ')}
               >
@@ -243,35 +242,39 @@ const Login = () => {
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
 
-          {/* Overlays */}
-          <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-black/20 dark:to-[#0a0a0a]/35" />
-          <div className="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/85" />
+          {/* Overlays — active only in dark mode to blend with dark theme */}
+          <div className="hidden dark:block absolute inset-0 bg-linear-to-r from-transparent via-transparent to-black/20 dark:to-[#0a0a0a]/35" />
+          <div className="hidden dark:block absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/85" />
 
-          {/* Logo — Velora image, top right */}
-          <Link to="/" className="absolute top-5 right-5 md:top-7 md:right-7 z-10 flex items-center gap-3 group">
-            <img src="/logo.png" alt="Velora Logo" className="h-8 md:h-12 w-auto object-contain drop-shadow-lg opacity-90 group-hover:opacity-100 transition-opacity" />
-            <span className="font-bodoni text-[22px] font-bold tracking-[0.2em] text-white uppercase drop-shadow-md">
+          {/* Logo — Ultra-Translucent Glass Emblem Badge */}
+          <Link 
+            to="/" 
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-7 md:right-7 z-10 flex items-center gap-2 sm:gap-2.5 px-3 py-1.25 rounded-full bg-white/35 dark:bg-black/40 backdrop-blur-xl border border-white/60 dark:border-white/15 shadow-[0_4px_20px_rgba(0,0,0,0.04)] group hover:scale-[1.02] transition-all"
+          >
+            <img src="/logo.png" alt="Velora Logo" className="h-5 sm:h-6 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+            <span className="font-bodoni text-sm sm:text-base font-bold tracking-[0.2em] text-[#121212] dark:text-white uppercase transition-colors">
               Velora
             </span>
           </Link>
 
-          {/* Bottom brand copy — desktop only */}
-          <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-7 md:px-9 md:pb-10">
-            <div className="w-9 h-0.5 bg-gold mb-4" />
-            <h2 className="font-bodoni text-[28px] sm:text-[32px] md:text-[38px] font-bold leading-[1.1] tracking-tight text-white">
-              Welcome<br />
-              <span className="text-gold">Back.</span>
-            </h2>
-            <p className="font-inter text-xs sm:text-sm text-white/80 mt-2 font-light leading-relaxed max-w-65 drop-shadow-sm">
-              Your style. Your story. Pick up where you left off.
-            </p>
-            <div className="flex gap-6 mt-4">
-              {[['120K+', 'Members'], ['50+', 'Collections'], ['🌍', 'Worldwide']].map(([num, lbl]) => (
-                <div key={lbl}>
-                  <div className="font-inter text-sm font-bold text-gold drop-shadow-sm">{num}</div>
-                  <div className="font-inter text-[9px] text-white/75 tracking-widest uppercase mt-0.5">{lbl}</div>
-                </div>
-              ))}
+          {/* Bottom brand copy — Ultra-Translucent Left-Anchored Glass Capsule */}
+          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-7 md:left-7 z-10 w-[calc(100%-2rem)] sm:w-auto max-w-xs sm:max-w-sm md:max-w-85 xl:max-w-90">
+            <div className="bg-white/35 dark:bg-black/50 backdrop-blur-xl border border-white/70 dark:border-white/15 rounded-2xl p-4 sm:p-5 lg:p-5.5 shadow-[0_8px_32px_0_rgba(0,0,0,0.06),inset_0_1px_1px_0_rgba(255,255,255,0.7)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+              <div className="w-7 h-0.5 bg-gold mb-2.5 rounded-full" />
+              <h2 className="font-bodoni text-[19px] sm:text-[22px] lg:text-[24px] font-bold leading-[1.15] tracking-tight text-[#111111] dark:text-white drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] dark:drop-shadow-none transition-colors">
+                Welcome <span className="text-gold">Back.</span>
+              </h2>
+              <p className="font-inter text-[11px] sm:text-xs text-[#2b2926] dark:text-white/80 mt-1 font-medium leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)] dark:drop-shadow-none transition-colors">
+                Your style. Your story. Pick up where you left off.
+              </p>
+              <div className="flex gap-4 sm:gap-6 mt-3 pt-2.5 border-t border-black/10 dark:border-white/15">
+                {[['120K+', 'Members'], ['50+', 'Collections'], ['🌍', 'Worldwide']].map(([num, lbl]) => (
+                  <div key={lbl}>
+                    <div className="font-inter text-xs sm:text-sm font-bold text-gold drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)] dark:drop-shadow-none">{num}</div>
+                    <div className="font-inter text-[8px] sm:text-[9px] text-[#44403c] dark:text-white/70 tracking-widest uppercase mt-0.5 font-semibold transition-colors">{lbl}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>

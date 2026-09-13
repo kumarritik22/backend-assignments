@@ -29,17 +29,17 @@ html.light body {
 }
 
 html.light .text-gold {
-  color: #85621D;
+  color: #966A24;
 }
 
-html.light [class*="bg-black"] .text-gold,
-html.light [class*="bg-black/"] .text-gold,
-html.light [class*="bg-black"] span.text-gold {
-  color: #C9A96E;
+html.light [class~="bg-black"] .text-gold,
+html.light [class~="bg-[#0a0a0a]"] .text-gold,
+html.light .dark .text-gold {
+  color: #C9A96E !important;
 }
 
 html.light .hover\:text-gold:hover {
-  color: #85621D;
+  color: #966A24;
 }
 
 /* ── Keyframe (can't be expressed with Tailwind utilities) ── */
