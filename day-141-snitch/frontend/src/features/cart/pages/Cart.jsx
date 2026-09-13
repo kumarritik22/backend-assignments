@@ -496,176 +496,177 @@ const Cart = () => {
 
                     </div>
                 )}
+            </main>
 
-                {isCheckoutOpen && (
+            {/* ── Checkout Address Drawer (Fixed to full viewport) ── */}
+            {isCheckoutOpen && (
+                <div 
+                    onClick={() => setIsCheckoutOpen(false)}
+                    className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+                >
                     <div 
-                        onClick={() => setIsCheckoutOpen(false)}
-                        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+                        onClick={(e) => e.stopPropagation()}
+                        className="fixed inset-y-0 right-0 z-50 w-full max-w-lg bg-white dark:bg-[#111] p-6 sm:p-8 pb-12 overflow-y-auto overscroll-contain border-l border-black/10 dark:border-white/10 shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col"
                     >
-                        <div 
-                            onClick={(e) => e.stopPropagation()}
-                            className="fixed right-0 top-0 h-screen z-50 w-full max-w-lg bg-white dark:bg-[#111] p-6 sm:p-8 pb-16 sm:pb-20 overflow-y-auto overscroll-contain border-l border-black/10 dark:border-white/10 shadow-2xl animate-in slide-in-from-right duration-300"
-                        >
-                            {/* ── Delivery Destination Form Card ── */}
-                            <div className="space-y-6">
-                                <div className="flex items-center justify-between border-b border-black/5 dark:border-white/5 pb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold">
-                                            <MapPin className="w-4 h-4" />
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bodoni text-lg font-bold text-[#121212] dark:text-white">Delivery Destination</h3>
-                                            <p className="font-inter text-xs text-[#636059] dark:text-[#888]">White-glove courier shipping location</p>
-                                        </div>
+                        {/* ── Delivery Destination Form Card ── */}
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between border-b border-black/5 dark:border-white/5 pb-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold">
+                                        <MapPin className="w-4 h-4" />
                                     </div>
-                                    <button 
-                                        onClick={() => setIsCheckoutOpen(false)}
-                                        className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-[#555] dark:text-[#888] hover:text-black dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
-                                    >
-                                        ✕
-                                    </button>
+                                    <div>
+                                        <h3 className="font-bodoni text-lg font-bold text-[#121212] dark:text-white">Delivery Destination</h3>
+                                        <p className="font-inter text-xs text-[#636059] dark:text-[#888]">White-glove courier shipping location</p>
+                                    </div>
+                                </div>
+                                <button 
+                                    onClick={() => setIsCheckoutOpen(false)}
+                                    className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-[#555] dark:text-[#888] hover:text-black dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            {addressError && (
+                                <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 font-inter text-xs animate-fade-in">
+                                    <AlertCircle className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" />
+                                    <span>{addressError}</span>
+                                </div>
+                            )}
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-inter">
+                                {/* Full Name */}
+                                <div className="sm:col-span-2 space-y-1.5">
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Recipient Full Name *</label>
+                                    <input 
+                                        type="text"
+                                        name="fullname"
+                                        value={shippingAddress.fullname}
+                                        onChange={handleAddressChange}
+                                        placeholder="e.g. Ritik Kumar"
+                                        className="w-full bg-[#F6F5F2] dark:bg-[#181818] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#555] transition-all outline-none"
+                                    />
                                 </div>
 
-                                {addressError && (
-                                    <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 font-inter text-xs animate-fade-in">
-                                        <AlertCircle className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" />
-                                        <span>{addressError}</span>
-                                    </div>
-                                )}
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-inter">
-                                    {/* Full Name */}
-                                    <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Recipient Full Name *</label>
-                                        <input 
-                                            type="text"
-                                            name="fullname"
-                                            value={shippingAddress.fullname}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Ritik Kumar"
-                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* Address Line 1 */}
-                                    <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Street Address / House No. *</label>
-                                        <input 
-                                            type="text"
-                                            name="addressLine1"
-                                            value={shippingAddress.addressLine1}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. W-42 Sector-12"
-                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* Address Line 2 (Optional) */}
-                                    <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888] dark:text-[#666]">Landmark / Building (Optional)</label>
-                                        <input 
-                                            type="text"
-                                            name="addressLine2"
-                                            value={shippingAddress.addressLine2}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Near Noida Stadium Gate no-7"
-                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* Contact Number */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Contact Number *</label>
-                                        <input 
-                                            type="text"
-                                            name="contact"
-                                            value={shippingAddress.contact}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. 9876543210"
-                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* PIN Code */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">PIN Code *</label>
-                                        <input 
-                                            type="text"
-                                            name="pinCode"
-                                            value={shippingAddress.pinCode}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. 400001"
-                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* Country */}
-                                    <div className="sm:col-span-2 space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Country *</label>
-                                        <div className="relative">
-                                            <select 
-                                                name="country"
-                                                value={shippingAddress.country}
-                                                onChange={handleAddressChange}
-                                                className="w-full appearance-none bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-[#121212] dark:text-white transition-all outline-none cursor-pointer"
-                                            >
-                                                {Object.keys(COUNTRY_STATES_MAP).map(countryName => (
-                                                    <option key={countryName} value={countryName} className="bg-white dark:bg-[#141414] text-[#121212] dark:text-white py-1">
-                                                        {countryName}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#777] dark:text-[#666] text-xs">▼</span>
-                                        </div>
-                                    </div>
-
-                                    {/* City */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">City *</label>
-                                        <input 
-                                            type="text"
-                                            name="city"
-                                            value={shippingAddress.city}
-                                            onChange={handleAddressChange}
-                                            placeholder="e.g. Mumbai"
-                                            className="w-full bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#444] transition-all outline-none"
-                                        />
-                                    </div>
-
-                                    {/* State */}
-                                    <div className="space-y-1.5 relative">
-                                        <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">State *</label>
-                                        <div className="relative">
-                                            <select 
-                                                name="state"
-                                                value={shippingAddress.state}
-                                                onChange={handleAddressChange}
-                                                className="w-full appearance-none bg-[#F6F5F2] dark:bg-[#141414] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold/60 focus:bg-white focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-[#121212] dark:text-white transition-all outline-none cursor-pointer"
-                                            >
-                                                <option value="" disabled className="bg-white dark:bg-[#141414] text-[#888] dark:text-[#666]">Select State / Province</option>
-                                                {(COUNTRY_STATES_MAP[shippingAddress.country] || []).map(stateName => (
-                                                    <option key={stateName} value={stateName} className="bg-white dark:bg-[#141414] text-[#121212] dark:text-white">
-                                                        {stateName}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#777] dark:text-[#666] text-xs">▼</span>
-                                        </div>
-                                    </div>
-
-                                    {/* CTA */}
-                                    <button  
-                                        onClick={handleCheckout}
-                                        className="sm:col-span-2 w-full bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.25)] cursor-pointer mt-2 mb-8"
-                                    >
-                                        CONFIRM & PAY
-                                    </button>
+                                {/* Address Line 1 */}
+                                <div className="sm:col-span-2 space-y-1.5">
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Street Address / House No. *</label>
+                                    <input 
+                                        type="text"
+                                        name="addressLine1"
+                                        value={shippingAddress.addressLine1}
+                                        onChange={handleAddressChange}
+                                        placeholder="e.g. W-42 Sector-12"
+                                        className="w-full bg-[#F6F5F2] dark:bg-[#181818] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#555] transition-all outline-none"
+                                    />
                                 </div>
+
+                                {/* Address Line 2 (Optional) */}
+                                <div className="sm:col-span-2 space-y-1.5">
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-[#888] dark:text-[#666]">Landmark / Building (Optional)</label>
+                                    <input 
+                                        type="text"
+                                        name="addressLine2"
+                                        value={shippingAddress.addressLine2}
+                                        onChange={handleAddressChange}
+                                        placeholder="e.g. Near Noida Stadium Gate no-7"
+                                        className="w-full bg-[#F6F5F2] dark:bg-[#181818] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#555] transition-all outline-none"
+                                    />
+                                </div>
+
+                                {/* Contact Number */}
+                                <div className="space-y-1.5">
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Contact Number *</label>
+                                    <input 
+                                        type="text"
+                                        name="contact"
+                                        value={shippingAddress.contact}
+                                        onChange={handleAddressChange}
+                                        placeholder="e.g. 9876543210"
+                                        className="w-full bg-[#F6F5F2] dark:bg-[#181818] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#555] transition-all outline-none"
+                                    />
+                                </div>
+
+                                {/* PIN Code */}
+                                <div className="space-y-1.5">
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">PIN Code *</label>
+                                    <input 
+                                        type="text"
+                                        name="pinCode"
+                                        value={shippingAddress.pinCode}
+                                        onChange={handleAddressChange}
+                                        placeholder="e.g. 400001"
+                                        className="w-full bg-[#F6F5F2] dark:bg-[#181818] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#555] transition-all outline-none"
+                                    />
+                                </div>
+
+                                {/* Country */}
+                                <div className="sm:col-span-2 space-y-1.5">
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">Country *</label>
+                                    <div className="relative">
+                                        <select 
+                                            name="country"
+                                            value={shippingAddress.country}
+                                            onChange={handleAddressChange}
+                                            className="w-full appearance-none bg-[#F6F5F2] dark:bg-[#181818] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-[#121212] dark:text-white transition-all outline-none cursor-pointer"
+                                        >
+                                            {Object.keys(COUNTRY_STATES_MAP).map(countryName => (
+                                                <option key={countryName} value={countryName} className="bg-white dark:bg-[#181818] text-[#121212] dark:text-white py-1">
+                                                    {countryName}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#777] dark:text-[#666] text-xs">▼</span>
+                                    </div>
+                                </div>
+
+                                {/* City */}
+                                <div className="space-y-1.5">
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">City *</label>
+                                    <input 
+                                        type="text"
+                                        name="city"
+                                        value={shippingAddress.city}
+                                        onChange={handleAddressChange}
+                                        placeholder="e.g. Mumbai"
+                                        className="w-full bg-[#F6F5F2] dark:bg-[#181818] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 text-sm text-[#121212] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#555] transition-all outline-none"
+                                    />
+                                </div>
+
+                                {/* State */}
+                                <div className="space-y-1.5 relative">
+                                    <label className="block text-[10px] font-bold uppercase tracking-wider text-[#636059] dark:text-[#888]">State *</label>
+                                    <div className="relative">
+                                        <select 
+                                            name="state"
+                                            value={shippingAddress.state}
+                                            onChange={handleAddressChange}
+                                            className="w-full appearance-none bg-[#F6F5F2] dark:bg-[#181818] border border-black/15 dark:border-white/10 hover:border-black/30 dark:hover:border-white/20 focus:border-gold focus:ring-1 focus:ring-gold/20 rounded-xl px-4 py-3 pr-10 text-sm text-[#121212] dark:text-white transition-all outline-none cursor-pointer"
+                                        >
+                                            <option value="" disabled className="bg-white dark:bg-[#181818] text-[#888] dark:text-[#666]">Select State / Province</option>
+                                            {(COUNTRY_STATES_MAP[shippingAddress.country] || []).map(stateName => (
+                                                <option key={stateName} value={stateName} className="bg-white dark:bg-[#181818] text-[#121212] dark:text-white">
+                                                    {stateName}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#777] dark:text-[#666] text-xs">▼</span>
+                                    </div>
+                                </div>
+
+                                {/* CTA */}
+                                <button  
+                                    onClick={handleCheckout}
+                                    className="sm:col-span-2 w-full bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.25)] cursor-pointer mt-4 mb-4"
+                                >
+                                    CONFIRM & PAY
+                                </button>
                             </div>
                         </div>
                     </div>
-                )}
-            </main>
+                </div>
+            )}
         </div>
     )
 }
