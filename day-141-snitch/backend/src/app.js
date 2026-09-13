@@ -2,19 +2,26 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import authRouter from "./routes/auth.routes.js";
-import passport, { Passport } from "passport";
+import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { config } from "./config/config.js";
 import productRouter from "./routes/product.routes.js";
 import cartRouter from "./routes/cart.routes.js";
+import cors from "cors";
 
 const app = express();
+
+app.set("trust proxy", 1);
 
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
+app.use(cors({
+    origin: config.FRONTEND_URL,
+    credentials: true
+}));
 
 passport.use(new GoogleStrategy({
     clientID: config.GOOGLE_CLIENT_ID,
