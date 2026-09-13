@@ -22,7 +22,7 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
         aria-describedby={error ? `${id}-error` : undefined}
         className={[
           'w-full rounded-lg px-4 py-2.75 text-sm font-light font-inter',
-          'bg-[#FBFBF9] dark:bg-[#1a1a1a] text-[#121212] dark:text-white placeholder-[#9E9B95] dark:placeholder-[#3d3d3d]',
+          'bg-white dark:bg-[#1a1a1a] text-[#121212] dark:text-white placeholder-[#9E9B95] dark:placeholder-[#3d3d3d] shadow-xs',
           'border outline-none transition-all duration-200',
           'focus:border-gold focus:ring-2 focus:ring-gold/10',
           error ? 'border-red-400/70 ring-2 ring-red-400/10' : 'border-black/10 dark:border-[#252525]',
@@ -131,14 +131,14 @@ const Register = () => {
         className="relative w-full h-64 sm:h-80 md:h-96 lg:w-[48%] lg:h-full shrink-0 overflow-hidden"
       >
         <img
-          src={isDark ? "/model-hero.png" : "/model-hero-light.png"}
+          src={isDark ? "/register-model.png" : "/register-model-light.png"}
           alt="Velora fashion model"
           className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500"
         />
 
         {/* ── Lighter overlays so image shines through ── */}
-        <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-[#F6F5F2]/40 dark:to-[#0a0a0a]/40" />
-        <div className="absolute inset-0 bg-linear-to-b from-black/25 via-transparent to-black/75" />
+        <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-black/20 dark:to-[#0a0a0a]/40" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/85" />
 
         {/* Logo — Velora image */}
         <Link to="/" className="absolute top-5 left-5 lg:top-7 lg:left-7 z-10 flex items-center gap-3 group">
@@ -170,7 +170,7 @@ const Register = () => {
       </section>
 
       {/* RIGHT — Registration Form or Success Message */}
-      <section className="flex-1 flex flex-col bg-white dark:bg-[#111] lg:border-l border-black/5 dark:border-white/5 overflow-y-auto px-6 sm:px-10 md:px-14 lg:px-10 xl:px-14">
+      <section className="flex-1 flex flex-col bg-[#F6F5F2] dark:bg-[#111] lg:border-l border-black/5 dark:border-white/5 overflow-y-auto px-6 sm:px-10 md:px-14 lg:px-10 xl:px-14">
         <div className="w-full max-w-97.5 mx-auto my-auto py-10">
           
           {isRegistered ? (
@@ -261,7 +261,7 @@ const Register = () => {
                     'flex items-center justify-between rounded-lg px-4 py-3.25 cursor-pointer select-none',
                     'border transition-all duration-200',
                     'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.31s] [animation-fill-mode:both]',
-                    'bg-[#FBFBF9] dark:bg-[#1a1a1a]',
+                    'bg-white dark:bg-[#1a1a1a] shadow-xs',
                     isSeller ? 'border-gold/60 ring-1 ring-gold/20' : 'border-black/10 dark:border-[#252525]',
                   ].join(' ')}
                 >

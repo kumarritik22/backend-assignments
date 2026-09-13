@@ -144,7 +144,7 @@ const Navbar = () => {
                   setIsSearchOpen(true)
                 }}
                 onFocus={() => setIsSearchOpen(true)}
-                className="bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/15 text-[#121212] dark:text-white placeholder:text-[#444] dark:placeholder:text-[#888] focus:bg-white dark:focus:bg-[#111] rounded-full py-1.5 pl-4 pr-10 text-[11px] font-inter focus:outline-none focus:border-gold/50 transition-all duration-300 w-48 focus:w-64"
+                className="bg-black/5 dark:bg-white/5 border border-black/15 dark:border-white/15 text-[#121212] dark:text-white placeholder:text-[#444] dark:placeholder:text-[#888] focus:bg-white dark:focus:bg-[#111] rounded-full py-1.5 pl-4 pr-10 text-[11px] font-inter focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all duration-200 w-48"
               />
               <button className="absolute right-3 text-[#555] group-focus-within:text-gold transition-colors">
                 <svg className='text-[#333] dark:text-[#888]' width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>

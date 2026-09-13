@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
 import { Link } from 'react-router'
+import { useTheme } from '../../shared/context/ThemeContext.jsx'
 
 const About = () => {
-  // Scroll to top on mount
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+
+  const { isDark } = useTheme()
 
   return (
     <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0c0c0c] text-[#121212] dark:text-white selection:bg-gold/30">
@@ -61,7 +59,7 @@ const About = () => {
           <div className="flex-1 w-full relative">
             <div className="aspect-3/4 sm:aspect-4/5 bg-[#f0ede6] dark:bg-[#111] border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden relative group shadow-md dark:shadow-none">
               <img 
-                src="/about-model.jpg" 
+                src={isDark ? "/about-model.jpg" : "/about-model-light.png"}
                 alt="Velora Editorial" 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />

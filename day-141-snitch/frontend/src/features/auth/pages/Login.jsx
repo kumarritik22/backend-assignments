@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router'
 import ContinueWithGoogle from '../components/ContinueWithGoogle.jsx'
 import { useDispatch, useSelector } from 'react-redux'
 import { setError } from '../state/auth.slice.js'
+import { useTheme } from '../../shared/context/ThemeContext.jsx'
 
 // InputField defined at module level — prevents React remount bug
 const InputField = ({ id, label, type = 'text', name, placeholder, value, onChange, error, children }) => (
@@ -25,10 +26,10 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
         aria-describedby={error ? `${id}-error` : undefined}
         className={[
           'w-full rounded-lg px-4 py-2.75 text-sm font-light font-inter',
-          'bg-[#FBFBF9] dark:bg-[#141414] text-[#121212] dark:text-white placeholder-[#9E9B95] dark:placeholder-[#3a3a3a]',
+          'bg-white dark:bg-[#1a1a1a] text-[#121212] dark:text-white placeholder-[#9E9B95] dark:placeholder-[#3d3d3d] shadow-xs',
           'border outline-none transition-all duration-200',
           'focus:border-gold focus:ring-2 focus:ring-gold/10',
-          error ? 'border-red-400/70 ring-2 ring-red-400/10' : 'border-black/10 dark:border-[#1e1e1e]',
+          error ? 'border-red-400/70 ring-2 ring-red-400/10' : 'border-black/10 dark:border-[#252525]',
           children ? 'pr-11' : '',
         ].join(' ')}
       />
@@ -45,7 +46,9 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
 // ── Login Component ──
 const Login = () => {
 
-    const {handleLogin} = useAuth()
+    const { handleLogin } = useAuth()
+    const { isDark } = useTheme()
+    
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -113,7 +116,7 @@ const Login = () => {
       <main className="flex flex-col-reverse md:flex-row min-h-screen md:h-screen md:overflow-hidden bg-[#F6F5F2] dark:bg-[#0a0a0a]">
 
         {/*  LEFT — Login Form Panel */}
-        <section className="flex-1 flex items-center justify-center bg-white dark:bg-[#111] md:border-r border-black/5 dark:border-white/5 overflow-y-auto px-6 py-10 sm:px-10 md:px-10 lg:px-12 xl:px-16">
+        <section className="flex-1 flex items-center justify-center bg-[#F6F5F2] dark:bg-[#111] md:border-r border-black/5 dark:border-white/5 overflow-y-auto px-6 py-10 sm:px-10 md:px-10 lg:px-12 xl:px-16">
           <div className="w-full max-w-100 mx-auto">
 
             {/* Header */}
@@ -176,7 +179,7 @@ const Login = () => {
                     type="button" id="toggle-password"
                     onClick={() => setShowPassword(v => !v)}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className="absolute right-3 p-0 bg-transparent border-none cursor-pointer text-[#888] hover:text-gold dark:text-[#3a3a3a] dark:hover:text-gold flex items-center transition-colors duration-150"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-0 bg-transparent border-none cursor-pointer text-[#888] hover:text-gold dark:text-[#484848] dark:hover:text-gold flex items-center transition-colors duration-150"
                   >
                     <span className="material-symbols-outlined">
                       {showPassword ? 'visibility' : 'visibility_off'}
@@ -235,14 +238,14 @@ const Login = () => {
         >
           {/* Hero image */}
           <img
-            src="/login-model.png"
+            src={isDark ? "/login-model.png" : "/login-model-light.png"}
             alt="Velora fashion model"
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
 
           {/* Overlays */}
-          <div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-[#F6F5F2]/40 dark:to-[#0a0a0a]/35" />
-          <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/70" />
+          <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-black/20 dark:to-[#0a0a0a]/35" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/85" />
 
           {/* Logo — Velora image, top right */}
           <Link to="/" className="absolute top-5 right-5 md:top-7 md:right-7 z-10 flex items-center gap-3 group">
@@ -259,14 +262,14 @@ const Login = () => {
               Welcome<br />
               <span className="text-gold">Back.</span>
             </h2>
-            <p className="font-inter text-xs sm:text-sm text-white/70 mt-2 font-light leading-relaxed max-w-65">
+            <p className="font-inter text-xs sm:text-sm text-white/80 mt-2 font-light leading-relaxed max-w-65 drop-shadow-sm">
               Your style. Your story. Pick up where you left off.
             </p>
             <div className="flex gap-6 mt-4">
               {[['120K+', 'Members'], ['50+', 'Collections'], ['🌍', 'Worldwide']].map(([num, lbl]) => (
                 <div key={lbl}>
-                  <div className="font-inter text-sm font-bold text-gold">{num}</div>
-                  <div className="font-inter text-[9px] text-white/60 tracking-widest uppercase mt-0.5">{lbl}</div>
+                  <div className="font-inter text-sm font-bold text-gold drop-shadow-sm">{num}</div>
+                  <div className="font-inter text-[9px] text-white/75 tracking-widest uppercase mt-0.5">{lbl}</div>
                 </div>
               ))}
             </div>
