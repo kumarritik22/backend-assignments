@@ -62,10 +62,10 @@ const NotFound = () => {
           </button>
         </div>
 
-        {/* Curated Atelier Discovery Links */}
+        {/* Quick Discovery Links */}
         <div className="w-full pt-8 border-t border-black/10 dark:border-white/10 animate-[fadeInUp_1.3s_ease_both]">
           <span className="block font-inter text-[10px] tracking-[0.3em] uppercase text-gold font-semibold mb-5">
-            Curated Atelier Navigation
+            Quick Navigation
           </span>
 
           <div className="flex flex-wrap items-center justify-center gap-y-3 gap-x-6 sm:gap-x-8 font-inter text-[11px] sm:text-xs font-medium tracking-[0.18em] uppercase text-[#636059] dark:text-white/60">
@@ -80,7 +80,7 @@ const NotFound = () => {
             <span className="text-black/20 dark:text-white/20 hidden sm:inline">&bull;</span>
 
             <Link to="/contact" className="hover:text-gold dark:hover:text-gold transition-colors duration-200 py-1">
-              Concierge
+              Customer Care
             </Link>
             
             {!isSeller && (

@@ -28,6 +28,20 @@ html.light body {
   color: #121212;
 }
 
+html.light .text-gold {
+  color: #85621D;
+}
+
+html.light [class*="bg-black"] .text-gold,
+html.light [class*="bg-black/"] .text-gold,
+html.light [class*="bg-black"] span.text-gold {
+  color: #C9A96E;
+}
+
+html.light .hover\:text-gold:hover {
+  color: #85621D;
+}
+
 /* ── Keyframe (can't be expressed with Tailwind utilities) ── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(14px); }

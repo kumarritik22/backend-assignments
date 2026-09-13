@@ -44,7 +44,7 @@ const About = () => {
                 Craftsmanship <br /> Without Compromise.
               </h2>
               <p className="font-inter text-[14px] text-[#636059] dark:text-[#888] leading-[1.8] font-light">
-                Every garment in the Velora collection is a testament to meticulous attention to detail. We partner exclusively with boutique ateliers and source only the finest sustainable materials to ensure that what you wear feels as exceptional as it looks.
+                Every garment in the Velora collection is a testament to meticulous attention to detail. We partner exclusively with artisan workshops and master tailors, sourcing only the finest sustainable materials to ensure that what you wear feels as exceptional as it looks.
               </p>
             </div>
             

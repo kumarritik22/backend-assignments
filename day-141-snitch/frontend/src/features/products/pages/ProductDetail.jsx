@@ -11,6 +11,7 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [activeImage, setActiveImage] = useState(0)
+    const [isAddingToCart, setIsAddingToCart] = useState(false)
 
     const navigate = useNavigate()
     const { user } = useSelector(state => state.auth)
@@ -311,45 +312,65 @@ const ProductDetail = () => {
                         <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                             <button 
                                 onClick={async () => {
+                                    if (isAddingToCart) return;
                                     if (!user) {
                                         return navigate("/login", { state : { from: location.pathname, selectedAttributes } })
                                     }
 
-                                    await handleAddItem({ 
-                                        productId: product._id, 
-                                        variantId: activeVariant._id
-                                    })
-                                    navigate("/cart")
+                                    try {
+                                        setIsAddingToCart(true)
+                                        await handleAddItem({ 
+                                            productId: product._id, 
+                                            variantId: activeVariant._id
+                                        })
+                                        navigate("/cart")
+                                    } catch (err) {
+                                        console.error(err)
+                                    } finally {
+                                        setIsAddingToCart(false)
+                                    }
                                 }}
-                                disabled={displayStock === 0}
+                                disabled={displayStock === 0 || isAddingToCart}
                                 className={`flex-1 rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform ${
                                     displayStock === 0 
                                     ? 'bg-black/10 dark:bg-white/10 text-[#888] dark:text-[#555] cursor-not-allowed' 
+                                    : isAddingToCart
+                                    ? 'bg-[#121212] dark:bg-white text-white dark:text-[#0a0a0a] opacity-50 cursor-not-allowed'
                                     : 'bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(201,169,110,0.25)] cursor-pointer'
                                 }`}
                             >
-                                {displayStock === 0 ? 'Out of Stock' : 'Buy Now'}
+                                {displayStock === 0 ? 'Out of Stock' : isAddingToCart ? 'Processing...' : 'Buy Now'}
                             </button>
                             <button 
-                                disabled={displayStock === 0}
+                                disabled={displayStock === 0 || isAddingToCart}
                                 className={`flex-1 border rounded-xl py-4.5 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 ${
                                     displayStock === 0
                                     ? 'border-black/5 dark:border-white/5 text-[#888] dark:text-[#555] bg-transparent cursor-not-allowed'
+                                    : isAddingToCart
+                                    ? 'border-black/20 dark:border-white/20 text-[#888] dark:text-[#666] opacity-50 cursor-not-allowed'
                                     : 'border-black/20 dark:border-white/20 hover:border-gold text-[#121212] dark:text-white hover:text-gold dark:hover:text-gold bg-transparent cursor-pointer'
                                 }`}
                                 onClick={ async () => {
+                                    if (isAddingToCart) return;
                                     if (!user) {
                                         return navigate("/login", { state: { from: location.pathname, selectedAttributes } })
                                     }
 
-                                    await handleAddItem({
-                                        productId: product._id,
-                                        variantId: activeVariant._id,
-                                    })
-                                    navigate("/cart")
+                                    try {
+                                        setIsAddingToCart(true)
+                                        await handleAddItem({
+                                            productId: product._id,
+                                            variantId: activeVariant._id,
+                                        })
+                                        navigate("/cart")
+                                    } catch (err) {
+                                        console.error(err)
+                                    } finally {
+                                        setIsAddingToCart(false)
+                                    }
                                 }}
                             >
-                                Add to Cart
+                                {isAddingToCart ? 'Adding...' : 'Add to Cart'}
                             </button>
                         </div>
                         

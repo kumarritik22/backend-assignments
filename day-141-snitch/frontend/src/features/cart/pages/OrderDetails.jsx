@@ -14,7 +14,7 @@ const ORDER_TIMELINE = [
     active: false
   },
   {
-    title: "Atelier Tailoring",
+    title: "Tailoring & Crafting",
     date: "In Progress",
     completed: false,
     active: true
@@ -70,7 +70,7 @@ const OrderDetails = () => {
 
   if (isLoading) {
     return <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0a0a0a] flex flex-col items-center justify-center">
-      <h2 className="font-inter text-xs font-bold tracking-[0.25em] text-gold uppercase animate-pulse">Loading Atelier Order Details...</h2>
+      <h2 className="font-inter text-xs font-bold tracking-[0.25em] text-gold uppercase animate-pulse">Loading Order Details...</h2>
     </div>
   }
 
@@ -233,7 +233,7 @@ const OrderDetails = () => {
                 <h3 className="font-inter font-bold text-xs uppercase tracking-[0.2em] text-[#636059] dark:text-[#888]">
                   Ordered Items ({order?.orderItems?.length || 0})
                 </h3>
-                <span className="font-inter text-xs text-gold">Velora Atelier Vault</span>
+                <span className="font-inter text-xs text-gold">Velora Collection</span>
               </div>
 
               {/* Items List */}
@@ -302,7 +302,7 @@ const OrderDetails = () => {
                             } catch (err) {
                               setToastNotification({
                                 title: "Selected Variant Out of Stock",
-                                message: "This specific size or color is currently sold out in the atelier. You can explore other available variants.",
+                                message: "This specific size or color is currently sold out in our collection. You can explore other available variants.",
                                 productId: item.productId
                               });
                               setTimeout(() => setToastNotification(null), 6000);
@@ -314,13 +314,13 @@ const OrderDetails = () => {
                           <span>Buy Again</span>
                         </button>
 
-                        {/* Concierge Support */}
+                        {/* Customer Care Support */}
                         <a 
-                          href={`mailto:concierge@velorafashion.com?subject=Inquiry for Order #${order?.razorpay?.orderId || order?._id}&body=Hello Velora Concierge, I need assistance with my item: ${item.title}`}
+                          href={`mailto:support@velorafashion.com?subject=Inquiry for Order #${order?.razorpay?.orderId || order?._id}&body=Hello Velora Customer Care, I need assistance with my item: ${item.title}`}
                           className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 text-[#888] hover:text-[#121212] dark:hover:text-white font-inter text-[10px] font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer"
                         >
                           <Headphones className="w-3 h-3 text-[#888]" />
-                          <span>Concierge</span>
+                          <span>Customer Care</span>
                         </a>
                       </div>
                     </div>
@@ -425,7 +425,7 @@ const OrderDetails = () => {
               </div>
             </div>
 
-            {/* 24/7 Client Concierge Support Card */}
+            {/* 24/7 Customer Support Card */}
             <div className="bg-linear-to-br from-[#fbf9f5] to-[#f4efe6] dark:from-[#161616] dark:to-[#121212] border border-gold/20 rounded-2xl p-6 backdrop-blur-xl shadow-md dark:shadow-2xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 dark:bg-gold/5 rounded-full blur-2xl pointer-events-none" />
               
@@ -434,19 +434,19 @@ const OrderDetails = () => {
                   <Headphones className="w-4 h-4" />
                 </div>
                 <h4 className="font-inter font-bold text-xs uppercase tracking-widest text-gold">
-                  VIP Concierge
+                  Customer Care
                 </h4>
               </div>
 
               <p className="font-inter text-xs text-[#636059] dark:text-[#888] leading-relaxed mb-4">
-                Have questions regarding your tailoring or delivery timeline? Our private client advisors are available 24/7.
+                Have questions regarding your tailoring or delivery timeline? Our dedicated support team is available 24/7.
               </p>
 
               <Link 
                 to="/contact"
                 className="inline-flex items-center gap-2 font-inter text-xs font-bold uppercase tracking-widest text-[#121212] dark:text-white hover:text-gold transition-colors cursor-pointer"
               >
-                <span>Connect with Concierge</span>
+                <span>Contact Customer Care</span>
                 <ChevronRight className="w-3.5 h-3.5 text-gold group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

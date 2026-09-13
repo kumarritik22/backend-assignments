@@ -18,6 +18,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
   const location = useLocation()
 
 
@@ -300,15 +301,28 @@ const Navbar = () => {
                           </Link>
 
                           <button 
-                            onClick={handleLogout}
-                            className="w-full font-inter text-[11px] font-semibold uppercase tracking-wider text-red-400 hover:text-red-300 hover:bg-red-500/10 px-3 py-2.5 rounded-xl flex items-center gap-2.5 cursor-pointer transition-all duration-200 active:scale-[0.98]"
+                            onClick={async () => {
+                              if (isLoggingOut) return;
+                              try {
+                                setIsLoggingOut(true);
+                                await handleLogout();
+                              } catch (err) {
+                                console.error("Logout error:", err);
+                              } finally {
+                                setIsLoggingOut(false);
+                              }
+                            }}
+                            disabled={isLoggingOut}
+                            className={`w-full font-inter text-[11px] font-semibold uppercase tracking-wider text-red-400 hover:text-red-300 hover:bg-red-500/10 px-3 py-2.5 rounded-xl flex items-center gap-2.5 ${
+                              isLoggingOut ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]'
+                            } transition-all duration-200`}
                           >
                             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                               <polyline points="16 17 21 12 16 7"></polyline>
                               <line x1="21" y1="12" x2="9" y2="12"></line>
                             </svg>
-                            <span>Sign Out</span>
+                            <span>{isLoggingOut ? "Signing Out..." : "Sign Out"}</span>
                           </button>
                         </div>
                       </div>

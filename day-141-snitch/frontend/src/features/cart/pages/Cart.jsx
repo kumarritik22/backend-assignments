@@ -56,6 +56,8 @@ const Cart = () => {
     })
     const [addressError, setAddressError] = useState("")
     const [isCheckoutOpen, setIsCheckoutOpen] = useState(false)
+    const [isPaying, setIsPaying] = useState(false)
+    const [updatingItemId, setUpdatingItemId] = useState(null)
 
     useEffect(() => {
         handleGetCart()
@@ -95,6 +97,8 @@ const Cart = () => {
     };
 
     const handleCheckout = async () => {
+        if (isPaying) return;
+
         // --- Delivery Address Validation ---
         if (!shippingAddress.fullname?.trim()) {
             setAddressError("Recipient full name is required.");
@@ -126,6 +130,7 @@ const Cart = () => {
         }
 
         try {
+            setIsPaying(true);
             setAddressError("");
             // Step 1: Tell the backend currency & shipping address to create Razorpay order
             const order = await handleCreateCartOrder({ 
@@ -185,6 +190,8 @@ const Cart = () => {
             console.error("Checkout error:", err)
             const errorMsg = err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Failed to initiate payment. Please try again.';
             setAddressError(errorMsg);
+        } finally {
+            setIsPaying(false);
         }
     }
 
@@ -332,45 +339,72 @@ const Cart = () => {
                                                     <div className="flex items-center justify-between mt-4">
                                                         <div className="flex items-center gap-0 border border-black/10 dark:border-white/10 rounded-lg overflow-hidden bg-white dark:bg-transparent shadow-xs dark:shadow-none">
                                                             <button
-                                                                onClick={() => 
-                                                                    handleDecreaseCartItemQuantity({
-                                                                        productId: item.product?._id,
-                                                                        variantId: item.variant
-                                                                    })
-                                                                }
-                                                                className="w-9 h-9 flex items-center justify-center text-[#555] dark:text-[#666] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+                                                                onClick={async () => {
+                                                                    if (updatingItemId) return;
+                                                                    try {
+                                                                        setUpdatingItemId(item.variant);
+                                                                        await handleDecreaseCartItemQuantity({
+                                                                            productId: item.product?._id,
+                                                                            variantId: item.variant
+                                                                        });
+                                                                    } catch (err) {
+                                                                        console.error(err);
+                                                                    } finally {
+                                                                        setUpdatingItemId(null);
+                                                                    }
+                                                                }}
+                                                                disabled={updatingItemId === item.variant || (item.quantity || 1) <= 1}
+                                                                className="w-9 h-9 flex items-center justify-center text-[#555] dark:text-[#666] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                                             </button>
                                                             <span className="w-10 h-9 flex items-center justify-center font-inter text-sm text-[#121212] dark:text-white border-l border-r border-black/10 dark:border-white/10">
-                                                                {item.quantity || 1}
+                                                                {updatingItemId === item.variant ? "..." : (item.quantity || 1)}
                                                             </span>
                                                             <button 
-                                                                onClick={() => 
-                                                                    handleIncreaseCartItemQuantity({
-                                                                        productId: item.product?._id,
-                                                                        variantId: item.variant
-                                                                    })
-                                                                }
-                                                                className="w-9 h-9 flex items-center justify-center text-[#555] dark:text-[#666] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+                                                                onClick={async () => {
+                                                                    if (updatingItemId) return;
+                                                                    try {
+                                                                        setUpdatingItemId(item.variant);
+                                                                        await handleIncreaseCartItemQuantity({
+                                                                            productId: item.product?._id,
+                                                                            variantId: item.variant
+                                                                        });
+                                                                    } catch (err) {
+                                                                        console.error(err);
+                                                                    } finally {
+                                                                        setUpdatingItemId(null);
+                                                                    }
+                                                                }}
+                                                                disabled={updatingItemId === item.variant}
+                                                                className="w-9 h-9 flex items-center justify-center text-[#555] dark:text-[#666] hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                                             </button>
                                                         </div>
 
                                                         <button 
-                                                            onClick={() => 
-                                                                handleDeleteCartItem({
-                                                                    productId: item.product?._id,
-                                                                    variantId: item.variant
-                                                                })
-                                                            }
-                                                            className="flex items-center gap-1.5 text-[#888] dark:text-[#444] hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 cursor-pointer opacity-80 sm:opacity-0 group-hover:opacity-100 font-inter text-[11px] uppercase tracking-wider">
+                                                            onClick={async () => {
+                                                                if (updatingItemId) return;
+                                                                try {
+                                                                    setUpdatingItemId(item.variant);
+                                                                    await handleDeleteCartItem({
+                                                                        productId: item.product?._id,
+                                                                        variantId: item.variant
+                                                                    });
+                                                                } catch (err) {
+                                                                    console.error(err);
+                                                                } finally {
+                                                                    setUpdatingItemId(null);
+                                                                }
+                                                            }}
+                                                            disabled={updatingItemId === item.variant}
+                                                            className="flex items-center gap-1.5 text-[#888] dark:text-[#444] hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 cursor-pointer opacity-80 sm:opacity-0 group-hover:opacity-100 font-inter text-[11px] uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed">
                                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                                                 <polyline points="3 6 5 6 21 6" />
                                                                 <path d="M19 6l-1 14H6L5 6" />
                                                                 <path d="M10 11v6M14 11v6" />
                                                                 <path d="M9 6V4h6v2" />
                                                             </svg>
-                                                            Remove
+                                                            {updatingItemId === item.variant ? "Removing..." : "Remove"}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -658,9 +692,12 @@ const Cart = () => {
                                 {/* CTA */}
                                 <button  
                                     onClick={handleCheckout}
-                                    className="sm:col-span-2 w-full bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.25)] cursor-pointer mt-4 mb-4"
+                                    disabled={isPaying}
+                                    className={`sm:col-span-2 w-full bg-[#121212] dark:bg-white hover:bg-gold dark:hover:bg-gold text-white dark:text-[#0a0a0a] hover:text-[#0a0a0a] rounded-xl py-4 px-8 font-inter font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-300 transform ${
+                                        isPaying ? 'opacity-50 cursor-not-allowed' : 'hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(201,169,110,0.25)] cursor-pointer'
+                                    } mt-4 mb-4`}
                                 >
-                                    CONFIRM & PAY
+                                    {isPaying ? "INITIATING PAYMENT..." : "CONFIRM & PAY"}
                                 </button>
                             </div>
                         </div>

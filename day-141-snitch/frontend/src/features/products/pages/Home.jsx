@@ -96,7 +96,7 @@ const Home = () => {
               Redefining<br />Modern Luxury.
             </h1>
 
-            <p className="font-inter text-xs sm:text-sm text-[#121212] dark:text-white/90 max-w-sm leading-relaxed mb-8 font-medium drop-shadow-[0_1px_12px_rgba(255,255,255,0.9)] dark:drop-shadow-none">
+            <p className="font-inter text-xs sm:text-sm text-[#121212] dark:text-white/90 max-w-sm leading-relaxed mb-8 font-medium dark:font-normal drop-shadow-[0_1px_12px_rgba(255,255,255,0.9)] dark:drop-shadow-none">
               Discover curated fashion for those who refuse to blend in. The new season collection is here.
             </p>
 

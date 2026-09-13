@@ -106,19 +106,19 @@ const Contact = () => {
   const faqs = [
     {
       question: "How do I arrange a bespoke consultation or custom sizing?",
-      answer: "Our bespoke service begins with an intimate private consultation—either within our Bandra or Paris boutiques, or via a secure digital concierge link. Our master tailors guide you through cloth curation, bespoke silhouette drafting, and hand-finished fittings."
+      answer: "Our bespoke service begins with an intimate private consultation—either within our Bandra or Paris boutiques, or via a secure digital consultation link. Our master tailors guide you through cloth curation, bespoke silhouette drafting, and hand-finished fittings."
     },
     {
       question: "What is the white-glove dispatch and tracking timeline?",
-      answer: "Every piece is packaged in signature museum-grade archival boxes and dispatched via secure, insured couriers. Domestic delivery arrives within 48–72 hours, while international shipments arrive in 3–5 business days with real-time concierge tracking."
+      answer: "Every piece is packaged in signature museum-grade archival boxes and dispatched via secure, insured couriers. Domestic delivery arrives within 48–72 hours, while international shipments arrive in 3–5 business days with real-time priority tracking."
     },
     {
       question: "What is Velora's private return and exchange policy?",
-      answer: "We offer a 14-day complimentary white-glove collection service for unworn pieces with security seals intact. Our concierge will coordinate a private courier pickup directly from your preferred address."
+      answer: "We offer a 14-day complimentary white-glove collection service for unworn pieces with security seals intact. Our customer care team will coordinate a private courier pickup directly from your preferred address."
     },
     {
       question: "How can I reserve a private boutique viewing in Mumbai or Paris?",
-      answer: "Private boutique viewings are curated exclusively for you and your guests with dedicated Champagne hospitality and stylist advisory. You may submit an appointment request through our concierge form or via our hotline."
+      answer: "Private boutique viewings are curated exclusively for you and your guests with dedicated Champagne hospitality and stylist advisory. You may submit an appointment request through our appointment form or via our hotline."
     }
   ];
 
@@ -139,7 +139,7 @@ const Contact = () => {
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-gold/30 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-md shadow-[0_0_15px_rgba(201,169,110,0.1)] mb-6">
             <Gem className="w-3.5 h-3.5 text-gold" />
             <span className="font-inter text-[11px] font-semibold tracking-[0.25em] text-gold uppercase">
-              Atelier Concierge · Client Advisory
+              Customer Care · Client Support
             </span>
           </div>
 
@@ -148,7 +148,7 @@ const Contact = () => {
           </h1>
 
           <p className="font-inter text-sm sm:text-base text-[#636059] dark:text-[#998f81] max-w-2xl leading-relaxed font-light">
-            From bespoke sizing consultations and styling advice to order concierge and private boutique appointments, our client advisors are dedicated to your service.
+            From bespoke sizing consultations and styling advice to order tracking and private boutique appointments, our client advisors are dedicated to your service.
           </p>
 
           {/* Quick Mobile Action Pills */}
@@ -158,10 +158,10 @@ const Contact = () => {
               className="flex items-center justify-center gap-2 py-3 px-4 bg-white dark:bg-[#141414] border border-gold/30 rounded-lg text-xs font-inter font-medium text-[#121212] dark:text-white hover:border-gold transition-all"
             >
               <Phone className="w-3.5 h-3.5 text-gold" />
-              <span>Call Concierge</span>
+              <span>Call Support</span>
             </a>
             <a 
-              href="https://wa.me/91800835672?text=Hello%20Velora%20Concierge" 
+              href="https://wa.me/91800835672?text=Hello%20Velora%20Support" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-3 px-4 bg-white dark:bg-[#141414] border border-black/10 dark:border-white/10 rounded-lg text-xs font-inter font-medium text-[#121212] dark:text-white hover:border-gold/50 transition-all"
@@ -207,7 +207,7 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Channel 2: Digital Concierge & WhatsApp */}
+            {/* Channel 2: Customer Support & WhatsApp */}
             <div className="bg-white/90 dark:bg-[#111111]/90 backdrop-blur-xl border border-black/5 dark:border-[#222222] hover:border-gold/40 rounded-xl p-6 sm:p-7 transition-all duration-300 group shadow-md dark:shadow-lg">
               <div className="flex items-start gap-4">
                 <div className="w-11 h-11 rounded-lg bg-[#F6F5F2] dark:bg-[#191919] border border-black/5 dark:border-white/5 flex items-center justify-center shrink-0 group-hover:border-gold/40 group-hover:bg-gold/5 transition-all">
@@ -215,7 +215,7 @@ const Contact = () => {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <h3 className="font-bodoni text-lg sm:text-xl font-medium text-[#121212] dark:text-white">Digital Concierge</h3>
+                    <h3 className="font-bodoni text-lg sm:text-xl font-medium text-[#121212] dark:text-white">Customer Support</h3>
                     <span className="font-inter text-[10px] tracking-wider text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded">4H REPLY</span>
                   </div>
                   <p className="font-inter text-xs text-[#636059] dark:text-[#8e9192] leading-relaxed mb-3">
@@ -223,15 +223,15 @@ const Contact = () => {
                   </p>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-1">
                     <a 
-                      href="mailto:concierge@velorafashion.com" 
+                      href="mailto:support@velorafashion.com" 
                       className="font-inter text-xs font-semibold text-[#121212] dark:text-white hover:text-gold transition-colors inline-flex items-center gap-1.5"
                     >
                       <Mail className="w-3.5 h-3.5 text-gold" />
-                      concierge@velorafashion.com
+                      support@velorafashion.com
                     </a>
                     <span className="hidden sm:inline text-black/20 dark:text-white/20">|</span>
                     <a 
-                      href="https://wa.me/91800835672?text=Hello%20Velora%20Concierge" 
+                      href="https://wa.me/91800835672?text=Hello%20Velora%20Support" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="font-inter text-xs font-semibold text-[#25D366] hover:underline inline-flex items-center gap-1.5"
@@ -256,7 +256,7 @@ const Contact = () => {
                 <div className="group">
                   <div className="flex items-center justify-between">
                     <h4 className="font-inter text-sm font-semibold text-[#121212] dark:text-white group-hover:text-gold transition-colors">
-                      Mumbai · Bandra Atelier
+                      Mumbai · Bandra Flagship
                     </h4>
                     <span className="font-inter text-[10px] tracking-widest text-gold uppercase">Flagship</span>
                   </div>
@@ -265,7 +265,7 @@ const Contact = () => {
                   </p>
                   <button 
                     onClick={() => {
-                      setFormData(prev => ({ ...prev, department: 'styling', message: 'I would like to schedule a private viewing at the Mumbai Bandra Atelier.' }))
+                      setFormData(prev => ({ ...prev, department: 'styling', message: 'I would like to schedule a private viewing at the Mumbai Bandra Flagship.' }))
                       document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
                     }}
                     className="mt-2 font-inter text-[11px] font-medium text-gold hover:text-[#121212] dark:hover:text-white tracking-wider uppercase inline-flex items-center gap-1 cursor-pointer transition-colors"
@@ -300,11 +300,11 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Atelier Promise Bar */}
+            {/* The Velora Promise Bar */}
             <div className="bg-linear-to-r from-[#fbf9f5] via-[#f7f3eb] to-[#fbf9f5] dark:from-[#141414] dark:via-[#161616] dark:to-[#141414] border border-gold/30 dark:border-gold/20 rounded-xl p-5 flex items-center gap-4 shadow-sm dark:shadow-lg">
               <Sparkles className="w-5 h-5 text-gold shrink-0" />
               <p className="font-inter text-[11px] tracking-wider text-[#636059] dark:text-[#c7c6c6] uppercase leading-relaxed">
-                The Atelier Promise: Discretion, White-Glove Care, and Uncompromising Sartorial Precision.
+                The Velora Promise: Discretion, White-Glove Care, and Uncompromising Sartorial Precision.
               </p>
             </div>
 
@@ -346,7 +346,7 @@ const Contact = () => {
                 <>
                   <div className="mb-8">
                     <span className="font-inter text-[10px] font-bold tracking-[0.25em] text-gold uppercase block mb-1">
-                      Direct Atelier Dispatch
+                      Direct Client Inquiry
                     </span>
                     <h2 className="font-bodoni text-2xl sm:text-3xl font-medium text-[#121212] dark:text-white mb-2">
                       Transmit Your Request
@@ -466,7 +466,7 @@ const Contact = () => {
                           <option value="" disabled className="bg-white dark:bg-[#161616] text-[#888]">Select inquiry classification...</option>
                           <option value="bespoke" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Bespoke Tailoring & Made-to-Measure</option>
                           <option value="styling" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Private Styling & Sizing Consultation</option>
-                          <option value="order" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Order Concierge & White-Glove Dispatch</option>
+                          <option value="order" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Order Tracking & White-Glove Delivery</option>
                           <option value="returns" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Returns & Private Exchanges</option>
                           <option value="boutique" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Flagship Boutique Appointment</option>
                           <option value="press" className="bg-white dark:bg-[#161616] text-[#121212] dark:text-white">Press, Collaborations & Brand Partnerships</option>
@@ -571,12 +571,12 @@ const Contact = () => {
 
         </div>
 
-        {/* ── Atelier FAQ Accordion Section ── */}
+        {/* ── Customer Care FAQ Accordion Section ── */}
         <div className="mt-20 pt-16 border-t border-black/5 dark:border-white/5 max-w-4xl mx-auto">
           
           <div className="text-center mb-12">
             <span className="font-inter text-[10px] font-bold tracking-[0.25em] text-gold uppercase block mb-2">
-              Concierge Knowledge Base
+              Customer Care Knowledge Base
             </span>
             <h2 className="font-bodoni text-2xl sm:text-4xl font-normal text-[#121212] dark:text-white mb-3">
               Frequently Inquired
@@ -623,7 +623,7 @@ const Contact = () => {
               <p className="font-inter text-xs text-[#636059] dark:text-[#777] mt-0.5">Our Private Client Desk is available on WhatsApp 24/7.</p>
             </div>
             <a
-              href="https://wa.me/91800835672?text=Hello%20Velora%20Concierge"
+              href="https://wa.me/91800835672?text=Hello%20Velora%20Support"
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 rounded-full bg-[#F6F5F2] dark:bg-[#161616] hover:bg-gold/10 border border-gold/40 text-gold font-inter text-xs font-semibold tracking-wider uppercase inline-flex items-center gap-2 transition-all shrink-0"

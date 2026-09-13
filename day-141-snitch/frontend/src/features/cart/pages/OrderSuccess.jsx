@@ -85,7 +85,7 @@ const OrderSuccess = () => {
 
                 <div className="pt-8">
                     <p className="text-[#888] dark:text-[#555555] text-sm">
-                        Need assistance? <Link to="/contact" className="text-gold hover:underline">Contact our concierge</Link>
+                        Need assistance? <Link to="/contact" className="text-gold hover:underline">Contact Customer Care</Link>
                     </p>
                 </div>
             </div>
