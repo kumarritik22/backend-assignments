@@ -11,7 +11,7 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
   <div className="flex flex-col gap-1.5">
     <label
       htmlFor={id}
-      className={`font-inter text-[10px] font-bold uppercase tracking-widest ${error ? 'text-red-500 dark:text-red-400' : 'text-[#8C703B] dark:text-gold'}`}
+      className={`font-inter text-[10px] font-bold uppercase tracking-[0.14em] ${error ? 'text-red-500 dark:text-red-400' : 'text-[#8C703B] dark:text-gold'}`}
     >
       {label}
     </label>
@@ -21,8 +21,8 @@ const InputField = ({ id, label, type = 'text', name, placeholder, value, onChan
         value={value} onChange={onChange}
         aria-describedby={error ? `${id}-error` : undefined}
         className={[
-          'w-full rounded-lg px-4 py-2.75 text-sm font-light font-inter',
-          'bg-white dark:bg-[#1a1a1a] text-[#121212] dark:text-white placeholder-[#9E9B95] dark:placeholder-[#3d3d3d] shadow-xs',
+          'w-full rounded-lg px-4 py-2.25 sm:py-2.5 text-sm font-light font-inter',
+          'bg-white dark:bg-[#1a1a1a] text-[#121212] dark:text-white placeholder-[#9E9B95] dark:placeholder-[#666] shadow-xs',
           'border outline-none transition-all duration-200',
           'focus:border-gold focus:ring-2 focus:ring-gold/10',
           error ? 'border-red-400/70 ring-2 ring-red-400/10' : 'border-black/10 dark:border-[#252525]',
@@ -143,13 +143,13 @@ const Register = () => {
           {/* Bottom gradient fade — only covers the bottom so model's upper body stays 100% bright */}
           <div className="absolute inset-x-0 bottom-0 h-36 sm:h-44 lg:h-84 bg-linear-to-t from-black/85 via-black/45 to-transparent pointer-events-none" />
 
-          {/* Logo — Ultra-Translucent Glass Emblem Badge */}
+          {/* Logo — Smoked Obsidian (Light) / Frosted Crystal (Dark) Emblem Badge */}
           <Link 
             to="/" 
-            className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-7 lg:left-7 z-10 flex items-center gap-2 sm:gap-2.5 px-3 py-1.25 rounded-full bg-white/35 dark:bg-black/40 backdrop-blur-xl border border-white/60 dark:border-white/15 shadow-[0_4px_20px_rgba(0,0,0,0.04)] group hover:scale-[1.02] transition-all"
+            className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-7 lg:left-7 z-10 flex items-center gap-2 sm:gap-2.5 px-3.5 py-1.5 rounded-full bg-black/65 dark:bg-white/8 backdrop-blur-xl border border-white/15 dark:border-white/20 hover:border-gold/40 dark:hover:border-gold/40 shadow-[0_8px_32px_rgba(0,0,0,0.28)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] group hover:scale-[1.02] transition-all"
           >
-            <img src="/logo.png" alt="Velora Logo" className="h-5 sm:h-6 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
-            <span className="font-bodoni text-sm sm:text-base font-bold tracking-[0.2em] text-[#121212] dark:text-white uppercase transition-colors">
+            <img src="/logo.png" alt="Velora Logo" className="h-5 sm:h-6 w-auto object-contain opacity-100 group-hover:scale-105 transition-transform drop-shadow-sm" />
+            <span className="font-bodoni text-sm sm:text-base font-bold tracking-[0.2em] text-white uppercase transition-colors">
               Velora
             </span>
           </Link>
@@ -175,8 +175,8 @@ const Register = () => {
         </section>
 
       {/* RIGHT — Registration Form or Success Message */}
-      <section className="flex-1 flex flex-col bg-[#F6F5F2] dark:bg-[#111] lg:border-l border-black/5 dark:border-white/5 overflow-y-auto px-6 sm:px-10 md:px-14 lg:px-10 xl:px-14">
-        <div className="w-full max-w-97.5 mx-auto my-auto py-10">
+      <section className="flex-1 flex flex-col bg-[#F6F5F2] dark:bg-[#111] lg:border-l border-black/5 dark:border-white/5 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden px-6 sm:px-10 md:px-14 lg:px-8 xl:px-12">
+        <div className="w-full max-w-100 mx-auto my-auto py-2.5 sm:py-3 lg:py-2.5">
           
           {isRegistered ? (
             <div className="flex flex-col items-center justify-center text-center space-y-6 animate-fade-in-up">
@@ -200,15 +200,15 @@ const Register = () => {
           ) : (
             <>
               {/* Header */}
-              <div className="mb-7 animate-[fadeInUp_0.5s_ease_both]">
-                <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 rounded-full px-3 py-1.25 mb-4">
+              <div className="mb-4 sm:mb-4.5 animate-[fadeInUp_0.5s_ease_both]">
+                <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 rounded-full px-3.5 py-1 mb-2.5">
                   <span className="w-1.25 h-1.25 rounded-full bg-gold shrink-0" />
-                  <span className="font-inter text-[9px] font-bold tracking-[0.14em] text-gold uppercase">Join Velora</span>
+                  <span className="font-inter text-[9.5px] font-bold tracking-[0.14em] text-gold uppercase">Join Velora</span>
                 </div>
-                <h1 className="font-bodoni text-[30px] sm:text-[34px] font-bold tracking-tight text-[#121212] dark:text-white leading-[1.15]">
+                <h1 className="font-bodoni text-[28px] sm:text-[31px] font-bold tracking-tight text-[#121212] dark:text-white leading-[1.12]">
                   Create Account
                 </h1>
-                <p className="font-inter text-[13px] text-[#636059] dark:text-[#777] mt-2 leading-relaxed">
+                <p className="font-inter text-[12.5px] sm:text-[13px] text-[#636059] dark:text-[#777] mt-1.25 leading-relaxed">
                   Already have an account?{' '}
                   <Link to="/login" id="sign-in-link" className="text-gold font-medium no-underline hover:underline underline-offset-2 transition-all">
                     Sign in →
@@ -217,8 +217,8 @@ const Register = () => {
               </div>
 
               {error && (
-                <div className="mb-5 flex items-center gap-3 rounded-md border border-red-500/20 bg-red-500/10 dark:bg-red-400/5 px-4 py-3 text-sm text-red-600 dark:text-red-300">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-500/40 text-[11px] font-bold">
+                <div className="mb-3.5 flex items-center gap-2.5 rounded-md border border-red-500/20 bg-red-500/10 dark:bg-red-400/5 px-3.5 py-2 text-xs text-red-600 dark:text-red-300">
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-red-500/40 text-[10px] font-bold">
                         !
                     </span>
                     <p>{error}</p>
@@ -226,7 +226,7 @@ const Register = () => {
               )}
 
               {/* Form */}
-              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3.25">
+              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-2.5 sm:gap-2.75">
 
                 <div className="animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.07s] [animation-fill-mode:both]">
                   <InputField id="fullName" label="Full Name" name="fullName" placeholder="e.g. Virat Kohli"
@@ -252,7 +252,7 @@ const Register = () => {
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                       className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[#888] hover:text-gold dark:text-[#484848] dark:hover:text-gold flex items-center transition-colors duration-150 p-0"
                     >
-                      <span className="material-symbols-outlined">{showPassword ? 'visibility' : 'visibility_off'}</span>
+                      <span className="material-symbols-outlined text-[18px]">{showPassword ? 'visibility' : 'visibility_off'}</span>
                     </button>
                   </InputField>
                 </div>
@@ -263,7 +263,7 @@ const Register = () => {
                   role="checkbox" aria-checked={isSeller} tabIndex={0}
                   onKeyDown={e => e.key === ' ' && setIsSeller(v => !v)}
                   className={[
-                    'flex items-center justify-between rounded-lg px-4 py-3.25 cursor-pointer select-none',
+                    'flex items-center justify-between rounded-lg px-4 py-2.25 sm:py-2.5 cursor-pointer select-none',
                     'border transition-all duration-200',
                     'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.31s] [animation-fill-mode:both]',
                     'bg-white dark:bg-[#1a1a1a] shadow-xs',
@@ -272,37 +272,33 @@ const Register = () => {
                 >
                   <div>
                     <p className="font-inter text-[13px] font-medium text-[#121212] dark:text-white">Register as Seller</p>
-                    <p className="font-inter text-[11px] text-[#636059] dark:text-[#666] mt-0.5">List &amp; manage your own products</p>
+                    <p className="font-inter text-[11px] text-[#636059] dark:text-[#777] mt-0.5">List &amp; manage your own products</p>
                   </div>
-                  <div className={`relative w-10 h-5.5 rounded-full shrink-0 ml-4 transition-colors duration-300 ${isSeller ? 'bg-gold' : 'bg-black/15 dark:bg-[#2a2a2a]'}`}>
-                    <div className={`absolute top-0.75 left-0.75 w-4 h-4 rounded-full transition-transform duration-300 ${isSeller ? 'translate-x-4.5 bg-[#0a0a0a]' : 'translate-x-0 bg-[#888] dark:bg-[#666]'}`} />
+                  <div className={`relative w-9.5 h-5.25 rounded-full shrink-0 ml-3 transition-colors duration-300 ${isSeller ? 'bg-gold' : 'bg-black/15 dark:bg-[#2a2a2a]'}`}>
+                    <div className={`absolute top-0.75 left-0.75 w-3.75 h-3.75 rounded-full transition-transform duration-300 ${isSeller ? 'translate-x-4.25 bg-[#0a0a0a]' : 'translate-x-0 bg-[#888] dark:bg-[#666]'}`} />
                   </div>
                   <input type="checkbox" id="isSeller" name="isSeller" checked={isSeller}
                     onChange={e => setIsSeller(e.target.checked)} className="sr-only" aria-label="Register as seller" />
                 </div>
-
-                <hr className="border-t border-black/10 dark:border-white/5 animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.35s] [animation-fill-mode:both]" />
 
                 <button
                   type="submit" 
                   id="create-account-btn"
                   disabled={loading}
                   className={[
-                    'w-full rounded-lg py-3.25 font-inter font-bold text-[11px] tracking-[0.18em] uppercase text-[#0a0a0a]',
+                    'w-full rounded-lg py-2.75 sm:py-3 font-inter font-bold text-[11px] tracking-[0.18em] uppercase text-[#0a0a0a]',
                     'bg-gold hover:bg-gold-light',
                     'transition-all duration-200 shadow-md shadow-gold/20 hover:shadow-gold/35',
-                    'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.39s] [animation-fill-mode:both] ', loading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
+                    'animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.37s] [animation-fill-mode:both] ', loading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]',
                   ].join(' ')}
                 >
                   {loading ? "Creating Account..." : "Create Account"}
                 </button>
 
-                <div className="flex-1 border-t border-black/10 dark:border-[#1e1e1e]" />
-
                 {/* Continue with Google button */}
                 <ContinueWithGoogle />
 
-                <p className="font-inter text-center text-[10px] text-[#888] dark:text-[#444] leading-relaxed animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.43s] [animation-fill-mode:both]">
+                <p className="font-inter text-center text-[10px] sm:text-[10.5px] text-[#888] dark:text-[#555] mt-0.5 leading-normal animate-[fadeInUp_0.5s_ease_both] [animation-delay:0.41s] [animation-fill-mode:both]">
                   By continuing you agree to our{' '}
                   <a href="#" className="text-[#555] dark:text-[#666] underline hover:text-[#111] dark:hover:text-[#999] transition-colors">Terms</a>
                   {' '}&amp;{' '}

@@ -116,7 +116,7 @@ const Login = () => {
       <main className="flex flex-col-reverse md:flex-row min-h-screen md:h-screen md:overflow-hidden bg-[#F6F5F2] dark:bg-[#0a0a0a]">
 
         {/*  LEFT — Login Form Panel */}
-        <section className="flex-1 flex items-center justify-center bg-[#F6F5F2] dark:bg-[#111] md:border-r border-black/5 dark:border-white/5 overflow-y-auto px-6 py-10 sm:px-10 md:px-10 lg:px-12 xl:px-16">
+        <section className="flex-1 flex items-center justify-center bg-[#F6F5F2] dark:bg-[#111] md:border-r border-black/5 dark:border-white/5 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden px-6 py-10 sm:px-10 md:px-10 lg:px-12 xl:px-16">
           <div className="w-full max-w-100 mx-auto">
 
             {/* Header */}
@@ -249,13 +249,13 @@ const Login = () => {
           {/* Bottom gradient fade — only covers the bottom so model's upper body stays 100% bright */}
           <div className="absolute inset-x-0 bottom-0 h-36 sm:h-44 md:h-84 bg-linear-to-t from-black/85 via-black/45 to-transparent pointer-events-none" />
 
-          {/* Logo — Ultra-Translucent Glass Emblem Badge */}
+          {/* Logo — Smoked Obsidian (Light) / Frosted Crystal (Dark) Emblem Badge */}
           <Link 
             to="/" 
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-7 md:right-7 z-10 flex items-center gap-2 sm:gap-2.5 px-3 py-1.25 rounded-full bg-white/35 dark:bg-black/40 backdrop-blur-xl border border-white/60 dark:border-white/15 shadow-[0_4px_20px_rgba(0,0,0,0.04)] group hover:scale-[1.02] transition-all"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-7 md:right-7 z-10 flex items-center gap-2 sm:gap-2.5 px-3.5 py-1.5 rounded-full bg-black/65 dark:bg-white/8 backdrop-blur-xl border border-white/15 dark:border-white/20 hover:border-gold/40 dark:hover:border-gold/40 shadow-[0_8px_32px_rgba(0,0,0,0.28)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] group hover:scale-[1.02] transition-all"
           >
-            <img src="/logo.png" alt="Velora Logo" className="h-5 sm:h-6 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
-            <span className="font-bodoni text-sm sm:text-base font-bold tracking-[0.2em] text-[#121212] dark:text-white uppercase transition-colors">
+            <img src="/logo.png" alt="Velora Logo" className="h-5 sm:h-6 w-auto object-contain opacity-100 group-hover:scale-105 transition-transform drop-shadow-sm" />
+            <span className="font-bodoni text-sm sm:text-base font-bold tracking-[0.2em] text-white uppercase transition-colors">
               Velora
             </span>
           </Link>
