@@ -133,7 +133,7 @@ const Register = () => {
           <img
             src={isDark ? "/register-model.png" : "/register-model-light.png"}
             alt="Velora fashion model"
-            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500"
+            className="absolute inset-0 w-full h-full object-cover object-[75%_top] transition-opacity duration-500"
           />
 
           {/* Overlays — active only in dark mode to blend with dark theme */}
