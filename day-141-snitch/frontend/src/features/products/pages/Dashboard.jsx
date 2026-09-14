@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useProduct } from '../hooks/useProduct'
@@ -118,10 +118,10 @@ const Dashboard = () => {
             {products.map((product) => {
               const coverImg = product.images?.[0]?.url
               return (
-                <div onClick={() => {navigate(`/seller/product/${product._id}`)}} key={product._id} className="group relative bg-white dark:bg-[#141414] border border-black/5 dark:border-white/10 rounded-xl overflow-hidden hover:border-gold/40 dark:hover:border-gold/30 transition-all duration-300 shadow-sm hover:shadow-xl dark:hover:shadow-2xl flex flex-col cursor-pointer">
+                <div onClick={() => {navigate(`/seller/product/${product._id}`)}} key={product._id} className="velora-glow-card group relative flex flex-col cursor-pointer">
                   
                   {/* Image Area */}
-                  <div className="relative aspect-3/4 w-full bg-white dark:bg-[#0e0e0e] overflow-hidden">
+                  <div className="relative aspect-3/4 w-full rounded-t-[12.5px] bg-white dark:bg-[#0e0e0e] overflow-hidden">
                     {coverImg ? (
                       <img 
                         src={coverImg} 

@@ -216,15 +216,19 @@ const Home = () => {
             {filteredProducts.map((product) => {
               const coverImg = product.images?.[0]?.url
               return (
-                <div key={product._id} className="group relative flex flex-col bg-white dark:bg-[#141414] border border-black/5 dark:border-white/5 rounded-xl p-3 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(201,169,110,0.08)] shadow-sm dark:shadow-none transition-all duration-300">
+                <div 
+                  key={product._id} 
+                  onClick={() => navigate(`/product/${product._id}`)} 
+                  className="velora-glow-card group relative flex flex-col p-3 cursor-pointer"
+                >
                   
                   {/* Image Container */}
-                  <div className="relative aspect-3/4 w-full bg-white dark:bg-[#0e0e0e] rounded-lg overflow-hidden mb-5">
+                  <div className="relative aspect-3/4 w-full bg-white dark:bg-[#0e0e0e] rounded-lg overflow-hidden mb-4">
                     {coverImg ? (
                       <img 
                         src={coverImg} 
                         alt={product.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         loading="lazy"
                       />
                     ) : (
@@ -232,14 +236,6 @@ const Home = () => {
                         Velora
                       </div>
                     )}
-                    
-                    {/* Hover Overlay — Quick Add */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                      <button onClick={() => navigate(`/product/${product._id}`)} 
-                      className="transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-white text-black px-8 py-3 rounded-full font-inter text-[11px] font-bold tracking-[0.15em] uppercase cursor-pointer hover:bg-gold hover:text-white">
-                        View Details
-                      </button>
-                    </div>
 
                     {/* Badge */}
                     <div className="absolute top-3.5 left-3.5 inline-flex items-center justify-center bg-black/70 backdrop-blur-md px-2 py-1.25 rounded-[3px] border border-gold/35">
