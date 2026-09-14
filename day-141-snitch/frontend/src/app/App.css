@@ -32,8 +32,10 @@ html.light .text-gold {
   color: #966A24;
 }
 
-html.light [class~="bg-black"] .text-gold,
-html.light [class~="bg-[#0a0a0a]"] .text-gold,
+html.light [class*="bg-black"] .text-gold,
+html.light [class*="bg-black"].text-gold,
+html.light [class*="bg-[#0a0a0a]"] .text-gold,
+html.light [class*="bg-[#0c0c0c]"] .text-gold,
 html.light .dark .text-gold {
   color: #C9A96E !important;
 }

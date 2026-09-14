@@ -156,9 +156,9 @@ const Register = () => {
 
           {/* Bottom brand copy — responsive editorial layout */}
           <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-4 sm:px-6 sm:pb-6 lg:px-9 lg:pb-10">
-            <div className="w-6 lg:w-9 h-0.5 bg-gold mb-1.5 lg:mb-4 rounded-full" />
+            <div className="w-6 lg:w-9 h-0.5 bg-[#E5C583] mb-1.5 lg:mb-4 rounded-full" />
             <h2 className="font-bodoni text-[18px] sm:text-[24px] lg:text-[38px] font-bold leading-[1.1] tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.75)]">
-              Wear Your<br className="hidden lg:inline" /> <span className="text-gold">Identity.</span>
+              Wear Your<br className="hidden lg:inline" /> <span className="text-[#E5C583] drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">Identity.</span>
             </h2>
             <p className="font-inter text-[10.5px] sm:text-xs lg:text-sm text-white/80 mt-1 lg:mt-2 font-light leading-relaxed max-w-65 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] line-clamp-1 sm:line-clamp-none">
               Curated fashion for those who refuse to blend in.
@@ -166,7 +166,7 @@ const Register = () => {
             <div className="flex gap-4 sm:gap-6 mt-2 lg:mt-4 pt-2 lg:pt-0 border-t border-white/15 lg:border-t-0">
               {[['50K+', 'Customers'], ['2K+', 'Styles'], ['4.9★', 'Rating']].map(([n, l]) => (
                 <div key={l}>
-                  <div className="font-inter text-xs sm:text-sm font-bold text-gold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{n}</div>
+                  <div className="font-inter text-xs sm:text-sm font-bold text-[#E5C583] drop-shadow-[0_1px_4px_rgba(0,0,0,0.85)]">{n}</div>
                   <div className="font-inter text-[7.5px] sm:text-[9px] text-white/75 tracking-widest uppercase mt-0.5 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{l}</div>
                 </div>
               ))}

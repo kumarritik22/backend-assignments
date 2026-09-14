@@ -72,15 +72,20 @@ const Home = () => {
           <img 
             src={isDark ? "/model-hero.png" : "/model-hero-light.png"}
             alt="Velora Collection" 
-            className="w-full h-full object-cover object-[80%_top] sm:object-[82%_top] opacity-100 dark:opacity-85 transition-opacity duration-500"
+            className="w-full h-full object-cover object-[80%_top] sm:object-[82%_top] opacity-100 dark:opacity-85 contrast-[1.03] saturate-[1.03] transition-all duration-500"
             onError={(e) => { e.target.src = '/login-model.png' }}
           />
 
-          <div className="absolute inset-0 hidden dark:block bg-linear-to-b from-[#0c0c0c]/50 via-transparent to-transparent" />
-          <div className="absolute inset-0 bg-linear-to-r from-[#F6F5F2]/90 via-[#F6F5F2]/40 to-transparent dark:from-[#0c0c0c]/85 dark:via-[#0c0c0c]/25 dark:to-transparent pointer-events-none" />
+          {/* Dark theme top ambient vignette */}
+          <div className="absolute inset-0 hidden dark:block bg-linear-to-b from-[#0c0c0c]/50 via-transparent to-transparent pointer-events-none" />
+          {/* Dark theme left contrast vignette */}
+          <div className="absolute inset-0 hidden dark:block bg-linear-to-r from-[#0c0c0c]/85 via-[#0c0c0c]/25 to-transparent pointer-events-none" />
+          {/* Light theme left editorial contrast gradient — strictly covers text zone (left ~55%) so the model remains 100% untouched */}
+          <div className="absolute inset-y-0 left-0 w-full sm:w-[70%] lg:w-[55%] bg-linear-to-r from-[#F6F5F2]/95 via-[#F6F5F2]/60 to-transparent pointer-events-none dark:hidden" />
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 h-10 sm:h-12 bg-linear-to-t from-[#F6F5F2] dark:from-[#0c0c0c] to-transparent pointer-events-none opacity-80" />
+        {/* Dark theme bottom seam fade (keeps dark mode seamless into next section, no foggy mist in light mode) */}
+        <div className="hidden dark:block absolute inset-x-0 bottom-0 h-10 sm:h-12 bg-linear-to-t from-[#0c0c0c] to-transparent pointer-events-none" />
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-350 w-full mx-auto px-6 sm:px-12 lg:px-16 flex flex-col items-start text-left animate-[fadeInUp_1s_ease_both]">
@@ -92,20 +97,20 @@ const Home = () => {
               <span className="w-8 h-px bg-gold" />
             </div>
 
-            <h1 className="font-bodoni text-[36px] sm:text-[46px] lg:text-[54px] font-bold text-[#121212] dark:text-white leading-[1.08] tracking-tight mb-5 drop-shadow-[0_2px_15px_rgba(255,255,255,0.85)] dark:drop-shadow-[0_4px_25px_rgba(0,0,0,0.9)]">
+            <h1 className="font-bodoni text-[36px] sm:text-[46px] lg:text-[54px] font-bold text-[#121212] dark:text-white leading-[1.08] tracking-tight mb-5 dark:drop-shadow-[0_4px_25px_rgba(0,0,0,0.9)]">
               Redefining<br />Modern Luxury.
             </h1>
 
-            <p className="font-inter text-xs sm:text-sm text-[#121212] dark:text-white/90 max-w-sm leading-relaxed mb-8 font-medium dark:font-normal drop-shadow-[0_1px_12px_rgba(255,255,255,0.9)] dark:drop-shadow-none">
+            <p className="font-inter text-xs sm:text-sm text-[#3a3935] dark:text-white/90 max-w-sm leading-relaxed mb-8 font-normal">
               Discover curated fashion for those who refuse to blend in. The new season collection is here.
             </p>
 
             <button 
               onClick={() => document.getElementById('collection').scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-3 rounded-full border border-black/30 dark:border-white/25 bg-white/40 dark:bg-transparent backdrop-blur-xs px-8 py-3.5 font-inter text-[11px] font-bold tracking-[0.2em] uppercase text-[#121212] dark:text-white hover:border-gold hover:bg-gold hover:text-black transition-all duration-300 cursor-pointer shadow-sm"
+              className="inline-flex items-center gap-3 rounded-full border border-[#121212] dark:border-white/25 bg-[#121212] dark:bg-transparent text-white hover:bg-gold hover:border-gold hover:text-black dark:hover:border-gold dark:hover:bg-gold dark:hover:text-black px-8 py-3.5 font-inter text-[11px] font-bold tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer shadow-md hover:shadow-xl group"
             >
               Explore Collection
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce group-hover:translate-y-0.5 transition-transform">
                 <path d="M12 5v14M19 12l-7 7-7-7"/>
               </svg>
             </button>
