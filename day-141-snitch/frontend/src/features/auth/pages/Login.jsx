@@ -233,7 +233,7 @@ const Login = () => {
         {/* RIGHT — Brand / Model Panel */}
         <section
           aria-label="Velora brand panel"
-          className="relative w-full h-64 sm:h-80 md:w-[48%] md:h-full shrink-0 overflow-hidden"
+          className="relative w-full h-72 sm:h-80 md:w-[48%] md:h-full shrink-0 overflow-hidden"
         >
           {/* Hero image */}
           <img
@@ -246,8 +246,8 @@ const Login = () => {
           <div className="hidden dark:block absolute inset-0 bg-linear-to-r from-transparent via-transparent to-black/20 dark:to-[#0a0a0a]/35" />
           <div className="hidden dark:block absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/85" />
 
-          {/* Bottom gradient fade — only covers the floor/feet on desktop/tablet so model's upper body stays 100% bright */}
-          <div className="hidden md:block absolute inset-x-0 bottom-0 h-64 sm:h-84 bg-linear-to-t from-black/75 via-black/35 to-transparent pointer-events-none" />
+          {/* Bottom gradient fade — only covers the bottom so model's upper body stays 100% bright */}
+          <div className="absolute inset-x-0 bottom-0 h-36 sm:h-44 md:h-84 bg-linear-to-t from-black/85 via-black/45 to-transparent pointer-events-none" />
 
           {/* Logo — Ultra-Translucent Glass Emblem Badge */}
           <Link 
@@ -260,21 +260,20 @@ const Login = () => {
             </span>
           </Link>
 
-          {/* Bottom brand copy — as it was earlier (desktop / tablet split only) */}
-          <div className="hidden md:block absolute bottom-0 left-0 right-0 z-10 px-6 pb-7 md:px-9 md:pb-10">
-            <div className="w-9 h-0.5 bg-gold mb-4" />
-            <h2 className="font-bodoni text-[28px] sm:text-[32px] md:text-[38px] font-bold leading-[1.1] tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.75)]">
-              Welcome<br />
-              <span className="text-gold">Back.</span>
+          {/* Bottom brand copy — responsive editorial layout */}
+          <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-4 sm:px-6 sm:pb-6 md:px-9 md:pb-10">
+            <div className="w-6 md:w-9 h-0.5 bg-gold mb-1.5 md:mb-4 rounded-full" />
+            <h2 className="font-bodoni text-[18px] sm:text-[24px] md:text-[38px] font-bold leading-[1.1] tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.75)]">
+              Welcome<br className="hidden md:inline" /> <span className="text-gold">Back.</span>
             </h2>
-            <p className="font-inter text-xs sm:text-sm text-white/80 mt-2 font-light leading-relaxed max-w-65 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
+            <p className="font-inter text-[10.5px] sm:text-xs md:text-sm text-white/80 mt-1 md:mt-2 font-light leading-relaxed max-w-65 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] line-clamp-1 sm:line-clamp-none">
               Your style. Your story. Pick up where you left off.
             </p>
-            <div className="flex gap-6 mt-4">
+            <div className="flex gap-4 sm:gap-6 mt-2 md:mt-4 pt-2 md:pt-0 border-t border-white/15 md:border-t-0">
               {[['120K+', 'Members'], ['50+', 'Collections'], ['🌍', 'Worldwide']].map(([num, lbl]) => (
                 <div key={lbl}>
-                  <div className="font-inter text-sm font-bold text-gold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{num}</div>
-                  <div className="font-inter text-[9px] text-white/75 tracking-widest uppercase mt-0.5 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{lbl}</div>
+                  <div className="font-inter text-xs sm:text-sm font-bold text-gold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{num}</div>
+                  <div className="font-inter text-[7.5px] sm:text-[9px] text-white/75 tracking-widest uppercase mt-0.5 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{lbl}</div>
                 </div>
               ))}
             </div>

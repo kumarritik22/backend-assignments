@@ -125,55 +125,54 @@ const Register = () => {
   return (
     <main className="flex flex-col lg:flex-row min-h-screen lg:h-screen lg:overflow-hidden bg-[#F6F5F2] dark:bg-[#0a0a0a]">
 
-      {/* LEFT — Brand / Model */}
-      <section
-        aria-label="Velora brand panel"
-        className="relative w-full h-64 sm:h-80 md:h-96 lg:w-[48%] lg:h-full shrink-0 overflow-hidden"
-      >
-        <img
-          src={isDark ? "/register-model.png" : "/register-model-light.png"}
-          alt="Velora fashion model"
-          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500"
-        />
-
-        {/* Overlays — active only in dark mode to blend with dark theme */}
-        <div className="hidden dark:block absolute inset-0 bg-linear-to-r from-black/20 via-transparent to-transparent dark:from-[#0a0a0a]/35" />
-        <div className="hidden dark:block absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/85" />
-
-        {/* Bottom gradient fade — only covers the floor/rug so model's upper body stays 100% bright */}
-        <div className="hidden lg:block absolute inset-x-0 bottom-0 h-64 sm:h-84 bg-linear-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
-
-        {/* Logo — Ultra-Translucent Glass Emblem Badge */}
-        <Link 
-          to="/" 
-          className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-7 lg:left-7 z-10 flex items-center gap-2 sm:gap-2.5 px-3 py-1.25 rounded-full bg-white/35 dark:bg-black/40 backdrop-blur-xl border border-white/60 dark:border-white/15 shadow-[0_4px_20px_rgba(0,0,0,0.04)] group hover:scale-[1.02] transition-all"
+        {/* LEFT — Brand / Model */}
+        <section
+          aria-label="Velora brand panel"
+          className="relative w-full h-72 sm:h-80 md:h-96 lg:w-[48%] lg:h-full shrink-0 overflow-hidden"
         >
-          <img src="/logo.png" alt="Velora Logo" className="h-5 sm:h-6 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
-          <span className="font-bodoni text-sm sm:text-base font-bold tracking-[0.2em] text-[#121212] dark:text-white uppercase transition-colors">
-            Velora
-          </span>
-        </Link>
+          <img
+            src={isDark ? "/register-model.png" : "/register-model-light.png"}
+            alt="Velora fashion model"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500"
+          />
 
-        {/* Bottom brand copy — desktop editorial layout matching Login */}
-        <div className="hidden lg:block absolute bottom-0 left-0 right-0 z-10 px-6 pb-7 lg:px-9 lg:pb-10">
-          <div className="w-9 h-0.5 bg-gold mb-4 rounded-full" />
-          <h2 className="font-bodoni text-[28px] sm:text-[32px] lg:text-[38px] font-bold leading-[1.1] tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.75)]">
-            Wear Your<br />
-            <span className="text-gold">Identity.</span>
-          </h2>
-          <p className="font-inter text-xs sm:text-sm text-white/80 mt-2 font-light leading-relaxed max-w-65 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
-            Curated fashion for those who refuse to blend in.
-          </p>
-          <div className="flex gap-6 mt-4">
-            {[['50K+', 'Customers'], ['2K+', 'Styles'], ['4.9★', 'Rating']].map(([n, l]) => (
-              <div key={l}>
-                <div className="font-inter text-sm font-bold text-gold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{n}</div>
-                <div className="font-inter text-[9px] text-white/75 tracking-widest uppercase mt-0.5 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{l}</div>
-              </div>
-            ))}
+          {/* Overlays — active only in dark mode to blend with dark theme */}
+          <div className="hidden dark:block absolute inset-0 bg-linear-to-r from-black/20 via-transparent to-transparent dark:from-[#0a0a0a]/35" />
+          <div className="hidden dark:block absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/85" />
+
+          {/* Bottom gradient fade — only covers the bottom so model's upper body stays 100% bright */}
+          <div className="absolute inset-x-0 bottom-0 h-36 sm:h-44 lg:h-84 bg-linear-to-t from-black/85 via-black/45 to-transparent pointer-events-none" />
+
+          {/* Logo — Ultra-Translucent Glass Emblem Badge */}
+          <Link 
+            to="/" 
+            className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-7 lg:left-7 z-10 flex items-center gap-2 sm:gap-2.5 px-3 py-1.25 rounded-full bg-white/35 dark:bg-black/40 backdrop-blur-xl border border-white/60 dark:border-white/15 shadow-[0_4px_20px_rgba(0,0,0,0.04)] group hover:scale-[1.02] transition-all"
+          >
+            <img src="/logo.png" alt="Velora Logo" className="h-5 sm:h-6 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+            <span className="font-bodoni text-sm sm:text-base font-bold tracking-[0.2em] text-[#121212] dark:text-white uppercase transition-colors">
+              Velora
+            </span>
+          </Link>
+
+          {/* Bottom brand copy — responsive editorial layout */}
+          <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-4 sm:px-6 sm:pb-6 lg:px-9 lg:pb-10">
+            <div className="w-6 lg:w-9 h-0.5 bg-gold mb-1.5 lg:mb-4 rounded-full" />
+            <h2 className="font-bodoni text-[18px] sm:text-[24px] lg:text-[38px] font-bold leading-[1.1] tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.75)]">
+              Wear Your<br className="hidden lg:inline" /> <span className="text-gold">Identity.</span>
+            </h2>
+            <p className="font-inter text-[10.5px] sm:text-xs lg:text-sm text-white/80 mt-1 lg:mt-2 font-light leading-relaxed max-w-65 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] line-clamp-1 sm:line-clamp-none">
+              Curated fashion for those who refuse to blend in.
+            </p>
+            <div className="flex gap-4 sm:gap-6 mt-2 lg:mt-4 pt-2 lg:pt-0 border-t border-white/15 lg:border-t-0">
+              {[['50K+', 'Customers'], ['2K+', 'Styles'], ['4.9★', 'Rating']].map(([n, l]) => (
+                <div key={l}>
+                  <div className="font-inter text-xs sm:text-sm font-bold text-gold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{n}</div>
+                  <div className="font-inter text-[7.5px] sm:text-[9px] text-white/75 tracking-widest uppercase mt-0.5 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{l}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* RIGHT — Registration Form or Success Message */}
       <section className="flex-1 flex flex-col bg-[#F6F5F2] dark:bg-[#111] lg:border-l border-black/5 dark:border-white/5 overflow-y-auto px-6 sm:px-10 md:px-14 lg:px-10 xl:px-14">
