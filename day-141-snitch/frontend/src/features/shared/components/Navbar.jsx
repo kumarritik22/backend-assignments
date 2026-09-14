@@ -102,7 +102,7 @@ const Navbar = () => {
         <div className="max-w-350 mx-auto px-5 sm:px-8 flex items-center justify-between">
           
           {/* ── Left: Desktop Navigation ── */}
-          <nav className="hidden md:flex items-center gap-8 flex-1">
+          <nav className="hidden md:flex items-center gap-5 lg:gap-8 flex-1">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path
               return (
@@ -130,7 +130,7 @@ const Navbar = () => {
           </Link>
 
           {/* ── Right: Actions (Search, Cart & Profile) ── */}
-          <div className="flex items-center justify-end gap-5 sm:gap-6 z-50 flex-1">
+          <div className="flex items-center justify-end gap-3.5 sm:gap-4 lg:gap-6 z-50 flex-1">
             
             {/* Search Bar */}
             <form 

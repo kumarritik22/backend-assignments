@@ -65,19 +65,19 @@ const Home = () => {
     <div className="min-h-screen bg-[#F6F5F2] dark:bg-[#0c0c0c] text-[#121212] dark:text-white selection:bg-gold/30 transition-colors duration-300">
 
       {/* ── Hero Section ── */}
-      <section className="relative w-full min-h-[85vh] sm:min-h-[90vh] pt-28 pb-20 sm:pt-32 sm:pb-24 flex items-center justify-center overflow-hidden border-b border-black/5 dark:border-white/5 bg-[#F6F5F2] dark:bg-[#0c0c0c] transition-colors duration-300">
+      <section className="relative w-full min-h-[75vh] md:min-h-[78vh] lg:min-h-[90vh] pt-28 pb-20 sm:pt-32 sm:pb-24 flex items-center justify-center overflow-hidden border-b border-black/5 dark:border-white/5 bg-[#F6F5F2] dark:bg-[#0c0c0c] transition-colors duration-300">
         
         {/* Background Image & Overlays */}
         <div className="absolute inset-0 bg-[#0c0c0c]">
           <img 
             src={isDark ? "/model-hero.png" : "/model-hero-light.png"}
             alt="Velora Collection" 
-            className="w-full h-full object-cover object-top opacity-100 dark:opacity-85 scale-105 animate-[kenBurns_20s_ease-out_forwards] transition-opacity duration-500"
+            className="w-full h-full object-cover object-[80%_top] sm:object-[82%_top] opacity-100 dark:opacity-85 transition-opacity duration-500"
             onError={(e) => { e.target.src = '/login-model.png' }}
           />
 
           <div className="absolute inset-0 hidden dark:block bg-linear-to-b from-[#0c0c0c]/50 via-transparent to-transparent" />
-          <div className="absolute inset-0 hidden dark:block bg-linear-to-r from-[#0c0c0c]/80 via-[#0c0c0c]/20 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-[#F6F5F2]/90 via-[#F6F5F2]/40 to-transparent dark:from-[#0c0c0c]/85 dark:via-[#0c0c0c]/25 dark:to-transparent pointer-events-none" />
         </div>
 
         <div className="absolute inset-x-0 bottom-0 h-10 sm:h-12 bg-linear-to-t from-[#F6F5F2] dark:from-[#0c0c0c] to-transparent pointer-events-none opacity-80" />
