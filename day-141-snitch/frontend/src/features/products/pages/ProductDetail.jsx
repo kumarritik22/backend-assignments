@@ -225,7 +225,7 @@ const ProductDetail = () => {
                                         <>
                                             <button 
                                                 onClick={prevImage}
-                                                className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/75 border border-white/15 cursor-pointer z-10"
+                                                className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-300 hover:bg-black/75 border border-white/15 cursor-pointer z-10"
                                                 aria-label="Previous Image"
                                             >
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -233,7 +233,7 @@ const ProductDetail = () => {
                                             
                                             <button 
                                                 onClick={nextImage}
-                                                className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/75 border border-white/15 cursor-pointer z-10"
+                                                className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-300 hover:bg-black/75 border border-white/15 cursor-pointer z-10"
                                                 aria-label="Next Image"
                                             >
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>

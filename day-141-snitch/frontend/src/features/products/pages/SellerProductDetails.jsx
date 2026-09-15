@@ -301,6 +301,9 @@ const SellerProductDetails = () => {
     // --- State for Product Overview (Buyer View Mockup) ---
     const [activeImage, setActiveImage] = useState(0);
 
+    // State to manage touch swipe gesture for mobiles and tablets
+    const [touchStartX, setTouchStartX] = useState(null)
+
     const nextImage = () => {
         if (product?.images?.length > 1) {
             setActiveImage((prev) => (prev + 1) % product.images.length);
@@ -312,6 +315,25 @@ const SellerProductDetails = () => {
             setActiveImage((prev) => (prev === 0 ? product.images.length - 1 : prev - 1));
         }
     };
+
+    const handleTouchStart = (e) => {
+        setTouchStartX(e.touches[0].clientX)
+    }
+
+    const handleTouchEnd = (e) => {
+        if (touchStartX === null) return;
+
+        const touchEndX = e.changedTouches[0].clientX
+        const diff = touchStartX - touchEndX
+
+        if (diff > 45) {
+            nextImage()
+        } else if (diff < -45) {
+            prevImage()
+        }
+
+        setTouchStartX(null)
+    }
 
     // --- State for Add Variant Form ---
     const [isAddingVariant, setIsAddingVariant] = useState(false);
@@ -423,7 +445,11 @@ const SellerProductDetails = () => {
                             )}
 
                             {/* Main Image Viewer */}
-                            <div className="w-full h-full flex-1 bg-white dark:bg-[#141414] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 relative group shadow-sm dark:shadow-none">
+                            <div 
+                                onTouchStart={handleTouchStart}
+                                onTouchEnd={handleTouchEnd}
+                                className="w-full h-full flex-1 bg-white dark:bg-[#141414] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 relative group shadow-sm dark:shadow-none touch-pan-y"
+                            >
                                 {product?.images && product?.images.length > 0 ? (
                                     <>
                                         <img 
@@ -437,16 +463,18 @@ const SellerProductDetails = () => {
                                             <>
                                                 <button 
                                                     onClick={prevImage}
-                                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/60 border border-white/10 cursor-pointer"
+                                                    className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-300 hover:bg-black/75 border border-white/15 cursor-pointer z-10"
+                                                    aria-label="Previous Image"
                                                 >
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                                                 </button>
                                                 
                                                 <button 
                                                     onClick={nextImage}
-                                                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/60 border border-white/10 cursor-pointer"
+                                                    className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-300 hover:bg-black/75 border border-white/15 cursor-pointer z-10"
+                                                    aria-label="Next Image"
                                                 >
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
                                                 </button>
                                                 
                                                 {/* Dot Indicators */}
