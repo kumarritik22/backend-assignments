@@ -421,9 +421,9 @@ const SellerProductDetails = () => {
                 
                 {/* ── 1. Buyer View (Product Preview) ── */}
                 <div className="mb-12 pb-10 border-b border-black/10 dark:border-white/10">
-                    <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
+                    <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 xl:gap-20">
                         {/* Left: Image Gallery */}
-                        <div className="w-full lg:w-[45%] xl:w-[42%] flex flex-col sm:flex-row gap-3 sm:gap-4 h-110 sm:h-120 lg:h-125">
+                        <div className="w-full max-w-120 lg:max-w-none lg:w-[45%] xl:w-[42%] mx-auto lg:mx-0 flex flex-col sm:flex-row gap-3 sm:gap-4 h-125 sm:h-140 lg:h-125">
                             
                             {/* Thumbnails Strip (Desktop Only) */}
                             {product?.images && product.images.length > 1 && (
@@ -497,7 +497,7 @@ const SellerProductDetails = () => {
                         </div>
 
                         {/* Right: Product Details */}
-                        <div className="w-full lg:w-[55%] xl:w-1/2 flex flex-col justify-center">
+                        <div className="w-full max-w-135 lg:max-w-none lg:w-[55%] xl:w-1/2 mx-auto lg:mx-0 flex flex-col justify-center">
                             
                             <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/25 rounded-full px-3 py-1.5 mb-6 self-start">
                                 <span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0 animate-pulse" />
