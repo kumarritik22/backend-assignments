@@ -12,6 +12,7 @@ const ProductDetail = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [activeImage, setActiveImage] = useState(0)
     const [isAddingToCart, setIsAddingToCart] = useState(false)
+    const [touchStartX, setTouchStartX] = useState(null)
 
     const navigate = useNavigate()
     const { user } = useSelector(state => state.auth)
@@ -134,6 +135,25 @@ const ProductDetail = () => {
         }
     }
 
+    const handleTouchStart = (e) => {
+        setTouchStartX(e.touches[0].clientX)
+    }
+
+    const handleTouchEnd = (e) => {
+        if (touchStartX === null) return
+
+        const touchEndX = e.changedTouches[0].clientX
+        const diff = touchStartX - touchEndX
+
+        if (diff > 45) {
+            nextImage()
+        } else if (diff < -45) {
+            prevImage()
+        }
+
+        setTouchStartX(null)
+    }
+
     // Currency symbol formatter
     const formatPrice = (amount, currency) => {
         if (amount == null) return ''
@@ -166,7 +186,7 @@ const ProductDetail = () => {
                 <div className="flex flex-col lg:flex-row gap-12 xl:gap-20">
                     
                     {/* Left: Image Gallery */}
-                    <div className="w-full lg:w-[45%] xl:w-[42%] flex flex-col sm:flex-row gap-3 sm:gap-4 h-[440px] sm:h-[480px] lg:h-[500px]">
+                    <div className="w-full lg:w-[45%] xl:w-[42%] flex flex-col sm:flex-row gap-3 sm:gap-4 h-110 sm:h-120 lg:h-125">
                         
                         {/* Thumbnails Strip (Desktop Only - Auto-fills exact height with 0 scrolling) */}
                         {displayImages && displayImages.length > 1 && (
@@ -188,7 +208,11 @@ const ProductDetail = () => {
                         )}
 
                         {/* Main Image Viewer */}
-                        <div className="w-full flex-1 h-full bg-white dark:bg-[#141414] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm dark:shadow-none relative group">
+                        <div 
+                            onTouchStart={handleTouchStart}
+                            onTouchEnd={handleTouchEnd}
+                            className="w-full flex-1 h-full bg-white dark:bg-[#141414] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm dark:shadow-none relative group touch-pan-y"
+                        >
                             {displayImages && displayImages.length > 0 ? (
                                 <>
                                     <img 
@@ -201,16 +225,18 @@ const ProductDetail = () => {
                                         <>
                                             <button 
                                                 onClick={prevImage}
-                                                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/60 border border-white/10 cursor-pointer"
+                                                className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/75 border border-white/15 cursor-pointer z-10"
+                                                aria-label="Previous Image"
                                             >
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                                             </button>
                                             
                                             <button 
                                                 onClick={nextImage}
-                                                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/60 border border-white/10 cursor-pointer"
+                                                className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/75 border border-white/15 cursor-pointer z-10"
+                                                aria-label="Next Image"
                                             >
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
                                             </button>
                                             
                                             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex sm:hidden gap-2">
