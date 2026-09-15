@@ -198,27 +198,50 @@ const OrderDetails = () => {
               ))}
             </div>
 
-            {/* Mobile Vertical Stepper */}
-            <div className="md:hidden space-y-6 relative pl-6 border-l-2 border-black/10 dark:border-white/10 ml-3">
-              {ORDER_TIMELINE.map((step, index) => (
-                <div key={index} className="relative">
-                  <div 
-                    className={`absolute -left-7.75 top-0 w-6 h-6 rounded-full flex items-center justify-center ${
-                      step.completed 
-                        ? 'bg-gold text-black' 
-                        : step.active 
-                        ? 'bg-[#f7f4ed] dark:bg-[#1a1a1a] border-2 border-gold text-gold ring-4 ring-gold/20' 
-                        : 'bg-[#ECEAE4] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/20 text-[#888] dark:text-[#555]'
-                    }`}
-                  >
-                    {step.completed ? <CheckCircle2 className="w-3.5 h-3.5 text-black" /> : <span className="text-[10px] font-bold">{index + 1}</span>}
+            {/* Mobile Vertical Stepper (Mathematically Centered & Straight) */}
+            <div className="md:hidden space-y-0">
+              {ORDER_TIMELINE.map((step, index) => {
+                const isLast = index === ORDER_TIMELINE.length - 1;
+                return (
+                  <div key={index} className="flex gap-4">
+                    {/* Left Track: Circle + Connecting Line sharing the exact same center axis */}
+                    <div className="flex flex-col items-center">
+                      <div 
+                        className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 relative z-10 transition-all duration-300 ${
+                          step.completed 
+                            ? 'bg-gold text-black shadow-[0_0_10px_rgba(201,169,110,0.4)]' 
+                            : step.active 
+                            ? 'bg-[#f7f4ed] dark:bg-[#1a1a1a] border-2 border-gold text-gold ring-4 ring-gold/20' 
+                            : 'bg-[#ECEAE4] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/20 text-[#888] dark:text-[#555]'
+                        }`}
+                      >
+                        {step.completed ? (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-black" strokeWidth={2.5} />
+                        ) : (
+                          <span className="font-inter text-[11px] font-bold">{index + 1}</span>
+                        )}
+                      </div>
+                      
+                      {/* Vertical Connecting Line (Stops neatly at the last step) */}
+                      {!isLast && (
+                        <div 
+                          className={`w-0.5 grow min-h-9 my-1 transition-colors duration-300 ${
+                            step.completed ? 'bg-gold' : 'bg-black/10 dark:bg-white/10'
+                          }`} 
+                        />
+                      )}
+                    </div>
+
+                    {/* Right Content */}
+                    <div className={`flex-1 ${isLast ? 'pb-0' : 'pb-6'}`}>
+                      <h4 className={`font-inter text-xs font-bold tracking-wider uppercase ${step.active ? 'text-gold' : step.completed ? 'text-[#121212] dark:text-white' : 'text-[#888] dark:text-[#666]'}`}>
+                        {step.title}
+                      </h4>
+                      <p className="font-inter text-[11px] text-[#888] dark:text-[#555] mt-0.5">{step.date}</p>
+                    </div>
                   </div>
-                  <h4 className={`font-inter text-xs font-bold tracking-wider uppercase ${step.active ? 'text-gold' : step.completed ? 'text-[#121212] dark:text-white' : 'text-[#888] dark:text-[#666]'}`}>
-                    {step.title}
-                  </h4>
-                  <p className="font-inter text-[11px] text-[#888] dark:text-[#555] mt-0.5">{step.date}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
