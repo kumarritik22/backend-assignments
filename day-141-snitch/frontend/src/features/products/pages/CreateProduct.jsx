@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
-import { useProduct } from '../hooks/useProduct'
+import { useProduct } from '../hooks/useProduct.js'
+import { compressImage } from '../../../utils/imageCompressor.js'
 
 const CURRENCIES = ['INR', 'USD', 'EUR', 'GBP', 'JPY']
 const MAX_IMAGES = 7
@@ -126,18 +127,40 @@ const CreateProduct = () => {
     if (errors[name]) setErrors(p => ({ ...p, [name]: '' }))
     setApiError('')
   }
+  
 
-  const addImages = (files) => {
-    const accepted  = Array.from(files).filter(f => f.type.startsWith('image/'))
-    const remaining = MAX_IMAGES - images.length
-    if (remaining <= 0) return
-    const toAdd = accepted.slice(0, remaining).map(file => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }))
-    setImages(p => [...p, ...toAdd])
-    if (errors.images) setErrors(p => ({ ...p, images: '' }))
-  }
+  const [isOptimizing, setIsOptimizing] = useState(false);
+
+  const addImages = async (files) => {
+    const accepted = Array.from(files).filter(f => f.type.startsWith('image/'));
+    const remaining = MAX_IMAGES - images.length;
+    if (remaining <= 0) return;
+
+    const toProcess = accepted.slice(0, remaining);
+    if (!toProcess.length) return;
+
+    setIsOptimizing(true);
+    setApiError('');
+
+    try {
+      // Compress all selected images in parallel
+      const optimizedFiles = await Promise.all(
+        toProcess.map(file => compressImage(file))
+      );
+
+      const toAdd = optimizedFiles.map(file => ({
+        file,
+        preview: URL.createObjectURL(file),
+      }));
+
+      setImages(prev => [...prev, ...toAdd]);
+      if (errors.images) setErrors(prev => ({ ...prev, images: '' }));
+    } catch (err) {
+      setApiError(err.message || 'One or more images could not be processed.');
+    } finally {
+      setIsOptimizing(false);
+    }
+  };
 
   const removeImage = (idx) => {
     setImages(p => {
@@ -311,38 +334,52 @@ const CreateProduct = () => {
             {/* Drop zone */}
             {images.length < MAX_IMAGES && (
               <div
-                onClick={() => fileInputRef.current?.click()}
-                onDragOver={e => { e.preventDefault(); setIsDragging(true) }}
+                onClick={() => !isOptimizing && fileInputRef.current?.click()}
+                onDragOver={e => { e.preventDefault(); if (!isOptimizing) setIsDragging(true) }}
                 onDragLeave={() => setIsDragging(false)}
-                onDrop={handleDrop}
+                onDrop={e => { if (!isOptimizing) handleDrop(e) }}
                 className={[
                   'flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-xl py-12 px-6 cursor-pointer transition-all duration-200',
-                  isDragging
+                  isOptimizing
+                    ? 'border-gold/50 bg-gold/5 cursor-wait'
+                    : isDragging
                     ? 'border-gold/60 bg-gold/5 scale-[1.01]'
                     : errors.images
                     ? 'border-red-500/40 bg-red-500/5 hover:border-red-500/60'
                     : 'border-black/15 dark:border-[#252525] bg-[#F6F5F2] dark:bg-[#0e0e0e] hover:border-gold/40 hover:bg-gold/5',
                 ].join(' ')}
               >
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-200 ${isDragging ? 'bg-gold/15' : 'bg-white dark:bg-[#1a1a1a] shadow-xs'}`}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-                    className={isDragging ? 'text-gold' : 'text-[#888] dark:text-[#555]'}>
-                    <polyline points="16 16 12 12 8 16" />
-                    <line x1="12" y1="12" x2="12" y2="21" />
-                    <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
-                  </svg>
-                </div>
-                <div className="text-center">
-                  <p className="font-inter text-sm font-medium text-[#444] dark:text-[#bbb]">
-                    {isDragging ? 'Drop to upload' : 'Drag & drop or click to upload'}
-                  </p>
-                  <p className="font-inter text-[11px] text-[#888] dark:text-[#444] mt-1">
-                    Up to {MAX_IMAGES} images — JPG, PNG, WEBP · Max 5 MB each
-                  </p>
-                </div>
+                {isOptimizing ? (
+                  <div className="flex flex-col items-center justify-center gap-2.5 py-2">
+                    <div className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+                    <p className="font-inter text-xs text-gold font-medium">Optimizing photos for mobile...</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-200 ${isDragging ? 'bg-gold/15' : 'bg-white dark:bg-[#1a1a1a] shadow-xs'}`}>
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+                        className={isDragging ? 'text-gold' : 'text-[#888] dark:text-[#555]'}>
+                        <polyline points="16 16 12 12 8 16" />
+                        <line x1="12" y1="12" x2="12" y2="21" />
+                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+                      </svg>
+                    </div>
+                    <div className="text-center">
+                      <p className="font-inter text-sm font-medium text-[#444] dark:text-[#bbb]">
+                        {isDragging ? 'Drop to upload' : 'Drag & drop or click to upload'}
+                      </p>
+                      <p className="font-inter text-[11px] text-[#888] dark:text-[#444] mt-1">
+                        Up to {MAX_IMAGES} images — JPG, PNG, WEBP · Auto-optimized for mobile
+                      </p>
+                    </div>
+                  </>
+                )}
                 <input ref={fileInputRef} type="file" accept="image/*" multiple className="sr-only"
-                  onChange={e => addImages(e.target.files)} />
+                  onChange={e => {
+                    addImages(e.target.files);
+                    e.target.value = '';
+                  }} />
               </div>
             )}
 

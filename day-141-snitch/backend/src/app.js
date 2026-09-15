@@ -41,4 +41,17 @@ app.use("/api/products", productRouter);
 
 app.use("/api/cart", cartRouter);
 
+// Global Error Handler (Handles Multer LIMIT_FILE_SIZE and other errors)
+app.use((err, req, res, next) => {
+    if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({
+            message: "File size exceeds the 5 MB limit. Please select images under 5 MB each."
+        });
+    }
+    const statusCode = err.status || err.statusCode || 500;
+    res.status(statusCode).json({
+        message: err.message || "Internal server error"
+    });
+});
+
 export default app;

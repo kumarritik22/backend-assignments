@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useProduct } from '../hooks/useProduct.js';
 import { Pencil, Trash2, X, Plus } from "lucide-react";
+import { compressImage } from '../../../utils/imageCompressor.js';
 
 const SellerProductDetails = () => {
 
@@ -16,6 +17,11 @@ const SellerProductDetails = () => {
     const [isDeletingVariant, setIsDeletingVariant] = useState(false)
     const [isSavingVariant, setIsSavingVariant] = useState(false)
     
+    // --- Image Optimization States ---
+    const [isOptimizingEditImages, setIsOptimizingEditImages] = useState(false);
+    const [isOptimizingVariantImages, setIsOptimizingVariantImages] = useState(false);
+    const [isOptimizingNewVariantImages, setIsOptimizingNewVariantImages] = useState(false);
+
     // --- Edit Product States ---
     const [isEditing, setIsEditing] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
@@ -59,6 +65,21 @@ const SellerProductDetails = () => {
     }, [productId]);
 
 
+    // Lock background scroll whenever an overlay modal is open
+    useEffect(() => {
+        const isAnyModalOpen = isEditing || Boolean(variantToEdit) || showDeleteModal || Boolean(variantToDelete);
+        if (isAnyModalOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        // Safety cleanup if the component unmounts
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isEditing, variantToEdit, showDeleteModal, variantToDelete]);
+
+
     const onConfirmDelete = async () => {
         setIsDeleting(true);
         const res = await handleDeleteProduct(productId);
@@ -93,7 +114,7 @@ const SellerProductDetails = () => {
     };
 
 
-    const handleEditImageUpload = (e) => {
+    const handleEditImageUpload = async (e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
 
@@ -101,21 +122,29 @@ const SellerProductDetails = () => {
             return alert('You can select a maximum of 7 images at once.');
         }
 
-        // 1. Build the complete unified timeline: [old existing -> previously selected new -> freshly selected new]
-        const allImagesTimeline = [...editExistingImages, ...editNewImages, ...files];
+        setIsOptimizingEditImages(true);
+        try {
+            const compressedFiles = await Promise.all(files.map(compressImage));
 
-        // 2. Keep ONLY the last 7 images (Oldest at the beginning are dropped first!)
-        const final7 = allImagesTimeline.slice(-7);
+            // 1. Build the complete unified timeline: [old existing -> previously selected new -> freshly selected new]
+            const allImagesTimeline = [...editExistingImages, ...editNewImages, ...compressedFiles];
 
-        // 3. Separate the final 7 back into existing saved images vs new File objects
-        const keptExisting = final7.filter((item) => !(item instanceof File) && item.url);
-        const keptNew = final7.filter((item) => item instanceof File || !item.url);
+            // 2. Keep ONLY the last 7 images (Oldest at the beginning are dropped first!)
+            const final7 = allImagesTimeline.slice(-7);
 
-        setEditExistingImages(keptExisting);
-        setEditNewImages(keptNew);
+            // 3. Separate the final 7 back into existing saved images vs new File objects
+            const keptExisting = final7.filter((item) => !(item instanceof File) && item.url);
+            const keptNew = final7.filter((item) => item instanceof File || !item.url);
 
-        // Reset input so selecting the same files again still triggers onChange
-        e.target.value = '';
+            setEditExistingImages(keptExisting);
+            setEditNewImages(keptNew);
+        } catch (err) {
+            alert(err.message || 'Failed to process image');
+        } finally {
+            setIsOptimizingEditImages(false);
+            // Reset input so selecting the same files again still triggers onChange
+            e.target.value = '';
+        }
     };
 
 
@@ -226,7 +255,7 @@ const SellerProductDetails = () => {
 
 
     // Variant Image Handlers
-    const handleEditVariantImageUpload = (e) => {
+    const handleEditVariantImageUpload = async (e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
 
@@ -234,15 +263,24 @@ const SellerProductDetails = () => {
             return alert("You can select a maximum of 7 images at once.");
         }
 
-        const allImagesTimeline = [...editVariantExistingImages, ...editVariantNewImages, ...files];
-        const final7 = allImagesTimeline.slice(-7);
+        setIsOptimizingVariantImages(true);
+        try {
+            const compressedFiles = await Promise.all(files.map(compressImage));
 
-        const keptExisting = final7.filter((item) => !(item instanceof File) && item.url);
-        const keptNew = final7.filter((item) => item instanceof File || !item.url);
+            const allImagesTimeline = [...editVariantExistingImages, ...editVariantNewImages, ...compressedFiles];
+            const final7 = allImagesTimeline.slice(-7);
 
-        setEditVariantExistingImages(keptExisting);
-        setEditVariantNewImages(keptNew);
-        e.target.value = "";
+            const keptExisting = final7.filter((item) => !(item instanceof File) && item.url);
+            const keptNew = final7.filter((item) => item instanceof File || !item.url);
+
+            setEditVariantExistingImages(keptExisting);
+            setEditVariantNewImages(keptNew);
+        } catch (err) {
+            alert(err.message || 'Failed to process image');
+        } finally {
+            setIsOptimizingVariantImages(false);
+            e.target.value = "";
+        }
     };
 
 
@@ -363,13 +401,23 @@ const SellerProductDetails = () => {
         setNewAttributes(updated);
     };
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         const files = Array.from(e.target.files);
         if (newImages.length + files.length > 7) {
             alert('You can only upload a maximum of 7 images per variant.');
             return;
         }
-        setNewImages([...newImages, ...files]);
+
+        setIsOptimizingNewVariantImages(true);
+        try {
+            const compressedFiles = await Promise.all(files.map(compressImage));
+            setNewImages([...newImages, ...compressedFiles]);
+        } catch (err) {
+            alert(err.message || 'Failed to process image');
+        } finally {
+            setIsOptimizingNewVariantImages(false);
+            e.target.value = '';
+        }
     };
 
     const handleRemoveImage = (index) => {
@@ -662,10 +710,19 @@ const SellerProductDetails = () => {
                                         ))}
                                         
                                         {newImages.length < 7 && (
-                                            <label className="shrink-0 w-24 h-24 rounded-lg border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-2 transition-all">
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#888] dark:text-[#666]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                                <span className="font-inter text-[9px] text-[#888] dark:text-[#666] uppercase">Upload</span>
-                                                <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
+                                            <label className={`shrink-0 w-24 h-24 rounded-lg border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold ${isOptimizingNewVariantImages ? 'cursor-wait opacity-70' : 'cursor-pointer'}`}>
+                                                {isOptimizingNewVariantImages ? (
+                                                    <>
+                                                        <div className="w-5 h-5 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+                                                        <span className="font-inter text-[8px] text-gold uppercase font-bold tracking-wider">Optimizing...</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#888] dark:text-[#666]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                                        <span className="font-inter text-[9px] uppercase">Upload</span>
+                                                        <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
+                                                    </>
+                                                )}
                                             </label>
                                         )}
                                     </div>
@@ -951,16 +1008,25 @@ const SellerProductDetails = () => {
                                 ))}
                                 
                                 {/* Add Photo Button */}
-                                <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
-                                    <Plus className="w-5 h-5" />
-                                    <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
-                                    <input 
-                                        type="file" 
-                                        multiple 
-                                        accept="image/*" 
-                                        onChange={handleEditImageUpload} 
-                                        className="hidden" 
-                                    />
+                                <label className={`shrink-0 w-24 h-24 rounded-xl border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold ${isOptimizingEditImages ? 'cursor-wait opacity-70' : 'cursor-pointer'}`}>
+                                    {isOptimizingEditImages ? (
+                                        <>
+                                            <div className="w-5 h-5 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+                                            <span className="font-inter text-[8px] uppercase tracking-wider font-bold text-gold">Optimizing...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Plus className="w-5 h-5" />
+                                            <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
+                                            <input 
+                                                type="file" 
+                                                multiple 
+                                                accept="image/*" 
+                                                onChange={handleEditImageUpload} 
+                                                className="hidden" 
+                                            />
+                                        </>
+                                    )}
                                 </label>
                             </div>
                         </div>
@@ -1154,17 +1220,26 @@ const SellerProductDetails = () => {
                                 ))}
                                 
                                 {/* Add Photo Button */}
-                                <label className="shrink-0 w-24 h-24 rounded-xl border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 cursor-pointer flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold">
-                                    <Plus className="w-5 h-5" />
-                                    <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
-                                    <input 
-                                        type="file" 
-                                        multiple 
-                                        accept="image/*" 
-                                        onChange={handleEditVariantImageUpload} 
-                                        className="hidden" 
-                                    />
-                                </label>
+                                 <label className={`shrink-0 w-24 h-24 rounded-xl border border-dashed border-black/20 dark:border-white/20 hover:border-gold/50 hover:bg-gold/5 flex flex-col items-center justify-center gap-1.5 transition-all text-[#888] hover:text-gold ${isOptimizingVariantImages ? 'cursor-wait opacity-70' : 'cursor-pointer'}`}>
+                                     {isOptimizingVariantImages ? (
+                                         <>
+                                             <div className="w-5 h-5 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+                                             <span className="font-inter text-[8px] uppercase tracking-wider font-bold text-gold">Optimizing...</span>
+                                         </>
+                                     ) : (
+                                         <>
+                                             <Plus className="w-5 h-5" />
+                                             <span className="font-inter text-[9px] uppercase tracking-wider font-bold">Add Photo</span>
+                                             <input 
+                                                 type="file" 
+                                                 multiple 
+                                                 accept="image/*" 
+                                                 onChange={handleEditVariantImageUpload} 
+                                                 className="hidden" 
+                                             />
+                                         </>
+                                     )}
+                                 </label>
                             </div>
                         </div>
 
