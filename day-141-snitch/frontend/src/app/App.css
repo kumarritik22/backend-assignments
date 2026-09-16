@@ -124,17 +124,17 @@ html.light .velora-glow-card {
 .velora-glow-card::before {
   content: "";
   position: absolute;
-  inset: -2.5px;
-  border-radius: 16.5px;
+  inset: -3px;
+  border-radius: 17px;
   background: conic-gradient(
     from var(--rotate),
     transparent 0%,
     transparent 10%,
-    #8C703B 20%,
-    #FFF0C2 28%,
+    #8C703B 18%,
+    #C9A96E 26%,
     #E5C583 34%,
-    #C9A96E 40%,
-    #8C703B 48%,
+    #C9A96E 42%,
+    #8C703B 50%,
     transparent 60%,
     transparent 100%  
   );
@@ -142,7 +142,7 @@ html.light .velora-glow-card {
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  padding: 2.5px;
+  padding: 3px;
   opacity: 0;
   animation: borderRotate 3.5s linear infinite;
   animation-play-state: paused;
@@ -165,7 +165,7 @@ html.light .velora-glow-card::before {
     transparent 60%,
     transparent 100%
   );
-  padding: 2.5px;
+  padding: 3px;
 }
 
 /* Light Theme: Matched Ambient Champagne Halo */

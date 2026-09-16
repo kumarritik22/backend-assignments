@@ -118,10 +118,10 @@ const Dashboard = () => {
             {products.map((product) => {
               const coverImg = product.images?.[0]?.url
               return (
-                <div onClick={() => {navigate(`/seller/product/${product._id}`)}} key={product._id} className="velora-glow-card group relative flex flex-col cursor-pointer">
+                <div onClick={() => {navigate(`/seller/product/${product._id}`)}} key={product._id} className="velora-glow-card group relative flex flex-col p-3 cursor-pointer">
                   
                   {/* Image Area */}
-                  <div className="relative aspect-3/4 w-full rounded-t-[12.5px] bg-white dark:bg-[#0e0e0e] overflow-hidden">
+                  <div className="relative aspect-3/4 w-full rounded-lg bg-white dark:bg-[#0e0e0e] overflow-hidden mb-4">
                     {coverImg ? (
                       <img 
                         src={coverImg} 
@@ -160,7 +160,7 @@ const Dashboard = () => {
                   </div>
 
                   {/* Content Area */}
-                  <div className="p-5 flex-1 flex flex-col">
+                  <div className="px-2 pb-2 flex-1 flex flex-col">
                     <h3 className="font-bodoni text-[18px] sm:text-[19px] font-bold text-[#121212] dark:text-white leading-tight tracking-tight mb-2 line-clamp-2 group-hover:text-gold transition-colors duration-200">
                       {product.title}
                     </h3>
