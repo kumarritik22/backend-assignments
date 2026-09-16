@@ -1087,7 +1087,7 @@ const SellerProductDetails = () => {
             {/* Edit Variant Modal */}
             {variantToEdit && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/80 backdrop-blur-md animate-[fadeIn_0.2s_ease_both]">
-                    <div className="relative w-full max-w-2xl bg-white dark:bg-[#121212] border border-black/5 dark:border-white/10 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl">
+                    <div className="relative w-full max-w-2xl bg-white dark:bg-[#121212] border border-black/5 dark:border-white/10 rounded-2xl p-4 sm:p-8 max-h-[90vh] overflow-y-auto overflow-x-hidden overscroll-contain shadow-2xl">
                         <form onSubmit={handleSaveVariantEdit} className="flex flex-col gap-6">
                             
                             {/* Header */}
@@ -1112,26 +1112,27 @@ const SellerProductDetails = () => {
                                 </label>
                                 <div className="flex flex-col gap-3">
                                     {editVariantFormData.attributes.map((attr, idx) => (
-                                        <div key={idx} className="flex items-start gap-3">
+                                        <div key={idx} className="flex items-center gap-2 sm:gap-3">
                                             <input 
                                                 type="text" 
                                                 placeholder="Attribute (e.g. Size)"
                                                 value={attr.key}
                                                 onChange={(e) => handleVariantAttributeChange(idx, 'key', e.target.value)}
-                                                className="flex-1 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none transition-colors"
+                                                className="flex-1 min-w-0 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-[#121212] dark:text-white text-xs sm:text-sm focus:border-gold focus:outline-none transition-colors"
                                             />
                                             <input 
                                                 type="text" 
-                                                placeholder="Value (e.g. XL, Crimson Red)"
+                                                placeholder="Value (e.g. XL, Black)"
                                                 value={attr.value}
                                                 onChange={(e) => handleVariantAttributeChange(idx, 'value', e.target.value)}
-                                                className="flex-1 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[#121212] dark:text-white text-sm focus:border-gold focus:outline-none transition-colors"
+                                                className="flex-1 min-w-0 bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-[#121212] dark:text-white text-xs sm:text-sm focus:border-gold focus:outline-none transition-colors"
                                             />
                                             {editVariantFormData.attributes.length > 1 && (
                                                 <button 
                                                     type="button" 
                                                     onClick={() => handleRemoveVariantAttributeField(idx)}
-                                                    className="p-3 text-red-500 dark:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-red-400/20"
+                                                    aria-label="Remove attribute"
+                                                    className="shrink-0 p-2.5 sm:p-3 text-red-500 dark:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer border border-transparent hover:border-red-400/20"
                                                 >
                                                     <X className="w-4 h-4" />
                                                 </button>
