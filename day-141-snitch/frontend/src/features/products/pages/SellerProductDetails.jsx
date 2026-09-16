@@ -695,16 +695,20 @@ const SellerProductDetails = () => {
                                 <div>
                                     <label className="block font-inter text-[11px] font-bold uppercase tracking-widest text-[#636059] dark:text-[#888] mb-3">Images (Max 7)</label>
                                     
-                                    <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                                    <div className="flex gap-4 overflow-x-auto pt-2.5 pb-2 px-1 scrollbar-hide">
                                         {newImages.map((file, idx) => (
-                                            <div key={idx} className="relative shrink-0 w-24 h-24 rounded-lg bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 overflow-hidden group">
-                                                <img src={URL.createObjectURL(file)} alt="preview" className="w-full h-full object-cover" />
+                                            <div key={idx} className="relative shrink-0 w-24 h-24 group">
+                                                {/* Inner clipped container for image */}
+                                                <div className="w-full h-full rounded-lg bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 overflow-hidden">
+                                                    <img src={URL.createObjectURL(file)} alt="preview" className="w-full h-full object-cover" />
+                                                </div>
+                                                {/* Floating Corner Cross Button */}
                                                 <button 
                                                     type="button" 
                                                     onClick={() => handleRemoveImage(idx)}
                                                     aria-label="Remove image"
-                                                    className="absolute top-1.5 right-1.5 z-20 w-6 h-6 rounded-full bg-black/75 backdrop-blur-xs border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
-                                                >
+                                                    className="absolute -top-2 -right-2 z-20 w-6 h-6 xl:w-5 xl:h-5 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 xl:opacity-0 xl:group-hover:opacity-100"
+                                                > 
                                                     <X className="w-3.5 h-3.5" />
                                                 </button>
                                             </div>
@@ -1000,7 +1004,7 @@ const SellerProductDetails = () => {
                                             type="button" 
                                             onClick={() => handleRemoveExistingImage(idx)}
                                             aria-label="Remove image"
-                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 xl:w-5 xl:h-5 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 xl:opacity-0 xl:group-hover:opacity-100"
                                         >
                                             <X className="w-3.5 h-3.5" />
                                         </button>
@@ -1023,7 +1027,7 @@ const SellerProductDetails = () => {
                                             type="button" 
                                             onClick={() => handleRemoveEditNewImage(idx)}
                                             aria-label="Remove image"
-                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 xl:w-5 xl:h-5 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 xl:opacity-0 xl:group-hover:opacity-100"
                                         >
                                             <X className="w-3.5 h-3.5" />
                                         </button>
@@ -1221,7 +1225,7 @@ const SellerProductDetails = () => {
                                             type="button" 
                                             onClick={() => handleRemoveEditVariantExistingImage(idx)}
                                             aria-label="Remove image"
-                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 xl:w-5 xl:h-5 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 xl:opacity-0 xl:group-hover:opacity-100"
                                         >
                                             <X className="w-3.5 h-3.5" />
                                         </button>
@@ -1244,7 +1248,7 @@ const SellerProductDetails = () => {
                                             type="button" 
                                             onClick={() => handleRemoveEditVariantNewImage(idx)}
                                             aria-label="Remove image"
-                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 xl:w-5 xl:h-5 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 xl:opacity-0 xl:group-hover:opacity-100"
                                         >
                                             <X className="w-3.5 h-3.5" />
                                         </button>

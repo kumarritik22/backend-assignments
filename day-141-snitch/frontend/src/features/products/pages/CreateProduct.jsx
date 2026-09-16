@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { useProduct } from '../hooks/useProduct.js'
 import { compressImage } from '../../../utils/imageCompressor.js'
+import { X } from 'lucide-react';
 
 const CURRENCIES = ['INR', 'USD', 'EUR', 'GBP', 'JPY']
 const MAX_IMAGES = 7
@@ -389,26 +390,39 @@ const CreateProduct = () => {
 
             {/* Preview grid */}
             {images.length > 0 && (
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-5">
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-5 pt-2">
                 {images.map((img, idx) => (
-                  <div key={idx} className="relative group aspect-square rounded-lg overflow-hidden border border-black/10 dark:border-white/8 bg-[#f0ede6] dark:bg-black">
-                    <img src={img.preview} alt={`Product ${idx + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                    <button type="button" onClick={() => removeImage(idx)}
+                  <div key={idx} className="relative group aspect-square">
+
+                    {/* Inner clipped container to keep the photo rounded */}
+                    <div className="relative w-full h-full rounded-lg overflow-hidden border border-black/10 dark:border-white/8 bg-[#f0ede6] dark:bg-black">
+                      <img 
+                        src={img.preview} 
+                        alt={`Product ${idx + 1}`}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      
+                      {/* Cover badge on first image */}
+                      {idx === 0 && (
+                        <div className="absolute bottom-2 left-2 bg-gold/90 rounded-sm px-1.5 py-0.5 shadow-sm">
+                          <span className="font-inter text-[9px] font-bold text-[#0a0a0a] uppercase tracking-wide">Cover</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Floating Corner Cross Button (Matches Variant Style) */}
+                    <button 
+                      type="button" 
+                      onClick={() => removeImage(idx)}
                       aria-label={`Remove image ${idx + 1}`}
-                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/70 border border-white/15 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-500/80 hover:border-red-400 text-white">
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
+                      className="absolute -top-2 -right-2 z-20 w-6 h-6 xl:w-5 xl:h-5 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 xl:opacity-0 xl:group-hover:opacity-100"
+                    >
+                      <X className="w-3.5 h-3.5" />
                     </button>
-                    {idx === 0 && (
-                      <div className="absolute bottom-2 left-2 bg-gold/90 rounded-sm px-1.5 py-0.5 shadow-sm">
-                        <span className="font-inter text-[9px] font-bold text-[#0a0a0a] uppercase tracking-wide">Cover</span>
-                      </div>
-                    )}
                   </div>
                 ))}
+
                 {/* Add more tile */}
                 {images.length < MAX_IMAGES && (
                   <button type="button" onClick={() => fileInputRef.current?.click()}
