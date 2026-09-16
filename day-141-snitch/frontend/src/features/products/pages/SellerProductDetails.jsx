@@ -748,33 +748,47 @@ const SellerProductDetails = () => {
                         ) : (
                             <div className="flex flex-col gap-4">
                                 {product.variants.map((v, i) => (
-                                    <div key={i} className="flex flex-col sm:flex-row gap-6 p-5 bg-white dark:bg-[#141414] border border-black/5 dark:border-white/5 rounded-xl hover:border-gold/30 dark:hover:border-white/10 transition-colors shadow-xs dark:shadow-none">
-                                        
-                                        {/* Variant Image */}
-                                        <div className="w-full sm:w-24 h-32 sm:h-24 shrink-0 bg-[#F6F5F2] dark:bg-[#0a0a0a] rounded-lg overflow-hidden border border-black/5 dark:border-white/5">
+                                    <div 
+                                        key={i} 
+                                        className="flex flex-row items-center gap-3.5 sm:gap-6 p-3.5 sm:p-5 bg-white dark:bg-[#141414] border border-black/5 dark:border-white/5 rounded-xl hover:border-gold/30 dark:hover:border-white/10 transition-colors shadow-xs dark:shadow-none"
+                                    >
+                                        {/* 1. Variant Square Thumbnail (Matches Tablet/Desktop) */}
+                                        <div className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 bg-[#F6F5F2] dark:bg-[#0a0a0a] rounded-lg overflow-hidden border border-black/5 dark:border-white/5">
                                             {v.images?.length > 0 ? (
-                                                <img src={v.images[0]?.url} className="w-full h-full object-cover" alt="Variant" />
+                                                <img 
+                                                    src={v.images[0]?.url} 
+                                                    className="w-full h-full object-cover object-top" 
+                                                    alt="Variant" 
+                                                />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-[10px] text-[#888] dark:text-[#444] uppercase tracking-widest">No Img</div>
+                                                <div className="w-full h-full flex items-center justify-center text-[10px] text-[#888] dark:text-[#444] uppercase tracking-widest">
+                                                    No Img
+                                                </div>
                                             )}
                                         </div>
                                         
-                                        {/* Variant Info */}
-                                        <div className="flex-1 flex flex-col justify-center">
-                                            <div className="flex flex-wrap gap-2 mb-3">
+                                        {/* 2. Variant Info */}
+                                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                            {/* Attribute Badges */}
+                                            <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3">
                                                 {Object.entries(v.attributes).map(([key, val]) => (
-                                                    <span key={key} className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-md px-2 py-1 font-inter text-[11px] text-[#636059] dark:text-[#ccc]">
+                                                    <span 
+                                                        key={key} 
+                                                        className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-md px-2 py-0.5 sm:py-1 font-inter text-[10px] sm:text-[11px] text-[#636059] dark:text-[#ccc]"
+                                                    >
                                                         <span className="text-[#888] dark:text-[#777] mr-1">{key}:</span>{val}
                                                     </span>
                                                 ))}
                                             </div>
-                                            <div className="flex items-center gap-6 font-inter text-sm">
+
+                                            {/* Stock & Price */}
+                                            <div className="flex items-center gap-4 sm:gap-6 font-inter text-xs sm:text-sm">
                                                 <div className="flex flex-col">
-                                                    <span className="text-[10px] uppercase tracking-widest text-[#888] dark:text-[#666]">Stock</span>
+                                                    <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#888] dark:text-[#666]">Stock</span>
                                                     <span className="text-[#121212] dark:text-white font-medium">{v.stock}</span>
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="text-[10px] uppercase tracking-widest text-[#888] dark:text-[#666]">Price</span>
+                                                    <span className="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#888] dark:text-[#666]">Price</span>
                                                     <span className="text-gold font-medium">
                                                         {v.price ? formatPrice(v.price.amount, v.price.currency) : 'Base Price'}
                                                     </span>
@@ -782,11 +796,11 @@ const SellerProductDetails = () => {
                                             </div>
                                         </div>
                                         
-                                        {/* Actions (Mock) */}
-                                        <div className="flex sm:flex-col justify-end gap-2 shrink-0">
+                                        {/* 3. Action Buttons (Stacked on Right on All Devices) */}
+                                        <div className="flex flex-col justify-center gap-1.5 sm:gap-2 shrink-0">
                                             <button 
                                                 onClick={() => handleStartEditingVariant(v)}
-                                                className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg font-inter text-[11px] uppercase tracking-widest text-[#121212] dark:text-white hover:border-gold hover:text-gold transition-colors cursor-pointer"
+                                                className="px-3 sm:px-4 py-1.5 sm:py-2 border border-black/10 dark:border-white/10 rounded-lg font-inter text-[10px] sm:text-[11px] uppercase tracking-widest text-[#121212] dark:text-white hover:border-gold hover:text-gold transition-colors cursor-pointer text-center"
                                             >
                                                 Edit
                                             </button>
@@ -794,7 +808,7 @@ const SellerProductDetails = () => {
                                             <button 
                                                 type='button'
                                                 onClick={() => setVariantToDelete(v)}
-                                                className="px-4 py-2 border border-red-500/20 text-red-600 dark:text-red-400 rounded-lg font-inter text-[11px] uppercase tracking-widest hover:bg-red-500/10 transition-colors cursor-pointer"
+                                                className="px-3 sm:px-4 py-1.5 sm:py-2 border border-red-500/20 text-red-600 dark:text-red-400 rounded-lg font-inter text-[10px] sm:text-[11px] uppercase tracking-widest hover:bg-red-500/10 transition-colors cursor-pointer text-center"
                                             >
                                                 Delete
                                             </button>
