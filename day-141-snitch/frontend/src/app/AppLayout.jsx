@@ -1,11 +1,18 @@
+import { useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router'
 import Navbar from '../features/shared/components/Navbar.jsx'
-import { Outlet, ScrollRestoration } from 'react-router'
 import Footer from '../features/shared/components/Footer.jsx'
 
 const AppLayout = () => {
+  
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
   return (
     <>
-      <ScrollRestoration />
       <Navbar />
       <Outlet />
       <Footer />
