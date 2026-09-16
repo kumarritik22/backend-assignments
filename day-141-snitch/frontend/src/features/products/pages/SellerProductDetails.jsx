@@ -702,9 +702,10 @@ const SellerProductDetails = () => {
                                                 <button 
                                                     type="button" 
                                                     onClick={() => handleRemoveImage(idx)}
-                                                    className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                                                    aria-label="Remove image"
+                                                    className="absolute top-1.5 right-1.5 z-20 w-6 h-6 rounded-full bg-black/75 backdrop-blur-xs border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                                                 >
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                                                    <X className="w-3.5 h-3.5" />
                                                 </button>
                                             </div>
                                         ))}
@@ -978,45 +979,53 @@ const SellerProductDetails = () => {
                                     </span>
                                 </div>
 
-                                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                                <div className="flex gap-4 overflow-x-auto pt-2 pb-2 px-1 scrollbar-hide">
                                 {/* Existing Saved Images */}
                                 {editExistingImages.map((img, idx) => (
-                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 overflow-hidden group">
-                                        <img 
-                                            src={img.url} 
-                                            alt="existing" 
-                                            className="w-full h-full object-cover" 
-                                        />
-                                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-white uppercase group-hover:opacity-0 transition-opacity">
-                                            Saved
-                                        </span>
+                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 group">
+                                        {/* Inner container to keep the image rounded */}
+                                        <div className="w-full h-full rounded-xl overflow-hidden bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10">
+                                            <img 
+                                                src={img.url} 
+                                                alt="existing" 
+                                                className="w-full h-full object-cover" 
+                                            />
+                                            <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-white uppercase group-hover:opacity-0 transition-opacity">
+                                                Saved
+                                            </span>
+                                        </div>
+
+                                        {/* Floating Corner Cross Button */}
                                         <button 
-                                            type='button' 
+                                            type="button" 
                                             onClick={() => handleRemoveExistingImage(idx)}
-                                            className="absolute inset-0 z-10 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                            aria-label="Remove image"
+                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
                                         >
-                                            <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
-                                                <X className="w-4 h-4" />
-                                            </div>
+                                            <X className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
                                 ))}
 
                                 {/* Newly Selected Images */}
                                 {editNewImages.map((file, idx) => (
-                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
-                                        <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
-                                        <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase group-hover:opacity-0 transition-opacity">
-                                            New
-                                        </span>
+                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 group">
+                                        {/* Inner container to keep the image rounded */}
+                                        <div className="w-full h-full rounded-xl overflow-hidden bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-gold/40">
+                                            <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
+                                            <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase group-hover:opacity-0 transition-opacity">
+                                                New
+                                            </span>
+                                        </div>
+
+                                        {/* Floating Corner Cross Button */}
                                         <button 
                                             type="button" 
                                             onClick={() => handleRemoveEditNewImage(idx)}
-                                            className="absolute inset-0 z-10 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                            aria-label="Remove image"
+                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
                                         >
-                                            <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
-                                                <X className="w-4 h-4" />
-                                            </div>
+                                            <X className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
                                 ))}
@@ -1190,45 +1199,54 @@ const SellerProductDetails = () => {
                                     </span>
                                 </div>
 
-                                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                                <div className="flex gap-4 overflow-x-auto pt-2 pb-2 px-1 scrollbar-hide">
+
                                 {/* Existing Saved Images */}
                                 {editVariantExistingImages.map((img, idx) => (
-                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 overflow-hidden group">
-                                        <img 
-                                            src={img.url} 
-                                            alt="existing" 
-                                            className="w-full h-full object-cover" 
-                                        />
-                                        <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-white uppercase group-hover:opacity-0 transition-opacity">
-                                            Saved
-                                        </span>
+                                    <div key={`existing-${idx}`} className="relative shrink-0 w-24 h-24 group">
+                                        {/* Inner container to keep the image rounded */}
+                                        <div className="w-full h-full rounded-xl overflow-hidden bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10">
+                                            <img 
+                                                src={img.url} 
+                                                alt="existing" 
+                                                className="w-full h-full object-cover" 
+                                            />
+                                            <span className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-inter text-white uppercase group-hover:opacity-0 transition-opacity">
+                                                Saved
+                                            </span>
+                                        </div>
+
+                                        {/* Floating Corner Cross Button */}
                                         <button 
-                                            type='button' 
+                                            type="button" 
                                             onClick={() => handleRemoveEditVariantExistingImage(idx)}
-                                            className="absolute inset-0 z-10 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                            aria-label="Remove image"
+                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
                                         >
-                                            <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
-                                                <X className="w-4 h-4" />
-                                            </div>
+                                            <X className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
                                 ))}
 
                                 {/* Newly Selected Images */}
                                 {editVariantNewImages.map((file, idx) => (
-                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 rounded-xl bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-gold/40 overflow-hidden group">
-                                        <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
-                                        <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase group-hover:opacity-0 transition-opacity">
-                                            New
-                                        </span>
+                                    <div key={`new-${idx}`} className="relative shrink-0 w-24 h-24 group">
+                                        {/* Inner container to keep the image rounded */}
+                                        <div className="w-full h-full rounded-xl overflow-hidden bg-[#F6F5F2] dark:bg-[#1a1a1a] border border-gold/40">
+                                            <img src={URL.createObjectURL(file)} alt="new preview" className="w-full h-full object-cover" />
+                                            <span className="absolute bottom-1 left-1 bg-gold/90 text-[#0a0a0a] px-1.5 py-0.5 rounded text-[8px] font-inter font-bold uppercase group-hover:opacity-0 transition-opacity">
+                                                New
+                                            </span>
+                                        </div>
+
+                                        {/* Floating Corner Cross Button */}
                                         <button 
                                             type="button" 
                                             onClick={() => handleRemoveEditVariantNewImage(idx)}
-                                            className="absolute inset-0 z-10 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white"
+                                            aria-label="Remove image"
+                                            className="absolute -top-2 -right-2 z-20 w-6 h-6 rounded-full bg-[#1e1e1e] border border-white/20 flex items-center justify-center text-white/90 hover:bg-red-500 hover:border-red-400 hover:text-white transition-all shadow-md cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
                                         >
-                                            <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400">
-                                                <X className="w-4 h-4" />
-                                            </div>
+                                            <X className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
                                 ))}
