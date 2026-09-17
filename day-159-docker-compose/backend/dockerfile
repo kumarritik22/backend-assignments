@@ -1,9 +1,8 @@
-FROM node:20-alpline
+FROM node:20-alpine
 
 WORKDIR /app
 
-# COPY package.json ./
-# COPY package-lock.json ./
+# By doing this we can copy package.json and package-lock.json in one line.
 
 COPY package*.json ./
 
