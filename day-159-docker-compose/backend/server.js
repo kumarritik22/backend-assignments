@@ -21,7 +21,8 @@ app.get("/api/users", (req, res) => {
     const users = [
         { id: 1, name: "Ramayan Part-1" },
         { id: 2, name: "Ramayan Part-2" },
-        { id: 3, name: "Varanasi" }
+        { id: 3, name: "Varanasi" },
+        { id: 4, name: "Kalki 2" }
     ];
 
     res.status(200).json(users);
