@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.get("/", async (req, res) => {
+app.get("/api/product", async (req, res) => {
     const response = await axios.get("http://express-service/")
     res.send(response.data);
 })
