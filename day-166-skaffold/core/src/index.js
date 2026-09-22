@@ -12,10 +12,7 @@ app.get("/", (req, res) => {
         sum += i
     }
 
-    res.status(200).json({
-        message: "Sum calculated successfully.",
-        sum
-    });
+    res.send(`Hello World! Sum is ${sum}`);
 });
 
 app.listen(3000, () => {
