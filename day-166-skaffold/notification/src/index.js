@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.get("/api/notification", (req, res) => {
+app.get("/", (req, res) => {
     let sum = 0;
     for (let i = 0; i < 1000000; i++) {
         sum += i;
