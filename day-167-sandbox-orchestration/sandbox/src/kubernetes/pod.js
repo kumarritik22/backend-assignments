@@ -27,7 +27,7 @@ export const createPod = async (sandboxId, s3Bucket) => {
                     env: [
                         { name: "SANDBOX_ID", value: sandboxId },
                         { name: "S3_BUCKET", value: s3Bucket },
-                        { name: "AWS_DEFAULT_REGION", value: "ap-southeast-1" },
+                        { name: "AWS_DEFAULT_REGION", value: "ap-south-1" },
                         {
                             name: "AWS_ACCESS_KEY_ID",
                             valueFrom: { secretKeyRef: { name: "aws-credentials", key: "AWS_ACCESS_KEY_ID" } }
@@ -80,7 +80,7 @@ export const createPod = async (sandboxId, s3Bucket) => {
                     env: [
                         { name: "SANDBOX_ID", value: sandboxId },
                         { name: "S3_BUCKET", value: s3Bucket },
-                        { name: "AWS_DEFAULT_REGION", value: "ap-southeast-1" },
+                        { name: "AWS_DEFAULT_REGION", value: "ap-south-1" },
                         {
                             name: "AWS_ACCESS_KEY_ID",
                             valueFrom: { secretKeyRef: { name: "aws-credentials", key: "AWS_ACCESS_KEY_ID" } }

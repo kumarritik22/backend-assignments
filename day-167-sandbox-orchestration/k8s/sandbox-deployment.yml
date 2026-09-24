@@ -38,7 +38,7 @@ spec:
           timeoutSeconds: 10
         env:
         - name:  S3_BUCKET
-          value:  cohort-capstone-329599656829-ap-southeast-1-an       
+          value:  sandbox-orchestration-storage       
         ports:
         - containerPort:  3000
           name:  sandbox
