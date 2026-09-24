@@ -1,7 +1,6 @@
 import express from "express";
-import morgan from 'morgan';
+import morgan from "morgan";
 import sandboxRoutes from './routes/sandbox.routes.js';
-
 
 const app = express();
 
