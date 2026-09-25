@@ -16,14 +16,14 @@ export const createPod = async (sandboxId, s3Bucket) => {
             // emptyDir wipes /app, so Vite would start with no files.
             // This init container polls until sync-sidecar seeds /app, then exits.
             initContainers: [
-                // ── Step 1: seed /app from S3 or template, then exit ──────────
+                // ── Step 1: seed /workspace from S3 or template, then exit ──
                 // Runs BEFORE Vite and agent start — no deadlock
                 {
                     name: `sync-init-${sandboxId}`,
                     image: "sandbox-sync:latest",
                     imagePullPolicy: "IfNotPresent",
                     command: [ "node", "seed.js" ],   // separate script, just seeds and exits
-                    volumeMounts: [ { name: "code-volume", mountPath: "/app" } ],
+                    volumeMounts: [ { name: "code-volume", mountPath: "/workspace" } ],
                     env: [
                         { name: "SANDBOX_ID", value: sandboxId },
                         { name: "S3_BUCKET", value: s3Bucket },
@@ -38,8 +38,8 @@ export const createPod = async (sandboxId, s3Bucket) => {
                         },
                     ],
                     resources: {
-                        limits: { cpu: "200m", memory: "256Mi" },
-                        requests: { cpu: "100m", memory: "128Mi" },
+                        limits: { cpu: "500m", memory: "512Mi" },
+                        requests: { cpu: "200m", memory: "256Mi" },
                     },
                 }
             ],
@@ -49,7 +49,8 @@ export const createPod = async (sandboxId, s3Bucket) => {
                     name: `sandbox-container-${sandboxId}`,
                     image: "template:latest",
                     imagePullPolicy: "IfNotPresent",
-                    command: [ "npm", "run", "dev" ],
+                    workingDir: "/workspace",
+                    command: [ "npx", "vite", "--host", "0.0.0.0", "--port", "5173" ],
                     ports: [ { containerPort: 5173 } ],
                     volumeMounts: [ { name: "code-volume", mountPath: "/workspace" } ],
                     resources: {

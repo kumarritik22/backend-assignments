@@ -18,14 +18,3 @@ spec:
             name: sandbox-service
             port:
               number: 80
-
-
-      - pathType: Prefix
-        path: /
-        backend:
-          service:  
-            name: frontend-service
-            port:
-              number: 80
-
-      
