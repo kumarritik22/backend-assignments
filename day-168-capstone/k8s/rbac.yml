@@ -19,8 +19,8 @@ kind: RoleBinding
 metadata:
   name: resource-manager-binding
 subjects: 
-- kind: ServiceAccount 
-  name: resource-manager
+  - kind: ServiceAccount 
+    name: resource-manager
 roleRef:
   kind: Role 
   name: resource-manager
