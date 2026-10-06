@@ -44,7 +44,7 @@ export const readFiles = tool(
     }
 );
 
-export const updateFile = tool(
+export const updateFiles = tool(
     async ({ files }, config) => {
 
         const writer = config.writer;
