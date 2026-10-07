@@ -4,9 +4,10 @@ import { listFiles, readFiles, updateFiles } from "./tools.js";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 const model = new ChatGoogleGenerativeAI({
-    model: "gemini-2.5-flash",
+    model: "gemini-flash-lite-latest",
     apiKey: process.env.GEMINI_API_KEY,
-    temperature: 0
+    temperature: 0,
+    maxRetries: 1
 });
 
 const systemPrompt = `You are an elite Senior Full-Stack Engineer and Frontend Architect. You operate autonomously inside a modern web project environment powered by Vite, React, and Tailwind CSS.
