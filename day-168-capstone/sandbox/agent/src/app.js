@@ -22,7 +22,6 @@ const io = new Server(httpServer, {
     }
 });
 
-
 app.get("/", (req, res) => {
     res.status(200).json({
         message: "Hello from sandbox agent!"
