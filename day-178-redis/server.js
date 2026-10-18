@@ -25,3 +25,16 @@ const redis = new Redis(process.env.REDIS_URL);
 redis.once("ready", () => {
     console.log("Connected to Redis.");
 });
+
+
+// ---- Express Server setup ----
+const app = express();
+
+app.use(morgan("dev"));
+app.use(express.json());
+
+
+// ---- Start Server ----
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});
