@@ -48,6 +48,20 @@ app.get("/user/:id", async (req, res) => {
 });
 
 
+app.post("/user", async (req, res) => {
+    try {
+        const newUser = new User(req.body);
+        await newUser.save();
+        res.json({
+            message: "User created successfully.",
+            data: newUser
+        });
+    } catch (error) {
+        res.status(500).json({ error: "Error creating user" });
+    }
+});
+
+
 // ---- Start Server ----
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
