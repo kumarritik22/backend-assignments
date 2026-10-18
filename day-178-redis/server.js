@@ -3,7 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import mongoose from "mongoose";
 import Redis from "ioredis";
-import user from "./models/user.model.js";
+import User from "./models/user.model.js";
 
 
 // ---- MongoDB Connection ----
@@ -32,6 +32,20 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());
+
+
+// ---- Routes ----
+app.get("/user/:id", async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.params.id });
+        res.json({
+            message: "User fetched successfully",
+            data: user
+        });
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching users" });
+    }
+});
 
 
 // ---- Start Server ----
