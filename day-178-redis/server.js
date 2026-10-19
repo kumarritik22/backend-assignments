@@ -37,7 +37,20 @@ app.use(express.json());
 // ---- Routes ----
 app.get("/user/:id", async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.params.id });
+        const userFromCache = await redis.get(`user:${req.params.id}`);
+
+        if (userFromCache) {
+            return res.json({
+                message: "User fetched from cache",
+                data: JSON.parse(userFromCache)
+            });
+        }
+
+        const user = await User.find();
+
+        await redis.set(`user:${req.params.id}`, JSON.stringify(user), "EX", 60 * 60);
+
+
         res.json({
             message: "User fetched successfully",
             data: user
