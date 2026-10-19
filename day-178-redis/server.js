@@ -4,6 +4,7 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import Redis from "ioredis";
 import User from "./models/user.model.js";
+import rateLimit from "express-rate-limit";
 
 
 // ---- MongoDB Connection ----
@@ -32,6 +33,20 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());
+
+
+const globalLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000,
+    max: 100,
+    message: {
+        error: "Too many requests, please try again later."
+    },
+    statusCode: 429,
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
+app.use(globalLimiter);
 
 
 // ---- Routes ----
@@ -87,6 +102,7 @@ app.get("/", (req, res) => {
         data: sum
     });
 });
+
 
 // ---- Start Server ----
 app.listen(3000, () => {
