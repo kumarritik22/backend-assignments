@@ -10,4 +10,8 @@ describe("sum function", () => {
         expect(sum(-10, 5)).toBe(-5);
     });
 
+    test("add -0 + 5 equal 5", () => {
+        expect(sum(-0, 5)).toBe(5);
+    });
+
 });
