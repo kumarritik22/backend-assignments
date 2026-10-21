@@ -28,4 +28,4 @@ export const authMiddleware = async (req, res, next) => {
     } catch (error) {
         throw new Error(error);
     }
-}
+};
