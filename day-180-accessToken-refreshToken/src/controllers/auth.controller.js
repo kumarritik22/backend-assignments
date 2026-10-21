@@ -40,7 +40,7 @@ export const loginController = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000
     });
 
-    return res.status(201).json({
+    return res.status(200).json({
         message: "User logged in successfully",
         user: isAlreadyExist
     });
