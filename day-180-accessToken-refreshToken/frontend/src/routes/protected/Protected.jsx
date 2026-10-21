@@ -1,7 +1,13 @@
-import { Outlet } from "react-router"
+import { useSelector } from "react-redux"
+import { Navigate, Outlet } from "react-router"
 
 const Protected = () => {
-  return <Outlet />
+
+    const { user } = useSelector((store) => store.auth);
+
+    if (!user) return <Navigate to={"/"} />
+
+    return <Outlet />
 }
 
 export default Protected

@@ -1,7 +1,12 @@
 import { useForm } from "react-hook-form";
-import { axiosInstance } from "../config/AxiosInstance";
+import { axiosInstance } from "../config/AxiosInstance.jsx";
+import { useDispatch } from "react-redux";
+import { addUser } from "../state/AuthReducer.jsx";
 
 export const useAuth = () => {
+
+    const dispatch = useDispatch();
+
     const {
         register,
         handleSubmit,
@@ -12,6 +17,7 @@ export const useAuth = () => {
     try {
         const response = await axiosInstance.post("/api/auth/login", data);
         console.log("Response from login api-->", response);
+        dispatch(addUser(response.data.user));
     } catch (error) {
         console.error("Error while logging in:", error);
     }
