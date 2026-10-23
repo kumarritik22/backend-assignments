@@ -17,6 +17,4 @@ router.get("/me", authMiddleware, (req, res) => {
     });
 });
 
-router.delete("/logout", logoutController);
-
 export default router;

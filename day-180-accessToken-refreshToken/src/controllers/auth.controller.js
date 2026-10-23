@@ -68,7 +68,3 @@ export const getAccessTokenController = async (req, res) => {
         message: "Access token generated."
     });
 };
-
-export const logoutController = async (req, res) => {
-    
-}
