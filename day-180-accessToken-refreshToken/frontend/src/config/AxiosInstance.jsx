@@ -5,8 +5,6 @@ export const axiosInstance = axios.create({
     withCredentials: true
 });
 
-// axiosInstance.interceptors.response.use();
-
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
