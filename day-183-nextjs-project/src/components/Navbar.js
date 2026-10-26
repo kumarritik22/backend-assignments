@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import { ModeToggle } from './toggleTheme'
 
 const Navbar = () => {
   return (
@@ -9,7 +10,7 @@ const Navbar = () => {
         <Link href={"/home"}>Home</Link>
         <Link href={"/products"}>Products</Link>
       </div>
-      <div>Login</div>
+      <div> <ModeToggle /> </div>
     </div>
   )
 }
