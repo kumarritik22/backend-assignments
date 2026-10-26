@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
     useEffect(() => {
-      if (!user) {
+      if (!loading && !user) {
         router.replace("/login");
       }
     }, [user, loading, router]);

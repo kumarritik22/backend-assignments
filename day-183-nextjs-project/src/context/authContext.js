@@ -1,17 +1,21 @@
 "use client";
 import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const Auth = createContext();
 
 export const AuthProvider = ({ children }) => {
+    const router = useRouter();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const hydrateUser = async () => {
         try {
             const res = await api.get("/api/auth/me");
+            console.log(res);
             setUser(res.data.user);
+            router.push("/mainLayout/home");
         } catch (error) {
             setUser(null);
             console.error("Error while hydrating user:", error);
@@ -24,7 +28,11 @@ export const AuthProvider = ({ children }) => {
       hydrateUser();
     }, []);
     
-    return <Auth.Provider value={{ user, setUser, loading }}>{children}</Auth.Provider>
+    return (
+        <Auth.Provider value={{ user, setUser, loading, hydrateUser }}>
+            {children}
+        </Auth.Provider>
+    );
 };
 
 export const useAuth = () => useContext(Auth);

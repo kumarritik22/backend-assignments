@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import "./globals.css";
 import { ThemeProvider } from "@/components/themeProvider";
 import { AuthProvider } from "@/context/authContext";
