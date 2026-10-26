@@ -1,14 +1,6 @@
-"use client"
-
+"use client";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Check,
-  ShoppingBag,
-  Sparkles,
-  Star,
-} from "lucide-react";
-
+import { ArrowRight, Check, ShoppingBag, Sparkles, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,7 +23,7 @@ export default function RegisterPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await api.post("/auth/api/register", formData);
+            const res = await api.post("/api/auth/register", formData);
             router.push("/login");
         } catch (error) {
             console.error("Error while registering:", error); 
