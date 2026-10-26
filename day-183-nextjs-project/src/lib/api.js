@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "https://api.team-sync.space",
+    baseURL: "https://team-sync-backend-n78w.onrender.com/",
     withCredentials: true
 });
