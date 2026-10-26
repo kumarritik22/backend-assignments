@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 import {
   ArrowRight,
@@ -11,8 +13,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { useState } from "react";
+import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+
+    const [formData, setFormData] = useState({});
+
+    const router = useRouter();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await api.post("/api/auth/login", formData);
+            router.push("/home");
+        } catch (error) {
+            console.error("Error while logging in:", error);
+        }
+    }
+
   return (
     <main className="grid min-h-[calc(100vh-4rem)] bg-background lg:grid-cols-2">
       {/* Premium Brand Panel */}
@@ -106,10 +131,11 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="email">Email address</Label>
               <Input
+                onChange={handleChange}
                 id="email"
                 name="email"
                 type="email"
@@ -132,6 +158,7 @@ export default function LoginPage() {
               </div>
 
               <Input
+                onChange={handleChange}
                 id="password"
                 name="password"
                 type="password"

@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 import {
   ArrowRight,
@@ -11,8 +13,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { useState } from "react";
+import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+
+    const [formData, setFormData] = useState({});
+
+    const router = useRouter();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await api.post("/auth/api/register", formData);
+            router.push("/login");
+        } catch (error) {
+            console.error("Error while registering:", error); 
+        }
+    }
+
   return (
     <main className="grid min-h-[calc(100vh-4rem)] bg-background lg:grid-cols-2">
       {/* Premium Brand Panel */}
@@ -107,10 +132,11 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Full name</Label>
               <Input
+                onChange={handleChange}
                 id="name"
                 name="name"
                 type="text"
@@ -124,6 +150,7 @@ export default function RegisterPage() {
             <div className="space-y-2">
               <Label htmlFor="email">Email address</Label>
               <Input
+                onChange={handleChange}
                 id="email"
                 name="email"
                 type="email"
@@ -137,6 +164,7 @@ export default function RegisterPage() {
             <div className="space-y-2">
               <Label htmlFor="password">Create password</Label>
               <Input
+                onChange={handleChange}
                 id="password"
                 name="password"
                 type="password"
