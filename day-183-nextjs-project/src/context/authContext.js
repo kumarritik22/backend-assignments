@@ -1,11 +1,12 @@
 "use client";
 import { api } from "@/lib/api";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const Auth = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const hydrateUser = async () => {
         try {
@@ -14,6 +15,8 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             setUser(null);
             console.error("Error while hydrating user:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -21,7 +24,7 @@ export const AuthProvider = ({ children }) => {
       hydrateUser();
     }, []);
     
-    return <Auth.Provider value={{ user, setUser }}>{children}</Auth.Provider>
+    return <Auth.Provider value={{ user, setUser, loading }}>{children}</Auth.Provider>
 };
 
 export const useAuth = () => useContext(Auth);

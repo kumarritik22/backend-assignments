@@ -26,7 +26,7 @@ export default function RegisterPage() {
             const res = await api.post("/api/auth/register", formData);
             router.push("/login");
         } catch (error) {
-            console.error("Error while registering:", error); 
+            console.error("Error while registering:", error);
         }
     }
 

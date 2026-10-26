@@ -23,7 +23,6 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
             <div className="px-8 flex-1">{children}</div>  
           </ThemeProvider>
         </AuthProvider>
