@@ -5,15 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 function ProductCard({ product }) {
-  const {
-    id,
-    image,
-    title,
-    category,
-    description,
-    price,
-    rating,
-  } = product;
+  const { id, image, title, category, description, price, rating } = product;
 
   return (
     <Card className="flex h-full w-full flex-col overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
