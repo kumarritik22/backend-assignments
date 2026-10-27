@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
     const hydrateUser = async () => {
         try {
             const res = await api.get("/api/auth/me");
-            console.log(res);
             setUser(res.data.user);
             router.push("/mainLayout/home");
         } catch (error) {
