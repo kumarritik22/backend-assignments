@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await api.get("/api/auth/me");
             setUser(res.data.user);
-            router.push("/mainLayout/home");
+            
         } catch (error) {
             setUser(null);
             console.error("Error while hydrating user:", error);

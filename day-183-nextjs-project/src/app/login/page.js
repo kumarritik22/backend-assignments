@@ -24,7 +24,7 @@ export default function LoginPage() {
         e.preventDefault();
         try {
             const res = await api.post("/api/auth/login", formData);
-            router.push("/home");
+            router.push("/mainLayout/home");
         } catch (error) {
             console.error("Error while logging in:", error);
         }
