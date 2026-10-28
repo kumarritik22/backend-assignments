@@ -1,17 +1,5 @@
-import { redirect } from 'next/navigation'
-import React from 'react'
+import { redirect } from "next/navigation";
 
-const page = () => {
-
-  function rootPage() {
-    redirect("/home")
-  }
-
-  return (
-    <div>
-      This is the Main Route.
-    </div>
-  )
-}
-
-export default page
+export default function RootPage() {
+  redirect("/home");
+};
