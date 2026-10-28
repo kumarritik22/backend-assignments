@@ -11,7 +11,7 @@ function ProductCard({ product }) {
     <Card className="flex h-full w-full flex-col overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       {/* Product Image */}
       <Link
-        href={`/mainLayout/products/${id}`}
+        href={`/products/${id}`}
         className="relative flex h-48 shrink-0 items-center justify-center bg-muted/50 p-5"
       >
         <img
@@ -29,7 +29,7 @@ function ProductCard({ product }) {
             {category}
           </Badge>
 
-          <Link href={`/mainLayout/products/${id}`}>
+          <Link href={`/products/${id}`}>
             <h2 className="mt-3 line-clamp-2 min-h-12 text-base font-semibold leading-6 hover:underline">
               {title}
             </h2>

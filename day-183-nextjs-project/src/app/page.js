@@ -4,7 +4,7 @@ import React from 'react'
 const page = () => {
 
   function rootPage() {
-    redirect("/mainLayout/home")
+    redirect("/home")
   }
 
   return (

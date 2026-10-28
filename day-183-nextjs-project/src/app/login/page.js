@@ -29,7 +29,7 @@ export default function LoginPage() {
         try {
             const res = await api.post("/api/auth/login", formData);
             await hydrateUser();
-            router.push("/mainLayout/home");
+            router.push("/home");
         } catch (error) {
             console.error("Error while logging in:", error);
         }

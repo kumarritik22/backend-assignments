@@ -10,7 +10,7 @@ const PublicRoute = ({ children }) => {
 
     useEffect(() => {
       if (!loading && user) {
-        router.replace("/mainLayout/home")
+        router.replace("/home")
       }
     }, [user, loading, router]);
 
