@@ -1,10 +1,13 @@
 import Navbar from "@/components/Navbar";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const Layout = ({ children }) => {
   return (
     <>
-      <Navbar />
-      {children}
+      <ProtectedRoute>
+        <Navbar />
+        {children}
+      </ProtectedRoute>
     </>
   );
 };
