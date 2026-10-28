@@ -8,12 +8,15 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/authContext";
 
 export default function LoginPage() {
 
     const [formData, setFormData] = useState({});
 
     const router = useRouter();
+
+    const { hydrateUser } = useAuth();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,6 +27,7 @@ export default function LoginPage() {
         e.preventDefault();
         try {
             const res = await api.post("/api/auth/login", formData);
+            await hydrateUser();
             router.push("/mainLayout/home");
         } catch (error) {
             console.error("Error while logging in:", error);

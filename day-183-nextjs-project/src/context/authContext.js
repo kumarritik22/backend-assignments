@@ -14,10 +14,11 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await api.get("/api/auth/me");
             setUser(res.data.user);
-            
         } catch (error) {
             setUser(null);
-            console.error("Error while hydrating user:", error);
+            if (error.response?.status !== 401) {
+                console.error("Error while hydrating user:", error);
+            }
         } finally {
             setLoading(false);
         }
