@@ -9,9 +9,9 @@ const PublicRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
     useEffect(() => {
-      if (!loading && user) [
+      if (!loading && user) {
         router.replace("/mainLayout/home")
-      ]
+      }
     }, [user, loading, router]);
 
     if (loading) {
