@@ -23,7 +23,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-      hydrateUser();
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        hydrateUser();
     }, []);
     
     return (

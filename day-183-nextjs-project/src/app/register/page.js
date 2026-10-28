@@ -118,11 +118,11 @@ export default function RegisterPage() {
               </p>
 
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Let's make it yours.
+                Let&apos;s make it yours.
               </h2>
 
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                Create your account and find something you'll love.
+                Create your account and find something you&apos;ll love.
               </p>
             </div>
 
