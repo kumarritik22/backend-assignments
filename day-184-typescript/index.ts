@@ -1,4 +1,10 @@
-let array: [number, string, boolean, string, number] = [90, "Ritik", true, "Engineer", 1];
+enum Role {
+    ADMIN,
+    USER,
+    SUP_ADMIN,
+    FOUNDER
+}
 
+let user = Role.SUP_ADMIN
 
-console.log(array);
+console.log(user);
